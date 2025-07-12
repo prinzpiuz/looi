@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "LooI",
+  "version": "1.0.0",
+  "description": "A customizable start page with widgets and synced bookmarks.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "identity",
+    "https://api.github.com/*",
+    "https://gist.github.com/*"
+  ],
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  }
+}
