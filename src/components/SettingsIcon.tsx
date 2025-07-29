@@ -1,5 +1,5 @@
 import React from "react";
-import { CiSettings } from "react-icons/ci";
+import { FaGear } from "react-icons/fa6";
 import { SettingsButtonProps } from "../utils/types";
 import ToolTip from "./ToolTip";
 
@@ -15,7 +15,7 @@ const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
         style={{ position: "fixed", top: 20, right: 20 }}
         onClick={toggleSettings}
       >
-        <CiSettings />
+        <FaGear />
       </button>
     </ToolTip>
   );

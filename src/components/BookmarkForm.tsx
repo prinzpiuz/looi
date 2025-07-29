@@ -29,6 +29,7 @@ const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
   const handleSubmit = () => {
     const finalIcon = icon || `https://icon.horse/icon/${url}`;
     const bookmark: Bookmark = {
+      id: crypto.randomUUID(),
       url: url.startsWith("http") ? url : `https://${url}`,
       name: name || url,
       icon: finalIcon,

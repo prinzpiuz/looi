@@ -2,120 +2,124 @@
 
 /* Use CSS variables for easy theming */
 :root {
-    --brand-primary: #041d80;
-    --brand-secondary: #000000;
-    --bg-primary: #000000;
-    --bg-secondary: #000000;
-    --text-primary: #ffffff;
-    --text-secondary: #6b6b6b;
-    --radius: 12px;
+  --brand-primary: #041d80;
+  --brand-secondary: #ffa348;
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --radius: 12px;
 }
 
 /* Main calendar container */
 .react-calendar {
-    width: 50%;
-    max-width: 400px;
-    /* Adjust as needed */
-    background: var(--bg-primary);
-    border: none;
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  max-width: 400px;
+  /* Adjust as needed */
+  background: var(--bg-primary);
+  border: none;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
 }
 
 /* Remove border from the navigation section */
 .react-calendar__navigation {
-    display: flex;
-    height: 44px;
-    margin-bottom: 1em;
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
 }
 
 .react-calendar__navigation button {
-    min-width: 44px;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    border-radius: 8px;
+  min-width: 44px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 8px;
 }
 
 .react-calendar__navigation button:hover {
-    background-color: var(--bg-secondary);
+  background-color: var(--bg-secondary);
 }
 
 .react-calendar__navigation button:disabled {
-    color: #d1d1d1;
-    cursor: not-allowed;
+  color: #d1d1d1;
+  cursor: not-allowed;
 }
 
 /* Center the navigation label (e.g., "July 2025") */
 .react-calendar__navigation__label {
-    font-weight: 600;
-    font-size: 1rem;
-    flex-grow: 1 !important;
+  font-weight: 600;
+  font-size: 1rem;
+  flex-grow: 1 !important;
 }
 
 /* Style for the weekdays (Mon, Tue, etc.) */
 .react-calendar__month-view__weekdays {
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: 500;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
 }
 
 /* Basic styling for all tiles (days, months, etc.) */
 .react-calendar__tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    padding: 5px;
-    background: none;
-    border: none;
-    border-radius: 8px;
-    /* Rounded corners for tiles */
-    color: var(--text-primary);
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 5px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  /* Rounded corners for tiles */
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 }
 
 /* Hover effect for tiles */
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-    background: var(--brand-secondary);
+  background: var(--brand-secondary);
 }
 
 /* Style for today's date */
 .react-calendar__tile--now {
-    background: var(--brand-secondary);
-    font-weight: 600;
+  background: var(--brand-secondary);
+  font-weight: 600;
 }
 
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-    background: #d4dfff;
-    /* Slightly darker shade on hover for today */
+  background: #d4dfff;
+  /* Slightly darker shade on hover for today */
 }
 
 /* Style for the selected date */
 .react-calendar__tile--active {
-    background: var(--brand-primary);
-    color: white;
-    font-weight: 600;
+  background: var(--brand-primary);
+  color: white;
+  font-weight: 600;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-    background: var(--brand-primary);
-    /* Keep the same color on hover */
+  background: var(--brand-primary);
+  /* Keep the same color on hover */
 }
 
 /* Style for days in the previous or next month */
 .react-calendar__month-view__days__day--neighboringMonth {
-    color: #aaaaaa; }
+  color: #aaaaaa;
+}

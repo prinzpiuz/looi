@@ -9,7 +9,7 @@ const Bookmarks: React.FC = () => {
   return (
     <>
       {bookmarks.map((bm: Bookmark, index: number) => {
-        return <BookmarkWidget index={index} bookmark={bm} />;
+        return <BookmarkWidget key={bm.id} index={index} bookmark={bm} />;
       })}
     </>
   );

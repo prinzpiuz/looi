@@ -1,5 +1,5 @@
 import React from "react";
-import { MdClose } from "react-icons/md";
+import { FaRegCircleXmark } from "react-icons/fa6";
 import { SettingsButtonProps } from "../utils/types";
 import ToolTip from "./ToolTip";
 
@@ -17,7 +17,7 @@ const CloseSettingsIcon: React.FC<SettingsButtonProps> = ({
         style={{ position: "fixed", top: 20, right: 20 }}
         onClick={toggleSettings}
       >
-        <MdClose />
+        <FaRegCircleXmark />
       </div>
     </ToolTip>
   );

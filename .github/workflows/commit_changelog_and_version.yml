@@ -1,0 +1,52 @@
+name: Commit Changelog And Version
+
+on:
+  push:
+    branches:
+      - "main"
+concurrency: production
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+      - name: Bump version and push tag
+        id: autoversion
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          skipInvalidTags: true
+    outputs:
+      new_tag: ${{ steps.autoversion.outputs.nextStrict }}
+  commit_changelog_and_version:
+    needs: tag
+    runs-on: ubuntu-latest
+    name: Generate changelog and update version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@main
+        id: git-cliff
+        with:
+          config: cliff.toml
+        env:
+          OUTPUT: CHANGES.md
+      - name: Copy changelog to workspace
+        run: echo "${{ steps.git-cliff.outputs.content }}" > CHANGELOG.md
+      - name: Edit package.json & manifest.json version
+        run: |
+          ./update_version.sh ${{ needs.tag.outputs.new_tag }}
+      - name: Commit changes
+        if: ${{ success() }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: '["CHANGELOG.md", "package.json", "public/manifest.json"]'
+          pull: "--rebase --autostash ."
+          message: "chore: changelog generated & version updated automatically"
+          default_author: github_actions

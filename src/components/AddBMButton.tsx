@@ -1,5 +1,5 @@
 import React from "react";
-import { IoMdAdd } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
 import ToolTip from "./ToolTip";
 import { AddBookmarkButtonProps } from "../utils/types";
 
@@ -17,7 +17,7 @@ const AddBookmarkButton: React.FC<AddBookmarkButtonProps> = ({
         onClick={() => showBookmarkForm(true)}
         style={{ position: "fixed", top: 20, right: 60 }}
       >
-        <IoMdAdd />
+        <FaPlus />
       </button>
     </ToolTip>
   );
