@@ -1,4 +1,4 @@
-import { browser } from "./browser_api";
+import { browser } from "./browserApi";
 import { Settings } from "./types";
 
 export const loadDefaultSettings: Settings = {
@@ -6,7 +6,22 @@ export const loadDefaultSettings: Settings = {
   bgUrl: "", // Default background image URL
   syncStatus: false,
   bookmarks: [],
-  widgets: [], // Default sync status
+  widgetConfigs: {
+    calendar: {
+      id: "calendar",
+      name: "Calendar",
+      icon: "🗓️",
+      enabled: true,
+      position: { x: 100, y: 200 },
+    },
+    todo: {
+      id: "todo",
+      name: "To-Do List",
+      icon: "✅",
+      enabled: false,
+      position: { x: 300, y: 150 },
+    },
+  }, // Default sync status
 };
 
 export const saveSettings = async (settings: Settings) => {
@@ -33,6 +48,11 @@ export const updateSettings = async (newSettings: Partial<Settings>) => {
       : currentSettings.bookmarks
         ? { bookmarks: currentSettings.bookmarks }
         : {}),
+    widgetConfigs:
+      newSettings.widgetConfigs ??
+      currentSettings.widgetConfigs ??
+      loadDefaultSettings.widgetConfigs,
+    ...newSettings,
   };
   await saveSettings(updatedSettings);
   return updatedSettings;

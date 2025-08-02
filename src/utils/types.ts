@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface Position {
   x: number;
   y: number;
@@ -11,12 +13,12 @@ export interface Bookmark {
   icon: string;
 }
 
-export interface Widget {
+export interface WidgetConfig {
+  id: string;
   name: string;
   position: Position;
   icon?: string;
-  component: React.FC;
-  isEnabled: boolean;
+  enabled: boolean;
 }
 
 export interface Settings {
@@ -24,7 +26,7 @@ export interface Settings {
   bgUrl?: string;
   syncStatus?: boolean;
   bookmarks?: Bookmark[];
-  widgets?: Widget[];
+  widgetConfigs: Record<string, WidgetConfig>;
 }
 
 export interface SettingsContextType {
@@ -34,6 +36,7 @@ export interface SettingsContextType {
   updateBookmark: (s: string, bm: Partial<Bookmark>) => void;
   removeBookmark: (s: string) => void;
   getBookmarkById: (s: string) => Bookmark | undefined;
+  updateWidgetPosition: (id: string, newPos: Position) => void;
   updateAndPersistSettings: (s: Partial<Settings>) => void;
 }
 
@@ -49,3 +52,16 @@ export interface CancelBookmarkButtonProps {
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   showBookmarkForm: boolean;
 }
+
+export interface WidgetProps {
+  config: WidgetConfig;
+}
+
+export interface FoldableSectionProps {
+  title: React.ReactNode;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+export type IconProps = React.FC<{ style?: CSSProperties }>;

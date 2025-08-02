@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { getSettings, updateSettings } from "../utils/manage_settings";
+import { getSettings, updateSettings } from "../utils/manageSettings";
 import { Settings, Bookmark, SettingsContextType } from "../utils/types";
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -11,6 +11,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
   const bookmarks = settings?.bookmarks || [];
+  const widgetConfigs = settings?.widgetConfigs || {};
 
   useEffect(() => {
     const load = async () => {
@@ -53,6 +54,24 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     return bookmarks.find((bm) => bm.id === id);
   };
 
+  const updateWidgetPosition = (
+    id: string,
+    newPos: { x: number; y: number },
+  ) => {
+    if (!settings?.widgetConfigs?.[id]) return;
+    const updated = {
+      ...settings,
+      widgetConfigs: {
+        ...settings.widgetConfigs,
+        [id]: {
+          ...settings.widgetConfigs[id],
+          position: newPos,
+        },
+      },
+    };
+    updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -62,6 +81,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         updateBookmark,
         removeBookmark,
         getBookmarkById,
+        updateWidgetPosition,
         updateAndPersistSettings,
       }}
     >

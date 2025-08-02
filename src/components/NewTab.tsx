@@ -1,10 +1,10 @@
 import React from "react";
-import CalendarWidget from "./Calendar";
-import SettingsPanel from "./SetttingsPanel";
-import AddBookmarkButton from "./AddBMButton";
-import Bookmarks from "./Bookmarks";
+import SettingsPanel from "./settings/SetttingsPanel";
+import AddBookmarkButton from "./bookmarks/AddBmButton";
+import Bookmarks from "./bookmarks/Bookmarks";
+import BookmarkForm from "./bookmarks/BookmarkForm";
+import DraggableWidget from "./widgets/DraggableWidget";
 import { useSettings } from "../hooks/settingsContext";
-import BookmarkForm from "./BookmarkForm";
 
 const NewTabPage: React.FC = () => {
   const { settings } = useSettings();
@@ -12,6 +12,7 @@ const NewTabPage: React.FC = () => {
 
   const bgColor = settings?.bgColor ?? "#000000";
   const bgUrl = settings?.bgUrl ? `url(${settings.bgUrl})` : undefined;
+  const widgetConfigs = settings?.widgetConfigs || {};
 
   const newTabStyle: React.CSSProperties = {
     position: "relative",
@@ -27,7 +28,10 @@ const NewTabPage: React.FC = () => {
     <div style={newTabStyle}>
       <SettingsPanel />
       <AddBookmarkButton showBookmarkForm={setShowBookmarkForm} />
-      <CalendarWidget />
+      {Object.entries(widgetConfigs).map(([id, config]) => {
+        if (!config.enabled) return null;
+        return <DraggableWidget key={id} id={id} config={config} />;
+      })}
       <Bookmarks />
       <BookmarkForm
         showBookmarkForm={showBookmarkForm}

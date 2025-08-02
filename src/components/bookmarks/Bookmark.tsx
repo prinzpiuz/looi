@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { FaEllipsis } from "react-icons/fa6";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { Bookmark } from "../utils/types";
-import { useSettings } from "../hooks/settingsContext";
+import { Bookmark } from "../../utils/types";
+import { useSettings } from "../../hooks/settingsContext";
 
 const bookmarkStyle: React.CSSProperties = {
   display: "flex",
@@ -47,7 +47,7 @@ const imageStyle: React.CSSProperties = {
   boxShadow: "0 1.5px 7px 0 rgba(0,0,0,0.08)",
 };
 
-const BookmarkWidget: React.FC<{
+const BookmarkDiv: React.FC<{
   bookmark: Bookmark;
   index: number;
 }> = ({ bookmark, index }) => {
@@ -60,7 +60,7 @@ const BookmarkWidget: React.FC<{
   const [position, setPosition] = useState(bookmark.position || { x: 0, y: 0 });
   const { updateBookmark } = useSettings();
 
-  const handleStop = (event: DraggableEvent, data: DraggableData) => {
+  const handleStop = (_: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: data.y });
     updateBookmark(bookmark.id, {
       position: {
@@ -119,4 +119,4 @@ const BookmarkWidget: React.FC<{
   );
 };
 
-export default BookmarkWidget;
+export default BookmarkDiv;

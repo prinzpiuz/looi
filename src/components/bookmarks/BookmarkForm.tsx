@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Bookmark, CancelBookmarkButtonProps } from "../utils/types";
-import { useSettings } from "../hooks/settingsContext";
+import { Bookmark, CancelBookmarkButtonProps } from "../../utils/types";
+import { useSettings } from "../../hooks/settingsContext";
 
 const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
   onCancel,

@@ -1,7 +1,7 @@
 import React from "react";
-import { useSettings } from "../hooks/settingsContext";
-import { Bookmark } from "../utils/types";
-import BookmarkWidget from "./Bookmark";
+import { useSettings } from "../../hooks/settingsContext";
+import { Bookmark } from "../../utils/types";
+import BookmarkDiv from "./Bookmark";
 
 const Bookmarks: React.FC = () => {
   const { settings } = useSettings();
@@ -9,7 +9,7 @@ const Bookmarks: React.FC = () => {
   return (
     <>
       {bookmarks.map((bm: Bookmark, index: number) => {
-        return <BookmarkWidget key={bm.id} index={index} bookmark={bm} />;
+        return <BookmarkDiv key={bm.id} index={index} bookmark={bm} />;
       })}
     </>
   );
