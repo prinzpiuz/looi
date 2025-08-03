@@ -32,6 +32,7 @@ export default [
         globalThis: "readonly",
         process: "readonly",
         crypto: "readonly",
+        require: "readonly",
       },
     },
     plugins: {

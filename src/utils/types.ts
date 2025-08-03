@@ -68,7 +68,6 @@ export interface FoldableSectionProps {
 export type IconProps = React.FC<{ style?: CSSProperties }>;
 
 export interface ColorResult {
-  // Now an interface, not a namespace
   hex: string;
   rgb: { r: number; g: number; b: number };
 }

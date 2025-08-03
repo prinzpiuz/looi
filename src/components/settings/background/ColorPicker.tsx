@@ -56,13 +56,13 @@ const ColorPanel: React.FC = () => {
 
   const handleColorChange = (color: ColorResult) => {
     if (!settings) return;
-    updateAndPersistSettings({ bgColor: color.hex }); // persist to browser.storage
+    void updateAndPersistSettings({ bgColor: color.hex }); // persist to browser.storage
   };
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newColor = e.target.value;
     if (!settings) return;
-    updateAndPersistSettings({ bgColor: newColor }); // persist to browser.storage
+    void updateAndPersistSettings({ bgColor: newColor }); // persist to browser.storage
   };
 
   return (

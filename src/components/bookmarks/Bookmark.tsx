@@ -62,7 +62,7 @@ const BookmarkDiv: React.FC<{
 
   const handleStop = (_: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: data.y });
-    updateBookmark(bookmark.id, {
+    void updateBookmark(bookmark.id, {
       position: {
         x: data.x,
         y: data.y,

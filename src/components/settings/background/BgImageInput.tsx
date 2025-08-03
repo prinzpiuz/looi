@@ -17,7 +17,7 @@ const BgImageURL: React.FC = () => {
 
   const handleBgUrlChange = (newUrl: string) => {
     if (!settings) return;
-    updateAndPersistSettings({ bgUrl: newUrl });
+    void updateAndPersistSettings({ bgUrl: newUrl });
   };
 
   const inputLabelStyle: React.CSSProperties = {

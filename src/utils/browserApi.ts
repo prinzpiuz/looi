@@ -3,6 +3,7 @@ export let browser: typeof import("webextension-polyfill") | null = null;
 try {
   browser = require("webextension-polyfill");
 } catch {
+  // eslint-disable-next-line no-undef
   console.warn(
     "webextension-polyfill is not available — running in non-extension env?",
   );
