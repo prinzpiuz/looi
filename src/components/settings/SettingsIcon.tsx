@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCog } from "react-icons/fa";
 import { SettingsButtonProps } from "../../utils/types";
 import ToolTip from "../commons/ToolTip";

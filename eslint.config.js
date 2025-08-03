@@ -1,42 +1,66 @@
 import js from "@eslint/js";
 import reactPlugin from "eslint-plugin-react";
 import importPlugin from "eslint-plugin-import";
-import prettierPlugin from "eslint-plugin-prettier";
-import prettierRecommended from "eslint-config-prettier";
 import tsEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import prettierRecommended from "eslint-config-prettier";
 
 export default [
-  // Base JS rules
+  // 1. Base JavaScript rules
   js.configs.recommended,
 
-  // React plugin
+  // 2. TypeScript-specific rules and parser
   {
-    plugins: {
-      react: reactPlugin,
-    },
-    files: ["**/*.tsx"],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
+      parser: tsParser,
       parserOptions: {
-        ecmaVersion: 2021,
+        project: "./tsconfig.json",
+        tsconfigRootDir: import.meta.dirname,
+        ecmaVersion: "latest",
         sourceType: "module",
         ecmaFeatures: {
           jsx: true,
         },
       },
     },
+    plugins: {
+      "@typescript-eslint": tsEslint,
+      react: reactPlugin,
+    },
     rules: {
+      // TypeScript rules
+      ...tsEslint.configs["eslint-recommended"].rules,
+      ...tsEslint.configs["recommended"].rules,
+      ...tsEslint.configs["recommended-requiring-type-checking"].rules,
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/explicit-function-return-type": "off",
+
+      // React rules for TSX files
       ...reactPlugin.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off", // React 17+ JSX transform
+      "react/react-in-jsx-scope": "off",
     },
     settings: {
       react: {
         version: "detect",
       },
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
+        node: {
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
+        },
+      },
+      "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     },
   },
 
-  // Import plugin
+  // 3. Import plugin rules (for both JS and TS)
   {
     plugins: {
       import: importPlugin,
@@ -44,60 +68,20 @@ export default [
     rules: {
       ...importPlugin.configs.errors.rules,
       ...importPlugin.configs.warnings.rules,
-    },
-  },
-
-  // Prettier plugin
-  {
-    plugins: {
-      prettier: prettierPlugin,
-    },
-    rules: {
-      "prettier/prettier": "error",
-    },
-  },
-  {
-    files: ["**/*.{ts,tsx}"], // Apply specifically to TypeScript files
-    languageOptions: {
-      parser: tsParser, // Use the TypeScript parser
-      parserOptions: {
-        project: "./tsconfig.json", // <--- THIS IS THE KEY PART!
-        tsconfigRootDir: import.meta.dirname, // Helps resolve the tsconfig path correctly
-        ecmaVersion: "latest",
-        sourceType: "module",
-      },
-    },
-    rules: {
-      // Add your TypeScript specific rules here
-      ...tsEslint.configs["eslint-recommended"].rules, // Disable base ESLint rules handled by TS
-      ...tsEslint.configs["recommended"].rules,
-      ...tsEslint.configs["recommended-requiring-type-checking"].rules,
-      // Example:
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^_" },
+      "import/no-unresolved": "error",
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          js: "never",
+          jsx: "never",
+          ts: "never",
+          tsx: "never",
+        },
       ],
-      "@typescript-eslint/explicit-function-return-type": "off",
-      // ... more TS rules
-    },
-    settings: {
-      "import/resolver": {
-        typescript: {
-          // Always try to resolve types under the `types` folder even when no `tsconfig.json` is present
-          alwaysTryTypes: true,
-          // Optional: Specify the tsconfig.json file(s)
-          // If you have multiple tsconfig files (e.g., for different build targets),
-          // you can provide an array: `project: ['./tsconfig.json', './tsconfig.node.json']`
-          project: "./tsconfig.json", // <--- This resolver setting also uses tsconfig!
-        },
-        node: {
-          extensions: [".js", ".jsx", ".ts", ".tsx"], // Ensure node resolver knows about TS extensions
-        },
-      },
-      "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     },
   },
 
-  // Prettier config (should be last)
+  // 4. Prettier config (must be last to override other formatting rules)
   prettierRecommended,
 ];

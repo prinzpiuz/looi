@@ -1,11 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  FaPalette,
-  FaPlus,
-  FaGithub,
-  FaListUl,
-  FaCalendarAlt,
-} from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaPalette, FaGithub, FaListUl } from "react-icons/fa";
 import ColorPanel from "./background/ColorPicker";
 import BgImageURL from "./background/BgImageInput";
 import FoldableSection from "./FoldableSection";

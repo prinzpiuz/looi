@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { getSettings, updateSettings } from "../utils/manageSettings";
 import { Settings, Bookmark, SettingsContextType } from "../utils/types";
 

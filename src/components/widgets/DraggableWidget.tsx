@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Draggable, { DraggableData } from "react-draggable";
 import { widgetRegistry } from "../../utils/widgetsRegistry";
 import { WidgetConfig } from "../../utils/types";

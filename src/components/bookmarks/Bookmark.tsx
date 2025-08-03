@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaEllipsis } from "react-icons/fa6";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Bookmark } from "../../utils/types";

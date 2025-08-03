@@ -1,5 +1,3 @@
-import React from "react";
-
 const ToolTip: React.FC<{
   message: string;
   children: React.ReactNode;

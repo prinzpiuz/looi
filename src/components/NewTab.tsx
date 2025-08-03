@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import SettingsPanel from "./settings/SetttingsPanel";
 import AddBookmarkButton from "./bookmarks/AddBmButton";
 import Bookmarks from "./bookmarks/Bookmarks";
@@ -8,7 +8,7 @@ import { useSettings } from "../hooks/settingsContext";
 
 const NewTabPage: React.FC = () => {
   const { settings } = useSettings();
-  const [showBookmarkForm, setShowBookmarkForm] = React.useState(false);
+  const [showBookmarkForm, setShowBookmarkForm] = useState(false);
 
   const bgColor = settings?.bgColor ?? "#000000";
   const bgUrl = settings?.bgUrl ? `url(${settings.bgUrl})` : undefined;

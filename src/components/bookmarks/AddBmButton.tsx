@@ -1,4 +1,3 @@
-import React from "react";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 import ToolTip from "../commons/ToolTip";
 import { AddBookmarkButtonProps } from "../../utils/types";

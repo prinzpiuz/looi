@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaLink } from "react-icons/fa";
 import { useSettings } from "../../../hooks/settingsContext";
 

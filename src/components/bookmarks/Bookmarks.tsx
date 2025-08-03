@@ -1,4 +1,3 @@
-import React from "react";
 import { useSettings } from "../../hooks/settingsContext";
 import { Bookmark } from "../../utils/types";
 import BookmarkDiv from "./Bookmark";

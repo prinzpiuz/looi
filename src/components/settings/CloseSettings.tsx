@@ -1,4 +1,3 @@
-import React from "react";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { SettingsButtonProps } from "../../utils/types";
 import ToolTip from "../commons/ToolTip";

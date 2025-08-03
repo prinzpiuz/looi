@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Bookmark, CancelBookmarkButtonProps } from "../../utils/types";
 import { useSettings } from "../../hooks/settingsContext";
 
