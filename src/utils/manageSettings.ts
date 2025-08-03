@@ -26,8 +26,7 @@ export const loadDefaultSettings: Settings = {
 
 export const saveSettings = async (settings: Settings) => {
   if (!browser) return {};
-  console.log("Saving settings:", settings);
-  browser.storage.local.set({ settings: settings });
+  await browser.storage.local.set({ settings: settings });
 };
 
 export const updateSettings = async (newSettings: Partial<Settings>) => {

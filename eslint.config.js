@@ -23,6 +23,16 @@ export default [
           jsx: true,
         },
       },
+      globals: {
+        React: "readonly",
+        document: "readonly",
+        window: "readonly",
+        browser: "readonly",
+        chrome: "readonly",
+        globalThis: "readonly",
+        process: "readonly",
+        crypto: "readonly",
+      },
     },
     plugins: {
       "@typescript-eslint": tsEslint,
@@ -38,10 +48,12 @@ export default [
         { argsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
 
       // React rules for TSX files
       ...reactPlugin.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
     },
     settings: {
       react: {

@@ -1,5 +1,6 @@
 import { CirclePicker } from "react-color";
 import { useSettings } from "../../../hooks/settingsContext";
+import { ColorResult } from "../../../utils/types";
 
 const palette = [
   "#478559",
@@ -53,7 +54,7 @@ const ColorPanel: React.FC = () => {
   const { settings, updateAndPersistSettings } = useSettings();
   const colorValue = settings?.bgColor ?? "#000000";
 
-  const handleColorChange = async (color: any) => {
+  const handleColorChange = (color: ColorResult) => {
     if (!settings) return;
     updateAndPersistSettings({ bgColor: color.hex }); // persist to browser.storage
   };

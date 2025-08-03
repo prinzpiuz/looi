@@ -15,7 +15,7 @@ const BgImageURL: React.FC = () => {
   const [focus, setFocus] = useState(false);
   const bgImageURL = settings?.bgUrl ?? "";
 
-  const handleBgUrlChange = async (newUrl: string) => {
+  const handleBgUrlChange = (newUrl: string) => {
     if (!settings) return;
     updateAndPersistSettings({ bgUrl: newUrl });
   };

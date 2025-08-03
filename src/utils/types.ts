@@ -32,12 +32,13 @@ export interface Settings {
 export interface SettingsContextType {
   settings: Settings | null;
   setSettings: (s: Settings) => void;
-  addBookmark: (s: Bookmark) => void;
-  updateBookmark: (s: string, bm: Partial<Bookmark>) => void;
-  removeBookmark: (s: string) => void;
+  addBookmark: (s: Bookmark) => Promise<void>;
+  updateBookmark: (s: string, bm: Partial<Bookmark>) => Promise<void>;
+  removeBookmark: (s: string) => Promise<void>;
   getBookmarkById: (s: string) => Bookmark | undefined;
-  updateWidgetPosition: (id: string, newPos: Position) => void;
-  updateAndPersistSettings: (s: Partial<Settings>) => void;
+  updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
+  enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
+  updateAndPersistSettings: (s: Partial<Settings>) => Promise<void>;
 }
 
 export interface SettingsButtonProps {
@@ -65,3 +66,9 @@ export interface FoldableSectionProps {
 }
 
 export type IconProps = React.FC<{ style?: CSSProperties }>;
+
+export interface ColorResult {
+  // Now an interface, not a namespace
+  hex: string;
+  rgb: { r: number; g: number; b: number };
+}

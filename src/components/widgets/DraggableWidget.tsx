@@ -22,7 +22,7 @@ const DraggableWidget: React.FC<{
       onStop={(_, data: DraggableData) => {
         const newPos = { x: data.x, y: data.y };
         setPosition(newPos);
-        updateWidgetPosition(id, newPos);
+        void updateWidgetPosition(id, newPos);
       }}
     >
       <div ref={nodeRef} style={{ position: "absolute" }}>

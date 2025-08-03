@@ -11,14 +11,14 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
   const bookmarks = settings?.bookmarks || [];
-  const widgetConfigs = settings?.widgetConfigs || {};
+  //   const widgetConfigs = settings?.widgetConfigs || {};
 
   useEffect(() => {
     const load = async () => {
       const s = await getSettings();
       setSettings(s);
     };
-    load();
+    void load();
   }, []);
 
   const updateAndPersistSettings = async (
@@ -54,7 +54,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     return bookmarks.find((bm) => bm.id === id);
   };
 
-  const updateWidgetPosition = (
+  const updateWidgetPosition = async (
     id: string,
     newPos: { x: number; y: number },
   ) => {
@@ -69,7 +69,22 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       },
     };
-    updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
+    await updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
+  };
+
+  const enableDisableWidget = async (id: string, enabled: boolean) => {
+    if (!settings?.widgetConfigs?.[id]) return;
+    const updated = {
+      ...settings,
+      widgetConfigs: {
+        ...settings.widgetConfigs,
+        [id]: {
+          ...settings.widgetConfigs[id],
+          enabled,
+        },
+      },
+    };
+    await updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
   };
 
   return (
@@ -82,6 +97,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         removeBookmark,
         getBookmarkById,
         updateWidgetPosition,
+        enableDisableWidget,
         updateAndPersistSettings,
       }}
     >

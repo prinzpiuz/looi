@@ -40,21 +40,27 @@ const widgetAddButtonStyle: React.CSSProperties = {
 };
 
 const AddWidget: React.FC = () => {
-  const { settings } = useSettings();
+  const { settings, enableDisableWidget } = useSettings();
   const widgetConfigs = settings?.widgetConfigs || {};
 
   return (
     <div style={widgetsDivStyle}>
       {Object.entries(widgetConfigs).map(([id, config]) => {
-        console.log("Rendering widget:", id);
         if (!widgetIcons[id]) return null;
         const WidgetIcon = widgetIcons[id];
         const buttonText = config.enabled ? "Remove" : "Add";
         return (
-          <div style={singleWidgetStyle}>
+          <div key={id} style={singleWidgetStyle}>
             <WidgetIcon style={widgetIconStyle} />
             <span style={widgetNameStyle}>{capitalize(id)}</span>
-            <button style={widgetAddButtonStyle}>{buttonText}</button>
+            <button
+              style={widgetAddButtonStyle}
+              onClick={() => {
+                void enableDisableWidget(id, !config.enabled);
+              }}
+            >
+              {buttonText}
+            </button>
           </div>
         );
       })}

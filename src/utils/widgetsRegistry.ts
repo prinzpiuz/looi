@@ -1,5 +1,4 @@
-import { FaCalendarAlt } from "react-icons/fa";
-import { FaTasks } from "react-icons/fa";
+import { FaCalendarAlt, FaTasks } from "react-icons/fa";
 import { IconProps } from "./types";
 import CalendarWidget from "../components/widgets/calendar/Calendar";
 
