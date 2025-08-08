@@ -36,6 +36,7 @@ const NewTabPage: React.FC = () => {
       <BookmarkForm
         showBookmarkForm={showBookmarkForm}
         onCancel={setShowBookmarkForm}
+        mode="add"
       />
     </div>
   );

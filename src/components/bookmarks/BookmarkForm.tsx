@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from "react-icons/fa";
-import { Bookmark, CancelBookmarkButtonProps } from "../../utils/types";
+import { Bookmark, BookmarkFormProps } from "../../utils/types";
 import { useSettings } from "../../hooks/settingsContext";
 
 const inputWrapperStyle: React.CSSProperties = {
@@ -126,29 +126,35 @@ const headerStyle: React.CSSProperties = {
   textAlign: "center",
 };
 
-const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
+const BookmarkForm: React.FC<BookmarkFormProps> = ({
   onCancel,
   showBookmarkForm,
+  mode,
+  initialData = {},
+  bookmarkId,
 }) => {
-  const { addBookmark } = useSettings();
-  const [url, setUrl] = useState("");
-  const [name, setName] = useState("");
-  const [icon, setIcon] = useState("");
+  const isEdit = mode === "edit";
+  const { addBookmark, updateBookmark } = useSettings();
+  const [url, setUrl] = useState(initialData.url || "");
+  const [name, setName] = useState(initialData.name || "");
+  const [icon, setIcon] = useState(initialData.icon || "");
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-focus first input when opened
   const firstInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
+    setUrl(initialData.url || "");
+    setName(initialData.name || "");
+    setIcon(initialData.icon || "");
     if (showBookmarkForm && firstInput.current) {
       firstInput.current.focus();
     }
-  }, [showBookmarkForm]);
+  }, [initialData.url, initialData.name, initialData.icon, showBookmarkForm]);
 
   const handleCancel = () => {
     onCancel(false);
-    setUrl("");
-    setName("");
-    setIcon("");
+    setUrl(initialData.url || "");
+    setName(initialData.name || "");
+    setIcon(initialData.icon || "");
     setError(null);
   };
 
@@ -162,13 +168,22 @@ const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
     }
     const normalizedUrl = url.startsWith("http") ? url : `https://${url}`;
     const finalIcon = icon || `https://icon.horse/icon/${normalizedUrl}`;
-    const bookmark: Bookmark = {
-      id: crypto.randomUUID(),
-      url: normalizedUrl,
-      name: name || url,
-      icon: finalIcon,
-    };
-    void addBookmark(bookmark);
+
+    if (isEdit && bookmarkId) {
+      void updateBookmark(bookmarkId, {
+        url: normalizedUrl,
+        name: name || url,
+        icon: finalIcon,
+      });
+    } else {
+      const bookmark: Bookmark = {
+        id: crypto.randomUUID(),
+        url: normalizedUrl,
+        name: name || url,
+        icon: finalIcon,
+      };
+      void addBookmark(bookmark);
+    }
     handleCancel();
   };
 
@@ -195,7 +210,7 @@ const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
 
   const allInputStyle: React.CSSProperties = {
     ...inputStyle,
-    border: error && !name ? "1.5px solid #990000ff" : "1.3px solid #ebeef7",
+    border: error && !name ? "1.5px solid #b10707ff" : "1.3px solid #ebeef7",
   };
 
   if (!showBookmarkForm) return null;
@@ -264,7 +279,7 @@ const BookmarkForm: React.FC<CancelBookmarkButtonProps> = ({
           disabled={!url}
         >
           <FaPlus style={AddIconStyle} />
-          Add
+          {isEdit ? "Update" : "Add"}
         </button>
       </div>
     </div>

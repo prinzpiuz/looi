@@ -21,6 +21,10 @@ const buttonStyles: React.CSSProperties = {
   fontSize: 23,
 };
 
+const iconStyle: React.CSSProperties = {
+  verticalAlign: -3,
+};
+
 const AddBookmarkButton: React.FC<AddBookmarkButtonProps> = ({
   showBookmarkForm,
 }) => {
@@ -31,7 +35,7 @@ const AddBookmarkButton: React.FC<AddBookmarkButtonProps> = ({
         onClick={() => showBookmarkForm(true)}
         style={buttonStyles}
       >
-        <MdOutlineBookmarkAdd />
+        <MdOutlineBookmarkAdd style={iconStyle} />
       </button>
     </ToolTip>
   );

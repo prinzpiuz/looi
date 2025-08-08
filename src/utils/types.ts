@@ -49,7 +49,10 @@ export interface AddBookmarkButtonProps {
   showBookmarkForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface CancelBookmarkButtonProps {
+export interface BookmarkFormProps {
+  bookmarkId?: string;
+  initialData?: Partial<Bookmark>;
+  mode: "add" | "edit";
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   showBookmarkForm: boolean;
 }
@@ -70,4 +73,12 @@ export type IconProps = React.FC<{ style?: CSSProperties }>;
 export interface ColorResult {
   hex: string;
   rgb: { r: number; g: number; b: number };
+}
+
+export interface PopUpMenuProps {
+  wrapperRef: React.RefObject<HTMLDivElement | null>;
+  menuOpen: boolean;
+  setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string;
+  onEdit?: React.Dispatch<React.SetStateAction<boolean>>;
 }

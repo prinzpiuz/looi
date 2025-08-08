@@ -21,6 +21,10 @@ const buttonStyles: React.CSSProperties = {
   fontSize: 23,
 };
 
+const iconStyle: React.CSSProperties = {
+  verticalAlign: -3,
+};
+
 const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
   const toggleSettings = () => openSettingsPanel((prevValue) => !prevValue);
   return (
@@ -30,7 +34,7 @@ const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
         onClick={toggleSettings}
         style={buttonStyles}
       >
-        <FaCog />
+        <FaCog style={iconStyle} />
       </button>
     </ToolTip>
   );

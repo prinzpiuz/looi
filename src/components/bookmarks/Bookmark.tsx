@@ -3,6 +3,8 @@ import { FaEllipsis } from "react-icons/fa6";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Bookmark } from "../../utils/types";
 import { useSettings } from "../../hooks/settingsContext";
+import PopUpMenu from "./PopUpMenu";
+import BookmarkForm from "./BookmarkForm";
 
 const bookmarkStyle: React.CSSProperties = {
   display: "flex",
@@ -10,9 +12,7 @@ const bookmarkStyle: React.CSSProperties = {
   alignItems: "center",
   width: "80px",
   minHeight: "70px",
-  background: "rgba(22, 22, 22, 0.7)",
   borderRadius: "15px",
-  boxShadow: "0 4px 32px rgba(0,0,0,0.25)",
   backdropFilter: "blur(7px)",
   padding: "18px 8px 12px 8px",
   transition:
@@ -52,13 +52,13 @@ const BookmarkDiv: React.FC<{
   index: number;
 }> = ({ bookmark, index }) => {
   const nodeRef = useRef(null);
-  const styles: React.CSSProperties = {
-    ...bookmarkStyle,
-    ...bookmark.position,
-  };
-
+  const { settings, updateBookmark } = useSettings();
   const [position, setPosition] = useState(bookmark.position || { x: 0, y: 0 });
-  const { updateBookmark } = useSettings();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showBookmarkForm, setShowBookmarkForm] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => setMenuOpen((open) => !open);
 
   const handleStop = (_: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: data.y });
@@ -70,52 +70,98 @@ const BookmarkDiv: React.FC<{
     });
   };
 
+  const bookmarkBackgroudColor = settings?.bgColor;
+
+  const bookmarkDivStyle: React.CSSProperties = {
+    ...bookmarkStyle,
+    ...bookmark.position,
+    backgroundColor: bookmarkBackgroudColor,
+  };
+
   return (
-    <Draggable
-      key={bookmark.id}
-      nodeRef={nodeRef}
-      position={position}
-      onStop={handleStop}
-    >
-      <div ref={nodeRef} tabIndex={index}>
-        <div
-          style={styles}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.025)")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          <img
-            src={bookmark.icon}
-            alt={bookmark.url}
-            width={44}
-            height={44}
-            style={imageStyle}
-          />
-          <a
-            href={bookmark.url}
-            target="_self"
-            rel="noopener noreferrer"
-            style={linkStyle}
-            title={bookmark.name}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#0078c9ff")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#a5adc6")}
-          >
-            {bookmark.name}
-          </a>
+    <div>
+      <Draggable
+        key={bookmark.id}
+        nodeRef={nodeRef}
+        position={position}
+        onStop={handleStop}
+      >
+        <div ref={nodeRef} tabIndex={index}>
           <div
-            style={moreIconStyle}
-            tabIndex={0}
-            onFocus={(e) => (e.currentTarget.style.color = "#ffe57f")}
-            onBlur={(e) => (e.currentTarget.style.color = "#a5adc6")}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#ffa726")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#a5adc6")}
+            style={bookmarkDivStyle}
+            onMouseEnter={(e) => {
+              (e.currentTarget.style.transform = "scale(1.025)"),
+                (e.currentTarget.style.backgroundColor =
+                  "rgba(22, 22, 22, 0.7)");
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.backgroundColor =
+                bookmarkBackgroudColor || "";
+            }}
           >
-            <FaEllipsis />
+            <img
+              src={bookmark.icon}
+              alt={bookmark.url}
+              width={44}
+              height={44}
+              style={imageStyle}
+            />
+            <a
+              href={bookmark.url}
+              target="_self"
+              rel="noopener noreferrer"
+              style={linkStyle}
+              title={bookmark.name}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#0078c9ff")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#a5adc6")}
+            >
+              {bookmark.name}
+            </a>
+            <div ref={wrapperRef}>
+              <div
+                style={moreIconStyle}
+                role="button"
+                aria-haspopup="true"
+                tabIndex={0}
+                onFocus={(e) => (e.currentTarget.style.color = "#ffe57f")}
+                onBlur={(e) => (e.currentTarget.style.color = "#a5adc6")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#ffa726")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#a5adc6")}
+                aria-expanded={menuOpen}
+                onClick={toggleMenu}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggleMenu();
+                  }
+                }}
+              >
+                <FaEllipsis />
+              </div>
+              {menuOpen && (
+                <PopUpMenu
+                  id={bookmark.id}
+                  wrapperRef={wrapperRef}
+                  menuOpen={menuOpen}
+                  setMenuOpen={setMenuOpen}
+                  onEdit={setShowBookmarkForm}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Draggable>
+      </Draggable>
+      {showBookmarkForm && (
+        <BookmarkForm
+          showBookmarkForm={showBookmarkForm}
+          onCancel={setShowBookmarkForm}
+          mode="edit"
+          initialData={bookmark}
+          bookmarkId={bookmark.id}
+        />
+      )}
+    </div>
   );
 };
 
