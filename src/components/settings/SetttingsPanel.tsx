@@ -6,6 +6,8 @@ import FoldableSection from "./FoldableSection";
 import SettingsIcon from "./SettingsIcon";
 import CloseSettingsIcon from "./CloseSettings";
 import AddWidget from "./widgets/AddWidgets";
+import LogoAndVersion from "./versionAndLogo/versionAndLogo";
+import GitHubSync from "./github/GithubSync";
 
 const settingsHeaderStyle: React.CSSProperties = {
   color: "#e9eafe",
@@ -67,7 +69,6 @@ const SettingsPanel: React.FC = () => {
       <div ref={panelRef} style={panelStyle} tabIndex={-1}>
         <CloseSettingsIcon openSettingsPanel={setSettingsOpen} />
         <h2 style={settingsHeaderStyle}>Settings</h2>
-
         <FoldableSection
           icon={<FaPalette color={sectionIconColor} />}
           title="Background"
@@ -76,54 +77,19 @@ const SettingsPanel: React.FC = () => {
           <ColorPanel />
           <BgImageURL />
         </FoldableSection>
-
         <FoldableSection
           icon={<FaListUl color={sectionIconColor} />}
           title="Widgets"
         >
           <AddWidget />
         </FoldableSection>
-
         <FoldableSection
           icon={<FaGithub color={sectionIconColor} />}
           title="GitHub Sync"
         >
-          {/* Provide switches/inputs for GitHub sync, tokens, etc. */}
-          <div style={{ color: "#b5b9c9", fontWeight: 500 }}>
-            <label style={{ display: "block", marginBottom: 12 }}>
-              GitHub Access Token:
-              <input
-                type="password"
-                style={{
-                  display: "block",
-                  marginTop: 3,
-                  background: "#232845",
-                  color: "#f1eefa",
-                  border: "1px solid #383e64",
-                  borderRadius: 6,
-                  padding: "7px 8px",
-                  width: "100%",
-                  fontSize: 14,
-                  outline: "none",
-                }}
-              />
-            </label>
-            <button
-              style={{
-                background: "linear-gradient(90deg,#159d75,#21eabb)",
-                border: 0,
-                color: "#181828",
-                padding: "7px 18px",
-                borderRadius: 5,
-                fontWeight: 600,
-                cursor: "pointer",
-                fontSize: 14,
-              }}
-            >
-              Sync Now
-            </button>
-          </div>
+          <GitHubSync />
         </FoldableSection>
+        <LogoAndVersion />
       </div>
     </>
   );

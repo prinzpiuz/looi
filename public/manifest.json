@@ -8,7 +8,9 @@
   },
   "permissions": ["storage"],
   "icons": {
-    "48": "icons/icon48.png",
-    "96": "icons/icon96.png"
+    "16": "icons/looi-16.png",
+    "48": "icons/looi-48.png",
+    "96": "icons/looi-96.png",
+    "128": "icons/looi-128.png"
   }
 }
