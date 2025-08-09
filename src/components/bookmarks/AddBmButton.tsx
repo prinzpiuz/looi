@@ -15,7 +15,7 @@ const buttonStyles: React.CSSProperties = {
   height: 35,
   border: "none",
   borderRadius: "50px",
-  background: "#3f3f3f",
+  background: "#000000",
   color: "#ffffff",
   cursor: "pointer",
   fontSize: 23,

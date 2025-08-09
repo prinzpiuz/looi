@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from "react-icons/fa";
 import { Bookmark, BookmarkFormProps } from "../../utils/types";
 import { useSettings } from "../../hooks/settingsContext";
+import { removeProtocol } from "../../utils/utils";
 
 const inputWrapperStyle: React.CSSProperties = {
   position: "relative",
@@ -167,7 +168,7 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
       return;
     }
     const normalizedUrl = url.startsWith("http") ? url : `https://${url}`;
-    const finalIcon = icon || `https://icon.horse/icon/${normalizedUrl}`;
+    const finalIcon = icon || `https://icon.horse/icon/${removeProtocol(url)}`;
 
     if (isEdit && bookmarkId) {
       void updateBookmark(bookmarkId, {
