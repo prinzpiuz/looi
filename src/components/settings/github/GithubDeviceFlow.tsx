@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { startDeviceFlow, pollForToken } from "./utils";
 import { GithubDeviceCodeResponse } from "../../../utils/types";
 
@@ -8,7 +8,11 @@ const errorDivStyle: React.CSSProperties = {
   marginTop: 5,
   fontSize: 13,
 };
-const doneDivStyle: React.CSSProperties = { color: "#17b57f", marginTop: 5 };
+const doneDivStyle: React.CSSProperties = {
+  color: "#ffffff",
+  marginTop: 5,
+  paddingLeft: 15,
+};
 const codeBlockStyle: React.CSSProperties = {
   fontSize: 24,
   fontWeight: "700",
@@ -17,9 +21,11 @@ const codeBlockStyle: React.CSSProperties = {
   userSelect: "all",
   textAlign: "center",
   backgroundColor: "#f7f7f7",
-  padding: "12px 16px",
+  padding: "12px 13px 16px",
   borderRadius: 8,
   border: "1px solid #ddd",
+  height: 27,
+  width: 158,
 };
 const connectButtonStyle: React.CSSProperties = {
   fontWeight: 700,
@@ -33,7 +39,7 @@ const connectButtonStyle: React.CSSProperties = {
   boxShadow: "0 2.5px 8px rgba(83,99,190,0.05)",
   transition: "background .14s, color .14s, box-shadow .13s",
 };
-const tryButtonStyle: React.CSSProperties = {
+const enterCodeButtonStyle: React.CSSProperties = {
   fontWeight: 700,
   fontSize: 15,
   border: 0,
@@ -57,12 +63,19 @@ const loadingSpinnerStyle: React.CSSProperties = {
   marginLeft: 8,
 };
 
-const keyframesSpin = `
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-`;
+const infoDivStyle: React.CSSProperties = {
+  color: "#ffffff",
+  marginTop: 8,
+  fontSize: 12,
+};
+
+const connectingStyle: React.CSSProperties = {
+  color: "#ffffff",
+  display: "flex",
+  alignItems: "center",
+  gap: 5,
+  flexDirection: "column",
+};
 
 const GithubDeviceFlow: React.FC<{
   onToken: (token: string) => void;
@@ -128,32 +141,32 @@ const GithubDeviceFlow: React.FC<{
 
   return (
     <div style={deviceFlowDivStyle}>
-      <button
-        style={connectButtonStyle}
-        onClick={() => {
-          if (!started) {
-            startAuth();
-          }
-        }}
-        disabled={loading || polling}
-        aria-live="polite"
-        aria-busy={loading || polling}
-      >
-        {loading || polling ? (
-          <span style={{ display: "inline-flex", alignItems: "center" }}>
-            Connecting...
-            <span style={loadingSpinnerStyle} aria-hidden="true" />
-          </span>
-        ) : success ? (
-          "Connected"
-        ) : (
-          "Connect GitHub"
-        )}
-      </button>
+      {loading || polling ? (
+        <span style={connectingStyle}>
+          Connecting...
+          <span style={loadingSpinnerStyle} aria-hidden="true" />
+        </span>
+      ) : (
+        !success && (
+          <button
+            style={connectButtonStyle}
+            onClick={() => {
+              if (!started) {
+                startAuth();
+              }
+            }}
+            disabled={loading || polling}
+            aria-live="polite"
+            aria-busy={loading || polling}
+          >
+            Connect GitHub
+          </button>
+        )
+      )}
 
       {dataReceived && deviceData && (
         <div>
-          <p>
+          <p style={infoDivStyle}>
             To authenticate with GitHub, click the button below and enter your
             device code:
           </p>
@@ -172,7 +185,7 @@ const GithubDeviceFlow: React.FC<{
                 "noopener,noreferrer",
               )
             }
-            style={connectButtonStyle}
+            style={enterCodeButtonStyle}
           >
             Enter Code
           </button>
@@ -181,7 +194,7 @@ const GithubDeviceFlow: React.FC<{
 
       {success && (
         <p style={doneDivStyle} role="status" aria-live="polite">
-          GitHub connected successfully! You can now sync your settings.
+          GitHub Connected!
         </p>
       )}
       {error && !setdataReceived && (

@@ -1,0 +1,15 @@
+# Ignore entire directories
+build/
+dist/
+public/
+node_modules/
+
+# Ignore a specific file
+src/utils/unformatted-file.js
+
+# Ignore all files with a specific extension
+*.min.js
+*.svg
+
+# Ignore files inside a directory, but not the directory itself
+/scripts/*

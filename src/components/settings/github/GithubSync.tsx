@@ -5,9 +5,10 @@ import GithubPATInput from "./GithubPATInput";
 
 const githubSyncDivStyle: React.CSSProperties = { margin: "7px 0 27px" };
 const syncReadyStyle: React.CSSProperties = {
-  color: "green",
+  color: "#ffffff",
   fontWeight: 600,
-  marginTop: 14,
+  marginTop: 8,
+  paddingLeft: 45,
 };
 const selectionDivStyle: React.CSSProperties = {
   display: "flex",
@@ -55,7 +56,7 @@ const GitHubSync: React.FC = () => {
       ) : (
         <GithubPATInput onToken={setToken} />
       )}
-      {token && <div style={syncReadyStyle}>Connected! Ready to sync.</div>}
+      {token && <div style={syncReadyStyle}>Ready To Sync</div>}
     </div>
   );
 };
