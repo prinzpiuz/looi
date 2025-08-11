@@ -1,38 +1,61 @@
+import React, { useState } from "react";
+import { FaGithub } from "react-icons/fa";
+import GithubDeviceFlow from "./GithubDeviceFlow";
+import GithubPATInput from "./GithubPATInput";
+
+const githubSyncDivStyle: React.CSSProperties = { margin: "7px 0 27px" };
+const syncReadyStyle: React.CSSProperties = {
+  color: "green",
+  fontWeight: 600,
+  marginTop: 14,
+};
+const selectionDivStyle: React.CSSProperties = {
+  display: "flex",
+  borderBottom: "1px solid #ffffff",
+  gap: 0,
+  marginBottom: -10,
+};
+
 const GitHubSync: React.FC = () => {
+  const [token, setToken] = useState<string | null>(null);
+  const [authTab, setAuthTab] = useState<"device" | "pat">("device");
+
+  const connectButtonStyle: React.CSSProperties = {
+    flex: 1,
+    background: authTab === "device" ? "#ffffff" : "none",
+    border: "none",
+    fontWeight: 700,
+    fontSize: 15,
+    padding: "12px 0",
+    borderRadius: "8px 8px 0 0",
+  };
+
+  const authButtonStyle: React.CSSProperties = {
+    flex: 1,
+    background: authTab === "pat" ? "#ffffff" : "none",
+    border: "none",
+    fontWeight: 700,
+    fontSize: 15,
+    padding: "12px 0",
+    borderRadius: "8px 8px 0 0",
+  };
+
   return (
-    <div style={{ color: "#b5b9c9", fontWeight: 500 }}>
-      <label style={{ display: "block", marginBottom: 12 }}>
-        GitHub Access Token:
-        <input
-          type="password"
-          style={{
-            display: "block",
-            marginTop: 3,
-            background: "#232845",
-            color: "#f1eefa",
-            border: "1px solid #383e64",
-            borderRadius: 6,
-            padding: "7px 8px",
-            width: "100%",
-            fontSize: 14,
-            outline: "none",
-          }}
-        />
-      </label>
-      <button
-        style={{
-          background: "linear-gradient(90deg,#159d75,#21eabb)",
-          border: 0,
-          color: "#181828",
-          padding: "7px 18px",
-          borderRadius: 5,
-          fontWeight: 600,
-          cursor: "pointer",
-          fontSize: 14,
-        }}
-      >
-        Sync Now
-      </button>
+    <div style={githubSyncDivStyle}>
+      <div style={selectionDivStyle}>
+        <button style={connectButtonStyle} onClick={() => setAuthTab("device")}>
+          <FaGithub /> Login
+        </button>
+        <button style={authButtonStyle} onClick={() => setAuthTab("pat")}>
+          <FaGithub /> Token
+        </button>
+      </div>
+      {authTab === "device" ? (
+        <GithubDeviceFlow onToken={setToken} />
+      ) : (
+        <GithubPATInput onToken={setToken} />
+      )}
+      {token && <div style={syncReadyStyle}>Connected! Ready to sync.</div>}
     </div>
   );
 };

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["firefox-webext-browser"],
+    "types": ["firefox-webext-browser", "chrome"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

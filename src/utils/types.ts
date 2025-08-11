@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 import { CSSProperties } from "react";
 
 export interface Position {
@@ -81,4 +82,67 @@ export interface PopUpMenuProps {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
   onEdit?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface Runtime {
+  sendMessage: (message: any, callback: (response?: any) => void) => void;
+  lastError?: { message: string };
+}
+
+interface BrowserAPI {
+  runtime: Runtime;
+}
+
+// Cast window to an extended type that optionally has browser and chrome
+export const typedWindow = window as typeof window & {
+  browser?: BrowserAPI;
+  chrome?: BrowserAPI;
+};
+
+export interface GithubDeviceCodeResponse {
+  device_code: string;
+  user_code: string;
+  verification_uri: string;
+  expires_in: number;
+  interval: number;
+}
+
+export interface GithubTokenResponse {
+  access_token?: string;
+  token_type?: string;
+  scope?: string;
+  error?: string;
+  error_description?: string;
+  error_uri?: string;
+}
+
+export interface GitHubDeviceFlowStartMessage {
+  type: "GITHUB_DEVICE_FLOW";
+  action: "start";
+}
+
+export interface GitHubDeviceFlowTokenMessage {
+  type: "GITHUB_DEVICE_FLOW";
+  action: "token";
+  device_code: string;
+}
+
+export type MessageData =
+  | GitHubDeviceFlowStartMessage
+  | GitHubDeviceFlowTokenMessage;
+
+export interface GithubDeviceFlowResponse {
+  success: boolean;
+  data?: GithubDeviceCodeResponse | GithubTokenResponse;
+  error?: string;
+}
+
+export interface BackgroundResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+export interface DeviceFlowAuthProps {
+  onTokenReceived: (token: string) => void;
 }

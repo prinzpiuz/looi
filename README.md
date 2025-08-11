@@ -19,4 +19,5 @@ Install dependencies with `npm install` before running the following scripts.
 - Local development server
   - `npm run start`
 - Production build
-  - `npm run build`
+  - Firefox: `npm run build:firefox`
+  - Chrome: `npm run build:chrome`

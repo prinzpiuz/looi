@@ -6,6 +6,10 @@ import tsParser from "@typescript-eslint/parser";
 import prettierRecommended from "eslint-config-prettier";
 
 export default [
+  {
+    ignores: ["public/background.js", "node_modules/**/*", "build/**/*"],
+  },
+
   // 1. Base JavaScript rules
   js.configs.recommended,
 
@@ -33,6 +37,10 @@ export default [
         process: "readonly",
         crypto: "readonly",
         require: "readonly",
+        fetch: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        NodeJS: "readonly",
       },
     },
     plugins: {
@@ -40,7 +48,6 @@ export default [
       react: reactPlugin,
     },
     rules: {
-      // TypeScript rules
       ...tsEslint.configs["eslint-recommended"].rules,
       ...tsEslint.configs["recommended"].rules,
       ...tsEslint.configs["recommended-requiring-type-checking"].rules,
@@ -50,8 +57,6 @@ export default [
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
-
-      // React rules for TSX files
       ...reactPlugin.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
@@ -95,6 +100,5 @@ export default [
     },
   },
 
-  // 4. Prettier config (must be last to override other formatting rules)
   prettierRecommended,
 ];
