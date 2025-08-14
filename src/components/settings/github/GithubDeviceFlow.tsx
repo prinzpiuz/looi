@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { startDeviceFlow, pollForToken } from "./utils";
+import { startDeviceFlow, pollForToken } from "../../../utils/github";
 import { GithubDeviceCodeResponse } from "../../../utils/types";
 
 const deviceFlowDivStyle: React.CSSProperties = { padding: 18, maxWidth: 340 };
@@ -34,7 +34,7 @@ const connectButtonStyle: React.CSSProperties = {
   borderRadius: 8,
   padding: "12px 32px",
   background: "linear-gradient(90deg,#2f82e4,#4559f9)",
-  color: "#162242",
+  color: "#ffffff",
   cursor: "pointer",
   boxShadow: "0 2.5px 8px rgba(83,99,190,0.05)",
   transition: "background .14s, color .14s, box-shadow .13s",

@@ -18,7 +18,7 @@ const buttonStyle: React.CSSProperties = {
   fontSize: 15,
   padding: "10px 24px",
   background: "linear-gradient(90deg,#2f82e4,#4559f9)",
-  color: "#162242",
+  color: "#ffffff",
   cursor: "pointer",
   boxShadow: "0 2.5px 8px rgba(83,99,190,0.05)",
   transition: "background .14s, color .14s, box-shadow .13s",

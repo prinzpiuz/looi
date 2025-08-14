@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getSettings, updateSettings } from "../utils/manageSettings";
-import { Settings, Bookmark, SettingsContextType } from "../utils/types";
+import {
+  Settings,
+  Bookmark,
+  SettingsContextType,
+  GitHubSyncSettings,
+} from "../utils/types";
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined,
@@ -11,7 +16,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
   const bookmarks = settings?.bookmarks || [];
-  //   const widgetConfigs = settings?.widgetConfigs || {};
 
   useEffect(() => {
     const load = async () => {
@@ -87,6 +91,21 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     await updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
   };
 
+  const updateGithubSettings = async (
+    githubSettings: Partial<GitHubSyncSettings>,
+  ) => {
+    if (!settings) return;
+    const updated = {
+      ...settings.githubSync,
+      ...githubSettings,
+    };
+    const updatedSettings = {
+      ...settings,
+      githubSync: updated,
+    };
+    await updateAndPersistSettings(updatedSettings);
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -98,6 +117,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         getBookmarkById,
         updateWidgetPosition,
         enableDisableWidget,
+        updateGithubSettings,
         updateAndPersistSettings,
       }}
     >

@@ -22,10 +22,17 @@ export interface WidgetConfig {
   enabled: boolean;
 }
 
+export interface GitHubSyncSettings {
+  lastSync: number | null;
+  autoSync: boolean;
+  publicGist: boolean;
+  tokenSaved: boolean;
+}
+
 export interface Settings {
   bgColor: string;
   bgUrl?: string;
-  syncStatus?: boolean;
+  githubSync: GitHubSyncSettings;
   bookmarks?: Bookmark[];
   widgetConfigs: Record<string, WidgetConfig>;
 }
@@ -39,6 +46,7 @@ export interface SettingsContextType {
   getBookmarkById: (s: string) => Bookmark | undefined;
   updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
   enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
+  updateGithubSettings: (s: Partial<GitHubSyncSettings>) => Promise<void>;
   updateAndPersistSettings: (s: Partial<Settings>) => Promise<void>;
 }
 
@@ -89,8 +97,17 @@ interface Runtime {
   lastError?: { message: string };
 }
 
-interface BrowserAPI {
+interface Storage {
+  local: {
+    set: (items: Record<string, any>) => void;
+    get: (key: string) => Promise<Record<string, any>>;
+    remove: (key: string) => Promise<void>;
+  };
+}
+
+export interface BrowserAPI {
   runtime: Runtime;
+  storage: Storage;
 }
 
 // Cast window to an extended type that optionally has browser and chrome
@@ -146,3 +163,5 @@ export interface BackgroundResponse<T = unknown> {
 export interface DeviceFlowAuthProps {
   onTokenReceived: (token: string) => void;
 }
+
+export type SyncStatus = "idle" | "syncing" | "success" | "error";

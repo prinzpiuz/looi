@@ -1,4 +1,4 @@
-import { FaCog } from "react-icons/fa";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import { SettingsButtonProps } from "../../utils/types";
 import ToolTip from "../commons/ToolTip";
 
@@ -34,7 +34,7 @@ const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
         onClick={toggleSettings}
         style={buttonStyles}
       >
-        <FaCog style={iconStyle} />
+        <HiOutlineCog6Tooth style={iconStyle} />
       </button>
     </ToolTip>
   );

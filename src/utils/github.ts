@@ -3,10 +3,9 @@ import {
   GithubTokenResponse,
   MessageData,
   BackgroundResponse,
-  typedWindow,
-} from "../../../utils/types";
+} from "./types";
 
-export const browser = typedWindow.browser || typedWindow.chrome;
+import { ext } from "./browserApi";
 
 export const startDeviceFlow = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -23,11 +22,11 @@ export const startDeviceFlow = (
       type: "GITHUB_DEVICE_FLOW",
       action: "start",
     };
-    browser.runtime.sendMessage(
+    ext?.runtime.sendMessage(
       message,
       (response: BackgroundResponse<GithubDeviceCodeResponse> | undefined) => {
-        if (browser.runtime.lastError) {
-          reject(new Error(browser.runtime.lastError.message));
+        if (ext?.runtime.lastError) {
+          reject(new Error(ext.runtime.lastError.message));
           return;
         }
 
@@ -57,7 +56,7 @@ export const pollForToken = (
   onToken: (token: string) => void,
   pollToken: () => void,
 ) => {
-  browser.runtime.sendMessage(
+  ext?.runtime.sendMessage(
     {
       type: "GITHUB_DEVICE_FLOW",
       action: "token",
@@ -92,4 +91,17 @@ export const pollForToken = (
       }
     },
   );
+};
+
+export const saveToken = (token: string) => {
+  ext?.storage.local.set({ github_token: token });
+};
+
+export const getToken = async (): Promise<string> => {
+  const stored = await ext?.storage.local.get("github_token");
+  return stored?.github_token as Promise<string>;
+};
+
+export const removeToken = async () => {
+  await ext?.storage.local.remove("github_token");
 };

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import GithubDeviceFlow from "./GithubDeviceFlow";
 import GithubPATInput from "./GithubPATInput";
+import { saveToken } from "../../../utils/github";
+import SyncSettings from "./SyncSettings";
+import { useSettings } from "../../../hooks/settingsContext";
 
 const githubSyncDivStyle: React.CSSProperties = { margin: "7px 0 27px" };
 const syncReadyStyle: React.CSSProperties = {
@@ -18,8 +21,17 @@ const selectionDivStyle: React.CSSProperties = {
 };
 
 const GitHubSync: React.FC = () => {
-  const [token, setToken] = useState<string | null>(null);
+  const { settings, updateGithubSettings } = useSettings();
+  const [tokenAvailable, setTokenAvailable] = useState(
+    settings?.githubSync?.tokenSaved || false,
+  );
   const [authTab, setAuthTab] = useState<"device" | "pat">("device");
+
+  const onToken = (token: string) => {
+    saveToken(token);
+    updateGithubSettings({ tokenSaved: true });
+    setTokenAvailable(true);
+  };
 
   const connectButtonStyle: React.CSSProperties = {
     flex: 1,
@@ -41,24 +53,34 @@ const GitHubSync: React.FC = () => {
     borderRadius: "8px 8px 0 0",
   };
 
-  return (
-    <div style={githubSyncDivStyle}>
-      <div style={selectionDivStyle}>
-        <button style={connectButtonStyle} onClick={() => setAuthTab("device")}>
-          <FaGithub /> Login
-        </button>
-        <button style={authButtonStyle} onClick={() => setAuthTab("pat")}>
-          <FaGithub /> Token
-        </button>
-      </div>
-      {authTab === "device" ? (
-        <GithubDeviceFlow onToken={setToken} />
-      ) : (
-        <GithubPATInput onToken={setToken} />
-      )}
-      {token && <div style={syncReadyStyle}>Ready To Sync</div>}
-    </div>
-  );
+  const getSection = () => {
+    if (tokenAvailable) {
+      return <SyncSettings onTokenReset={setTokenAvailable} />;
+    } else {
+      return (
+        <>
+          <div style={selectionDivStyle}>
+            <button
+              style={connectButtonStyle}
+              onClick={() => setAuthTab("device")}
+            >
+              <FaGithub /> Login
+            </button>
+            <button style={authButtonStyle} onClick={() => setAuthTab("pat")}>
+              <FaGithub /> Token
+            </button>
+          </div>
+          {authTab === "device" ? (
+            <GithubDeviceFlow onToken={onToken} />
+          ) : (
+            <GithubPATInput onToken={onToken} />
+          )}
+        </>
+      );
+    }
+  };
+
+  return <div style={githubSyncDivStyle}>{getSection()}</div>;
 };
 
 export default GitHubSync;

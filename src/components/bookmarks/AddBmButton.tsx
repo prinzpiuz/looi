@@ -10,7 +10,7 @@ const toolTipPosition: React.CSSProperties = {
 const buttonStyles: React.CSSProperties = {
   position: "fixed",
   top: 30,
-  right: 80,
+  right: 60,
   width: 35,
   height: 35,
   border: "none",

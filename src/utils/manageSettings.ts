@@ -1,10 +1,17 @@
-import { browser } from "./browserApi";
-import { Settings } from "./types";
+import { ext } from "./browserApi";
+import { Settings, GitHubSyncSettings } from "./types";
+
+export const defaultGithubSettings: GitHubSyncSettings = {
+  lastSync: null,
+  autoSync: true,
+  publicGist: false,
+  tokenSaved: false,
+};
 
 export const loadDefaultSettings: Settings = {
-  bgColor: "#000000", // Default background color
-  bgUrl: "", // Default background image URL
-  syncStatus: false,
+  bgColor: "#000000",
+  bgUrl: "",
+  githubSync: defaultGithubSettings,
   bookmarks: [],
   widgetConfigs: {
     calendar: {
@@ -21,12 +28,12 @@ export const loadDefaultSettings: Settings = {
       enabled: false,
       position: { x: 300, y: 150 },
     },
-  }, // Default sync status
+  },
 };
 
-export const saveSettings = async (settings: Settings) => {
-  if (!browser) return {};
-  await browser.storage.local.set({ settings: settings });
+export const saveSettings = (settings: Settings) => {
+  if (!ext) return {};
+  ext.storage.local.set({ settings: settings });
 };
 
 export const updateSettings = async (newSettings: Partial<Settings>) => {
@@ -38,10 +45,10 @@ export const updateSettings = async (newSettings: Partial<Settings>) => {
       loadDefaultSettings.bgColor,
     bgUrl:
       newSettings.bgUrl ?? currentSettings.bgUrl ?? loadDefaultSettings.bgUrl,
-    syncStatus:
-      newSettings.syncStatus ??
-      currentSettings.syncStatus ??
-      loadDefaultSettings.syncStatus,
+    githubSync:
+      newSettings.githubSync ??
+      currentSettings.githubSync ??
+      loadDefaultSettings.githubSync,
     ...(newSettings.bookmarks !== undefined
       ? { bookmarks: newSettings.bookmarks }
       : currentSettings.bookmarks
@@ -53,21 +60,21 @@ export const updateSettings = async (newSettings: Partial<Settings>) => {
       loadDefaultSettings.widgetConfigs,
     ...newSettings,
   };
-  await saveSettings(updatedSettings);
+  saveSettings(updatedSettings);
   return updatedSettings;
 };
 
 export const getSettings = async (): Promise<Settings> => {
-  if (!browser) return loadDefaultSettings;
-  const stored = await browser.storage.local.get("settings");
+  if (!ext) return loadDefaultSettings;
+  const stored = await ext.storage.local.get("settings");
   if (stored.settings) {
     return stored.settings as Settings;
   } else {
-    await browser.storage.local.set({ settings: loadDefaultSettings });
+    ext.storage.local.set({ settings: loadDefaultSettings });
     return loadDefaultSettings;
   }
 };
 export const resetSettings = async () => {
-  if (!browser) return loadDefaultSettings;
-  await browser.storage.local.set({ settings: loadDefaultSettings });
+  if (!ext) return loadDefaultSettings;
+  ext.storage.local.set({ settings: loadDefaultSettings });
 };

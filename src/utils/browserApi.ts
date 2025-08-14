@@ -1,4 +1,8 @@
+import { typedWindow, BrowserAPI } from "./types";
+
 export let browser: typeof import("webextension-polyfill") | null = null;
+export const ext: BrowserAPI | undefined =
+  typedWindow.browser || typedWindow.chrome;
 
 try {
   browser = require("webextension-polyfill");
