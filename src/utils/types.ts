@@ -27,6 +27,7 @@ export interface GitHubSyncSettings {
   autoSync: boolean;
   publicGist: boolean;
   tokenSaved: boolean;
+  gistId: string;
 }
 
 export interface Settings {
@@ -135,22 +136,57 @@ export interface GithubTokenResponse {
 
 export interface GitHubDeviceFlowStartMessage {
   type: "GITHUB_DEVICE_FLOW";
-  action: "start";
+  action: "startDeviceFlow";
 }
 
 export interface GitHubDeviceFlowTokenMessage {
   type: "GITHUB_DEVICE_FLOW";
-  action: "token";
+  action: "getToken";
   device_code: string;
+}
+
+export interface GitHubAPIMessage {
+  type: "GITHUB_GIST_API";
+  action: "findGist" | "createOrUpdateLooiGist";
+  gistId?: string;
+  payload?: {
+    files: Record<string, { content: string }>;
+    publicGist: boolean;
+  };
+}
+
+export interface GistFile {
+  filename: string;
+  type: string;
+  language: string;
+  raw_url: string;
+  size: number;
+  truncated: boolean;
+  content?: string;
+  encoding: string;
+}
+
+export interface GithubAPIResponse {
+  id: string;
+  url: string;
+  public: boolean;
+  files: Record<string, GistFile>;
+}
+
+export interface GitHubAPIResponseMessage {
+  type: "GITHUB_GIST_API";
+  action: "findGist" | "createOrUpdateLooiGist";
+  gistId: string;
 }
 
 export type MessageData =
   | GitHubDeviceFlowStartMessage
-  | GitHubDeviceFlowTokenMessage;
+  | GitHubDeviceFlowTokenMessage
+  | GitHubAPIMessage;
 
-export interface GithubDeviceFlowResponse {
+export interface GithubResponses {
   success: boolean;
-  data?: GithubDeviceCodeResponse | GithubTokenResponse;
+  data?: GithubDeviceCodeResponse | GithubTokenResponse | GithubAPIResponse;
   error?: string;
 }
 

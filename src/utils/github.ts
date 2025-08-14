@@ -3,6 +3,7 @@ import {
   GithubTokenResponse,
   MessageData,
   BackgroundResponse,
+  GithubAPIResponse,
 } from "./types";
 
 import { ext } from "./browserApi";
@@ -20,7 +21,7 @@ export const startDeviceFlow = (
     setLoading(false);
     const message: MessageData = {
       type: "GITHUB_DEVICE_FLOW",
-      action: "start",
+      action: "startDeviceFlow",
     };
     ext?.runtime.sendMessage(
       message,
@@ -56,12 +57,13 @@ export const pollForToken = (
   onToken: (token: string) => void,
   pollToken: () => void,
 ) => {
+  const message: MessageData = {
+    type: "GITHUB_DEVICE_FLOW",
+    action: "getToken",
+    device_code: device_code,
+  };
   ext?.runtime.sendMessage(
-    {
-      type: "GITHUB_DEVICE_FLOW",
-      action: "token",
-      device_code: device_code,
-    },
+    message,
     (response: BackgroundResponse<GithubTokenResponse> | undefined) => {
       if (response?.success && response.data) {
         const data = response.data;
@@ -91,6 +93,61 @@ export const pollForToken = (
       }
     },
   );
+};
+
+export const findGist = (): Promise<GithubAPIResponse> => {
+  return new Promise((resolve, reject) => {
+    const message: MessageData = {
+      type: "GITHUB_GIST_API",
+      action: "findGist",
+    };
+    ext?.runtime.sendMessage(
+      message,
+      (response: BackgroundResponse<GithubAPIResponse> | undefined) => {
+        if (ext?.runtime.lastError) {
+          reject(new Error(ext.runtime.lastError.message));
+          return;
+        }
+
+        if (response?.success && response.data) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response?.error ?? "Unknown background error"));
+        }
+      },
+    );
+  });
+};
+
+export const createOrUpdateLooiGist = (
+  gistId: string,
+  payload: { files: any; publicGist: boolean },
+): Promise<GithubAPIResponse> => {
+  return new Promise((resolve, reject) => {
+    const message: MessageData = {
+      type: "GITHUB_GIST_API",
+      action: "createOrUpdateLooiGist",
+      gistId,
+      payload,
+    };
+    console.log("message", message);
+    ext?.runtime.sendMessage(
+      message,
+      (response: BackgroundResponse<GithubAPIResponse> | undefined) => {
+        console.log("response githubts", response);
+        if (ext?.runtime.lastError) {
+          reject(new Error(ext.runtime.lastError.message));
+          return;
+        }
+
+        if (response?.success && response.data) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response?.error ?? "Unknown background error"));
+        }
+      },
+    );
+  });
 };
 
 export const saveToken = (token: string) => {

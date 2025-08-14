@@ -1,4 +1,5 @@
 import { ext } from "./browserApi";
+import { createOrUpdateLooiGist } from "./github";
 import { Settings, GitHubSyncSettings } from "./types";
 
 export const defaultGithubSettings: GitHubSyncSettings = {
@@ -6,6 +7,7 @@ export const defaultGithubSettings: GitHubSyncSettings = {
   autoSync: true,
   publicGist: false,
   tokenSaved: false,
+  gistId: "LooiExtensionSettings",
 };
 
 export const loadDefaultSettings: Settings = {
@@ -34,6 +36,20 @@ export const loadDefaultSettings: Settings = {
 export const saveSettings = (settings: Settings) => {
   if (!ext) return {};
   ext.storage.local.set({ settings: settings });
+  console.log("settings saved", settings.githubSync.gistId);
+  if (settings.githubSync.tokenSaved && settings.githubSync.autoSync) {
+    createOrUpdateLooiGist(
+      settings.githubSync.gistId || "LooiExtensionSettings",
+      {
+        files: {
+          "settings.json": {
+            content: JSON.stringify(settings),
+          },
+        },
+        publicGist: settings.githubSync.publicGist,
+      },
+    );
+  }
 };
 
 export const updateSettings = async (newSettings: Partial<Settings>) => {

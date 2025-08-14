@@ -10,7 +10,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": ["https://github.com/"],
+  "host_permissions": ["https://api.github.com/*"],
   "icons": {
     "16": "icons/looi-16.png",
     "48": "icons/looi-48.png",
