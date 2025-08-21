@@ -88,7 +88,6 @@ ext.runtime.onMessage.addListener(
     if (message.type === "GITHUB_GIST_API") {
       (async () => {
         const token = await getToken();
-        console.log("token", token);
         const { action, gistId, payload } = message;
         const apiUrl = gistId ? `${GistBaseURL}/${gistId}` : GistBaseURL;
         const headers = {
@@ -136,7 +135,6 @@ ext.runtime.onMessage.addListener(
           }
 
           const response: GistResponse = await resp.json();
-          console.log("response", response);
           const content = response.files["settings.json"].content as string;
           const settings = JSON.parse(content) as Settings;
           settings.githubSync.gistId = response.id;

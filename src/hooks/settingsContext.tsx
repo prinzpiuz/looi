@@ -31,7 +31,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!settings) return;
     const updated = { ...settings, ...partialSettings };
     setSettings(updated);
-    await updateSettings(updated);
+    await updateSettings(updated, setSettings);
   };
 
   const addBookmark = async (bookmark: Bookmark) => {

@@ -7,12 +7,6 @@ import SyncSettings from "./SyncSettings";
 import { useSettings } from "../../../hooks/settingsContext";
 
 const githubSyncDivStyle: React.CSSProperties = { margin: "7px 0 27px" };
-const syncReadyStyle: React.CSSProperties = {
-  color: "#ffffff",
-  fontWeight: 600,
-  marginTop: 8,
-  paddingLeft: 45,
-};
 const selectionDivStyle: React.CSSProperties = {
   display: "flex",
   borderBottom: "1px solid #ffffff",
@@ -29,7 +23,7 @@ const GitHubSync: React.FC = () => {
 
   const onToken = (token: string) => {
     saveToken(token);
-    updateGithubSettings({ tokenSaved: true });
+    void updateGithubSettings({ tokenSaved: true });
     setTokenAvailable(true);
   };
 

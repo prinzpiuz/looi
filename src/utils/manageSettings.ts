@@ -31,20 +31,25 @@ export const loadDefaultSettings: Settings = {
   },
 };
 
-export const saveSettings = (settings: Settings) => {
-  if (!ext) return {};
-  ext.storage.local.set({ settings: settings });
+export const saveSettings = (
+  settings: Settings,
+  setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
+) => {
+  ext?.storage.local.set({ settings: settings });
   if (settings.githubSync.tokenSaved && settings.githubSync.autoSync) {
     void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then(
       (data) => {
-        if (!ext) return {};
-        ext.storage.local.set({ settings: data.settings });
+        ext?.storage.local.set({ settings: data.settings });
+        setSettings?.(data.settings);
       },
     );
   }
 };
 
-export const updateSettings = async (newSettings: Partial<Settings>) => {
+export const updateSettings = async (
+  newSettings: Partial<Settings>,
+  setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
+) => {
   const currentSettings = await getSettings();
   const updatedSettings: Settings = {
     bgColor:
@@ -68,7 +73,7 @@ export const updateSettings = async (newSettings: Partial<Settings>) => {
       loadDefaultSettings.widgetConfigs,
     ...newSettings,
   };
-  saveSettings(updatedSettings);
+  saveSettings(updatedSettings, setSettings);
   return updatedSettings;
 };
 

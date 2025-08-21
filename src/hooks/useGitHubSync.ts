@@ -42,8 +42,6 @@ export const useGitHubSync = () => {
   const syncNow = useCallback(async () => {
     setStatus("syncing");
     try {
-      // TODO: call GitHub API with `settings.token`
-      // simulate delay
       await new Promise((res) => setTimeout(res, 1500));
       updateSyncSettings({ lastSync: Date.now() });
       setStatus("success");

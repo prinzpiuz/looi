@@ -152,7 +152,7 @@ const GithubDeviceFlow: React.FC<{
             style={connectButtonStyle}
             onClick={() => {
               if (!started) {
-                startAuth();
+                void startAuth();
               }
             }}
             disabled={loading || polling}
