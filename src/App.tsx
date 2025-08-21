@@ -1,4 +1,3 @@
-import React from "react";
 import NewTabPage from "./components/NewTab";
 import { SettingsProvider } from "./hooks/settingsContext";
 
