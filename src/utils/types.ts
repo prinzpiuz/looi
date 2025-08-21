@@ -27,7 +27,7 @@ export interface GitHubSyncSettings {
   autoSync: boolean;
   publicGist: boolean;
   tokenSaved: boolean;
-  gistId: string;
+  gistId: string | undefined;
 }
 
 export interface Settings {
@@ -149,10 +149,7 @@ export interface GitHubAPIMessage {
   type: "GITHUB_GIST_API";
   action: "findGist" | "createOrUpdateLooiGist";
   gistId?: string;
-  payload?: {
-    files: Record<string, { content: string }>;
-    publicGist: boolean;
-  };
+  payload: Settings;
 }
 
 export interface GistFile {
@@ -167,10 +164,10 @@ export interface GistFile {
 }
 
 export interface GithubAPIResponse {
-  id: string;
+  gistId: string;
   url: string;
   public: boolean;
-  files: Record<string, GistFile>;
+  settings: Settings;
 }
 
 export interface GitHubAPIResponseMessage {
@@ -201,3 +198,10 @@ export interface DeviceFlowAuthProps {
 }
 
 export type SyncStatus = "idle" | "syncing" | "success" | "error";
+
+export interface GistResponse {
+  url: string;
+  id: string;
+  files: Record<string, GistFile>;
+  public: boolean;
+}

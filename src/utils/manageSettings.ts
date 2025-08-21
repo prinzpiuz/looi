@@ -7,7 +7,7 @@ export const defaultGithubSettings: GitHubSyncSettings = {
   autoSync: true,
   publicGist: false,
   tokenSaved: false,
-  gistId: "LooiExtensionSettings",
+  gistId: undefined,
 };
 
 export const loadDefaultSettings: Settings = {
@@ -19,14 +19,12 @@ export const loadDefaultSettings: Settings = {
     calendar: {
       id: "calendar",
       name: "Calendar",
-      icon: "🗓️",
       enabled: true,
       position: { x: 100, y: 200 },
     },
     todo: {
       id: "todo",
       name: "To-Do List",
-      icon: "✅",
       enabled: false,
       position: { x: 300, y: 150 },
     },
@@ -36,17 +34,11 @@ export const loadDefaultSettings: Settings = {
 export const saveSettings = (settings: Settings) => {
   if (!ext) return {};
   ext.storage.local.set({ settings: settings });
-  console.log("settings saved", settings.githubSync.gistId);
   if (settings.githubSync.tokenSaved && settings.githubSync.autoSync) {
-    createOrUpdateLooiGist(
-      settings.githubSync.gistId || "LooiExtensionSettings",
-      {
-        files: {
-          "settings.json": {
-            content: JSON.stringify(settings),
-          },
-        },
-        publicGist: settings.githubSync.publicGist,
+    void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then(
+      (data) => {
+        if (!ext) return {};
+        ext.storage.local.set({ settings: data.settings });
       },
     );
   }
@@ -90,7 +82,7 @@ export const getSettings = async (): Promise<Settings> => {
     return loadDefaultSettings;
   }
 };
-export const resetSettings = async () => {
+export const resetSettings = () => {
   if (!ext) return loadDefaultSettings;
   ext.storage.local.set({ settings: loadDefaultSettings });
 };

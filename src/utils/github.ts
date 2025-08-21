@@ -4,6 +4,7 @@ import {
   MessageData,
   BackgroundResponse,
   GithubAPIResponse,
+  Settings,
 } from "./types";
 
 import { ext } from "./browserApi";
@@ -95,11 +96,16 @@ export const pollForToken = (
   );
 };
 
-export const findGist = (): Promise<GithubAPIResponse> => {
+export const findGist = (
+  gistId: string,
+  payload: Settings,
+): Promise<GithubAPIResponse> => {
   return new Promise((resolve, reject) => {
     const message: MessageData = {
       type: "GITHUB_GIST_API",
       action: "findGist",
+      gistId,
+      payload,
     };
     ext?.runtime.sendMessage(
       message,
@@ -120,8 +126,8 @@ export const findGist = (): Promise<GithubAPIResponse> => {
 };
 
 export const createOrUpdateLooiGist = (
-  gistId: string,
-  payload: { files: any; publicGist: boolean },
+  gistId: string | undefined,
+  payload: Settings,
 ): Promise<GithubAPIResponse> => {
   return new Promise((resolve, reject) => {
     const message: MessageData = {
@@ -130,11 +136,9 @@ export const createOrUpdateLooiGist = (
       gistId,
       payload,
     };
-    console.log("message", message);
     ext?.runtime.sendMessage(
       message,
       (response: BackgroundResponse<GithubAPIResponse> | undefined) => {
-        console.log("response githubts", response);
         if (ext?.runtime.lastError) {
           reject(new Error(ext.runtime.lastError.message));
           return;

@@ -10,15 +10,18 @@ import {
   GithubDeviceCodeResponse,
   GithubTokenResponse,
   GithubAPIResponse,
+  Settings,
+  GistResponse,
 } from "./utils/types";
 import { getToken } from "./utils/github";
+import { settingsToJSONString } from "./utils/utils";
 
 const ext = isFirefox() ? browser : chrome;
 
 const CLIENT_ID = "Iv23li5frjjDBAV3DfuR";
 
 const DeviceBaseFlowURL = "https://github.com/login/";
-const GistBaseURL = "https://api.github.com/gists/";
+const GistBaseURL = "https://api.github.com/gists";
 
 ext.runtime.onMessage.addListener(
   (
@@ -87,69 +90,70 @@ ext.runtime.onMessage.addListener(
         const token = await getToken();
         console.log("token", token);
         const { action, gistId, payload } = message;
+        const apiUrl = gistId ? `${GistBaseURL}/${gistId}` : GistBaseURL;
         const headers = {
           Authorization: `Bearer ${token}`,
           Accept: "application/vnd.github+json",
+          "Content-Type": "application/json",
         };
 
         if (action === "findGist") {
-          const resp = await fetch(`${GistBaseURL}${gistId}`, { headers });
+          const resp = await fetch(apiUrl, {
+            headers: headers,
+          });
           if (!resp.ok) throw new Error("Failed to fetch gist");
-          const response = await resp.json();
+          const response: GistResponse = await resp.json();
+          const content = response.files["settings.json"].content as string;
+          const settings = JSON.parse(content) as Settings;
+          settings.githubSync.gistId = response.id;
           const data: GithubAPIResponse = {
-            id: response.id,
+            gistId: response.id,
             url: response.url,
             public: response.public,
-            files: response.files,
+            settings: settings,
           };
           sendResponse({ success: true, data: data || null });
-        }
-        // POST/UPDATE: Update (PATCH) or create gist
-        else if (action === "createOrUpdateLooiGist") {
-          console.log("payload", payload);
-          let url: string, method: string;
-          let body: any;
-
-          const desc = "Settings for looi extension";
-
-          if (gistId) {
-            url = `${GistBaseURL}${gistId}`;
-            method = "PATCH";
-            body = {
-              description: desc,
-              files: payload?.files, // { filename: {content: "..."} }
-              public: payload?.publicGist,
-            };
-          } else {
-            url = `${GistBaseURL}`;
-            method = "POST";
-            body = {
-              description: desc,
-              files: payload?.files,
-              public: payload?.publicGist,
-            };
-          }
-          const resp = await fetch(url, {
-            method,
-            headers: { ...headers, "Content-Type": "application/json" },
+        } else if (action === "createOrUpdateLooiGist") {
+          const body = {
+            description: "Settings for looi extension",
+            public: payload.githubSync.publicGist,
+            files: {
+              "settings.json": {
+                content: settingsToJSONString(payload),
+              },
+            },
+          };
+          const resp = await fetch(apiUrl, {
+            method: gistId ? "PATCH" : "POST",
+            headers: headers,
             body: JSON.stringify(body),
           });
-          const response = await resp.json();
+
+          if (!resp.ok) {
+            throw new Error(
+              `GitHub API error: ${resp.status} ${resp.statusText}`,
+            );
+          }
+
+          const response: GistResponse = await resp.json();
           console.log("response", response);
+          const content = response.files["settings.json"].content as string;
+          const settings = JSON.parse(content) as Settings;
+          settings.githubSync.gistId = response.id;
           const data: GithubAPIResponse = {
-            id: response.id,
+            gistId: response.id,
             url: response.url,
             public: response.public,
-            files: response.files,
+            settings: settings,
           };
           sendResponse({ success: resp.ok, data });
         }
-      })().catch((err) =>
+      })().catch((err) => {
         sendResponse({
           success: false,
           error: err instanceof Error ? err.message : String(err),
-        }),
-      );
+        });
+      });
       return true;
     }
     return undefined;
