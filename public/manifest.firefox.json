@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Looi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.",
   "chrome_url_overrides": {
     "newtab": "index.html"
