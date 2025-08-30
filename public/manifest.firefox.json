@@ -6,9 +6,16 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage", "tabs", "https://github.com/","https://api.github.com/*"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "https://github.com/",
+    "https://api.github.com/*"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": true
   },
   "icons": {
