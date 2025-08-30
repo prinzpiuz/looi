@@ -46,7 +46,7 @@ jobs:
         if: ${{ success() }}
         uses: EndBug/add-and-commit@v9
         with:
-          add: '["CHANGELOG.md", "package.json", "public/manifest.json"]'
+          add: '["CHANGELOG.md", "package.json", "public/manifest.firefox.json", "public/manifest.chrome.json"]'
           pull: "--rebase --autostash ."
           message: "chore: changelog generated & version updated automatically"
           default_author: github_actions

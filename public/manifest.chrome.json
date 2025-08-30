@@ -6,11 +6,18 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage", "scripting", "tabs", "https://github.com/"],
+  "permissions": [
+    "storage",
+    "scripting",
+    "tabs",
+    "https://github.com/"
+  ],
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": ["https://api.github.com/*"],
+  "host_permissions": [
+    "https://api.github.com/*"
+  ],
   "icons": {
     "16": "icons/looi-16.png",
     "48": "icons/looi-48.png",

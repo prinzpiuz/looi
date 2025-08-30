@@ -6,8 +6,6 @@
 if ! command -v jq &> /dev/null
 then
     echo "jq is not installed. Please install it to use this script."
-    echo "On Ubuntu/Debian: sudo apt-get install jq"
-    echo "On macOS: brew install jq"
     exit 1
 fi
 
@@ -20,7 +18,8 @@ fi
 
 NEW_VERSION="$1"
 PACKAGE_JSON="package.json"
-MANIFEST_JSON="public/manifest.json"
+FIREFOX_MANIFEST_JSON="public/manifest.firefox.json"
+CHROME_MANIFEST_JSON="public/manifest.chrome.json"
 
 echo "Attempting to update version to: $NEW_VERSION"
 
@@ -40,18 +39,25 @@ else
 fi
 
 # --- Update manifest.json ---
-if [ -f "$MANIFEST_JSON" ]; then
-    echo "Updating version in $MANIFEST_JSON..."
+if [ -f "$FIREFOX_MANIFEST_JSON" ] && [ -f "$CHROME_MANIFEST_JSON" ]; then
+    echo "Updating version in Manifest.json..."
     # Use jq to update the 'version' field
-    jq ".version = \"$NEW_VERSION\"" "$MANIFEST_JSON" > "$MANIFEST_JSON.tmp" && mv "$MANIFEST_JSON.tmp" "$MANIFEST_JSON"
+    jq ".version = \"$NEW_VERSION\"" "$FIREFOX_MANIFEST_JSON" > "$FIREFOX_MANIFEST_JSON.tmp" && mv "$FIREFOX_MANIFEST_JSON.tmp" "$FIREFOX_MANIFEST_JSON"
     if [ $? -eq 0 ]; then
-        echo "Successfully updated $MANIFEST_JSON"
+        echo "Successfully updated $FIREFOX_MANIFEST_JSON"
     else
-        echo "Error updating $MANIFEST_JSON"
+        echo "Error updating $FIREFOX_MANIFEST_JSON"
+        exit 1
+    fi
+    jq ".version = \"$NEW_VERSION\"" "$CHROME_MANIFEST_JSON" > "$CHROME_MANIFEST_JSON.tmp" && mv "$CHROME_MANIFEST_JSON.tmp" "$CHROME_MANIFEST_JSON"
+    if [ $? -eq 0 ]; then
+        echo "Successfully updated $CHROME_MANIFEST_JSON"
+    else
+        echo "Error updating $CHROME_MANIFEST_JSON"
         exit 1
     fi
 else
-    echo "Warning: $MANIFEST_JSON not found. Skipping."
+    echo "Warning: Manifest files not found. Skipping."
 fi
 
 echo "Version update complete."
