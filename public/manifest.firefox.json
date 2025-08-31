@@ -3,6 +3,11 @@
   "name": "Looi",
   "version": "1.1.0",
   "description": "A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "7e332fc3-46f0-4753-b8a1-e99f91470790@looi-extension"
+    }
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
