@@ -64,7 +64,7 @@ jobs:
       - name: Download firefox zip
         uses: actions/download-artifact@v4
         with:
-          name: firefox-extension
+          name: looi-extension
 
       - name: Publish to Firefox Add-ons
         uses: cardinalby/webext-buildtools-firefox-addons-action@v1
