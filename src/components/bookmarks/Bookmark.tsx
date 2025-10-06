@@ -33,6 +33,11 @@ const linkStyle: React.CSSProperties = {
   transition: "color 0.1s ease",
 };
 
+const draggableStyle: React.CSSProperties = {
+  width: "auto !important",
+  display: "inline-block",
+};
+
 const moreIconStyle: React.CSSProperties = {
   color: "#a5adc6",
   fontSize: "1.13rem",
@@ -70,12 +75,12 @@ const BookmarkDiv: React.FC<{
     });
   };
 
-  const bookmarkBackgroudColor = settings?.bgColor;
+  const bookmarkBackgroundColor = settings?.bgColor;
 
   const bookmarkDivStyle: React.CSSProperties = {
     ...bookmarkStyle,
     ...bookmark.position,
-    backgroundColor: bookmarkBackgroudColor,
+    backgroundColor: bookmarkBackgroundColor,
   };
 
   return (
@@ -86,18 +91,18 @@ const BookmarkDiv: React.FC<{
         position={position}
         onStop={handleStop}
       >
-        <div ref={nodeRef} tabIndex={index}>
+        <div ref={nodeRef} tabIndex={index} style={draggableStyle}>
           <div
             style={bookmarkDivStyle}
             onMouseEnter={(e) => {
-              (e.currentTarget.style.transform = "scale(1.025)"),
+              ((e.currentTarget.style.transform = "scale(1.025)"),
                 (e.currentTarget.style.backgroundColor =
-                  "rgba(22, 22, 22, 0.7)");
+                  "rgba(22, 22, 22, 0.7)"));
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
               e.currentTarget.style.backgroundColor =
-                bookmarkBackgroudColor || "";
+                bookmarkBackgroundColor || "";
             }}
           >
             <img

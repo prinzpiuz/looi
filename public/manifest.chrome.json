@@ -9,14 +9,14 @@
   "permissions": [
     "storage",
     "scripting",
-    "tabs",
-    "https://github.com/"
+    "tabs"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "host_permissions": [
-    "https://api.github.com/*"
+    "https://api.github.com/*",
+    "https://github.com/"
   ],
   "icons": {
     "16": "icons/looi-16.png",

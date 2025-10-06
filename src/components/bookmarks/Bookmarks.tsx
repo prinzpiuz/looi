@@ -1,6 +1,6 @@
-import { useSettings } from "../../hooks/settingsContext";
-import { Bookmark } from "../../utils/types";
-import BookmarkDiv from "./Bookmark";
+import { useSettings } from '../../hooks/settingsContext';
+import { Bookmark } from '../../utils/types';
+import BookmarkDiv from './Bookmark';
 
 const Bookmarks: React.FC = () => {
   const { settings } = useSettings();
