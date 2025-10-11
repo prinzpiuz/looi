@@ -1,6 +1,6 @@
-import { ext } from "./browserApi";
-import { createOrUpdateLooiGist } from "./github";
-import { Settings, GitHubSyncSettings } from "./types";
+import { ext } from './browserApi';
+import { createOrUpdateLooiGist } from './github';
+import { Settings, GitHubSyncSettings } from './types';
 
 export const defaultGithubSettings: GitHubSyncSettings = {
   lastSync: null,
@@ -11,20 +11,20 @@ export const defaultGithubSettings: GitHubSyncSettings = {
 };
 
 export const loadDefaultSettings: Settings = {
-  bgColor: "#000000",
-  bgUrl: "",
+  bgColor: '#000000',
+  bgUrl: '',
   githubSync: defaultGithubSettings,
   bookmarks: [],
   widgetConfigs: {
     calendar: {
-      id: "calendar",
-      name: "Calendar",
+      id: 'calendar',
+      name: 'Calendar',
       enabled: true,
       position: { x: 100, y: 200 },
     },
     todo: {
-      id: "todo",
-      name: "To-Do List",
+      id: 'todo',
+      name: 'To-Do List',
       enabled: false,
       position: { x: 300, y: 150 },
     },
@@ -37,12 +37,10 @@ export const saveSettings = (
 ) => {
   ext?.storage.local.set({ settings: settings });
   if (settings.githubSync.tokenSaved && settings.githubSync.autoSync) {
-    void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then(
-      (data) => {
-        ext?.storage.local.set({ settings: data.settings });
-        setSettings?.(data.settings);
-      },
-    );
+    void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then((data) => {
+      ext?.storage.local.set({ settings: data.settings });
+      setSettings?.(data.settings);
+    });
   }
 };
 
@@ -52,16 +50,10 @@ export const updateSettings = async (
 ) => {
   const currentSettings = await getSettings();
   const updatedSettings: Settings = {
-    bgColor:
-      newSettings.bgColor ??
-      currentSettings.bgColor ??
-      loadDefaultSettings.bgColor,
-    bgUrl:
-      newSettings.bgUrl ?? currentSettings.bgUrl ?? loadDefaultSettings.bgUrl,
+    bgColor: newSettings.bgColor ?? currentSettings.bgColor ?? loadDefaultSettings.bgColor,
+    bgUrl: newSettings.bgUrl ?? currentSettings.bgUrl ?? loadDefaultSettings.bgUrl,
     githubSync:
-      newSettings.githubSync ??
-      currentSettings.githubSync ??
-      loadDefaultSettings.githubSync,
+      newSettings.githubSync ?? currentSettings.githubSync ?? loadDefaultSettings.githubSync,
     ...(newSettings.bookmarks !== undefined
       ? { bookmarks: newSettings.bookmarks }
       : currentSettings.bookmarks
@@ -79,7 +71,7 @@ export const updateSettings = async (
 
 export const getSettings = async (): Promise<Settings> => {
   if (!ext) return loadDefaultSettings;
-  const stored = await ext.storage.local.get("settings");
+  const stored = await ext.storage.local.get('settings');
   if (stored.settings) {
     return stored.settings as Settings;
   } else {

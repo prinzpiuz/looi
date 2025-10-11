@@ -1,5 +1,5 @@
 /// <reference types="chrome"/>
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 export interface Position {
   x: number;
@@ -62,7 +62,7 @@ export interface AddBookmarkButtonProps {
 export interface BookmarkFormProps {
   bookmarkId?: string;
   initialData?: Partial<Bookmark>;
-  mode: "add" | "edit";
+  mode: 'add' | 'edit';
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   showBookmarkForm: boolean;
 }
@@ -135,19 +135,19 @@ export interface GithubTokenResponse {
 }
 
 export interface GitHubDeviceFlowStartMessage {
-  type: "GITHUB_DEVICE_FLOW";
-  action: "startDeviceFlow";
+  type: 'GITHUB_DEVICE_FLOW';
+  action: 'startDeviceFlow';
 }
 
 export interface GitHubDeviceFlowTokenMessage {
-  type: "GITHUB_DEVICE_FLOW";
-  action: "getToken";
+  type: 'GITHUB_DEVICE_FLOW';
+  action: 'getToken';
   device_code: string;
 }
 
 export interface GitHubAPIMessage {
-  type: "GITHUB_GIST_API";
-  action: "findGist" | "createOrUpdateLooiGist";
+  type: 'GITHUB_GIST_API';
+  action: 'findGist' | 'createOrUpdateLooiGist';
   gistId?: string;
   payload: Settings;
 }
@@ -171,8 +171,8 @@ export interface GithubAPIResponse {
 }
 
 export interface GitHubAPIResponseMessage {
-  type: "GITHUB_GIST_API";
-  action: "findGist" | "createOrUpdateLooiGist";
+  type: 'GITHUB_GIST_API';
+  action: 'findGist' | 'createOrUpdateLooiGist';
   gistId: string;
 }
 
@@ -197,7 +197,7 @@ export interface DeviceFlowAuthProps {
   onTokenReceived: (token: string) => void;
 }
 
-export type SyncStatus = "idle" | "syncing" | "success" | "error";
+export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
 export interface GistResponse {
   url: string;

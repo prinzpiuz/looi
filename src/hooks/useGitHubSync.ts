@@ -1,15 +1,16 @@
-import { useState, useCallback, useEffect } from "react";
-import { GitHubSyncSettings, SyncStatus } from "../utils/types";
-import { getToken, removeToken } from "../utils/github";
-import { useSettings } from "./settingsContext";
-import { defaultGithubSettings } from "../utils/manageSettings";
+import { useState, useCallback, useEffect } from 'react';
+import { GitHubSyncSettings, SyncStatus } from '../utils/types';
+import { getToken, removeToken } from '../utils/github';
+import { useSettings } from './settingsContext';
+import { defaultGithubSettings } from '../utils/manageSettings';
 
 export const useGitHubSync = () => {
   const { settings, updateGithubSettings } = useSettings();
 
-  const [githubSyncSettings, setGithubSyncSettings] =
-    useState<GitHubSyncSettings>(settings?.githubSync || defaultGithubSettings);
-  const [status, setStatus] = useState<SyncStatus>("idle");
+  const [githubSyncSettings, setGithubSyncSettings] = useState<GitHubSyncSettings>(
+    settings?.githubSync || defaultGithubSettings,
+  );
+  const [status, setStatus] = useState<SyncStatus>('idle');
   const [token, setToken] = useState<string | null>(null);
 
   // Load settings from storage
@@ -40,15 +41,15 @@ export const useGitHubSync = () => {
   }, [saveSettings]);
 
   const syncNow = useCallback(async () => {
-    setStatus("syncing");
+    setStatus('syncing');
     try {
       await new Promise((res) => setTimeout(res, 1500));
       updateSyncSettings({ lastSync: Date.now() });
-      setStatus("success");
+      setStatus('success');
     } catch (e) {
-      setStatus("error");
+      setStatus('error');
     }
-    setTimeout(() => setStatus("idle"), 2000);
+    setTimeout(() => setStatus('idle'), 2000);
   }, [token, updateSyncSettings]);
 
   return {

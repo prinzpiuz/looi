@@ -27,11 +27,23 @@
       html,
       body,
       #root {
-        height: 100%;
+        min-height: 100vh;
         margin: 0;
         padding: 0;
+        overflow-y: auto;
+        scroll-behavior: smooth;
         font-family: "Roboto Mono", monospace;
+        scrollbar-width: none;
+        transition: background-color 0.3s ease;
+        background-color: var(--app-bg-color, #000);
+        background-image: var(--app-bg-image, none);
+        background-size: cover;
+        -ms-overflow-style: none;
       }
+      ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
     </style>
   </head>
   <body>
