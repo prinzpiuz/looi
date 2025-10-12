@@ -2,8 +2,6 @@
 /* eslint-disable no-undef */
 
 /// <reference types="chrome"/>
-import type { Runtime } from 'webextension-polyfill';
-import { isFirefox } from './utils/browserApi';
 import {
   GithubResponses,
   MessageData,
@@ -12,21 +10,30 @@ import {
   GithubAPIResponse,
   Settings,
   GistResponse,
-} from './utils/types';
-import { getToken } from './utils/github';
-import { settingsToJSONString } from './utils/utils';
-
-const ext = isFirefox() ? browser : chrome;
+} from '../utils/types';
+import { settingsToJSONString } from '../utils/utils';
 
 const CLIENT_ID = 'Iv23li5frjjDBAV3DfuR';
 
 const DeviceBaseFlowURL = 'https://github.com/login/';
 const GistBaseURL = 'https://api.github.com/gists';
 
-ext.runtime.onMessage.addListener(
+export const getToken = async (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get('github_token', (stored) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+        return;
+      }
+      resolve((stored?.github_token as string) ?? '');
+    });
+  });
+};
+
+chrome.runtime.onMessage.addListener(
   (
     message: MessageData,
-    _sender: Runtime.MessageSender,
+    _sender: chrome.runtime.MessageSender,
     sendResponse: (response: GithubResponses) => void,
   ): boolean | void => {
     if (message.type === 'GITHUB_DEVICE_FLOW') {

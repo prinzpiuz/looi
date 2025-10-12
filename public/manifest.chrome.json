@@ -12,7 +12,7 @@
     "tabs"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.chrome.js"
   },
   "host_permissions": [
     "https://api.github.com/*",

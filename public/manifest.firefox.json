@@ -19,7 +19,7 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background.firefox.js"
     ],
     "persistent": true
   },
