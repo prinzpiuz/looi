@@ -1,19 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { getSettings, updateSettings } from "../utils/manageSettings";
-import {
-  Settings,
-  Bookmark,
-  SettingsContextType,
-  GitHubSyncSettings,
-} from "../utils/types";
+import { createContext, useContext, useState, useEffect } from 'react';
+import { getSettings, updateSettings } from '../utils/manageSettings';
+import { Settings, Bookmark, SettingsContextType, GitHubSyncSettings } from '../utils/types';
 
-const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined,
-);
+const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
   const bookmarks = settings?.bookmarks || [];
 
@@ -27,11 +18,14 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateAndPersistSettings = async (
     partialSettings: Partial<Settings>,
+    saveChanges = true,
   ) => {
     if (!settings) return;
     const updated = { ...settings, ...partialSettings };
     setSettings(updated);
-    await updateSettings(updated, setSettings);
+    if (saveChanges) {
+      await updateSettings(updated, setSettings);
+    }
   };
 
   const addBookmark = async (bookmark: Bookmark) => {
@@ -39,10 +33,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     await updateAndPersistSettings({ bookmarks: newList });
   };
 
-  const updateBookmark = async (
-    id: string,
-    updatedBookmark: Partial<Bookmark>,
-  ) => {
+  const updateBookmark = async (id: string, updatedBookmark: Partial<Bookmark>) => {
     const updatedBookmarks = bookmarks.map((bm) =>
       bm.id === id ? { ...bm, ...updatedBookmark } : bm,
     );
@@ -58,10 +49,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     return bookmarks.find((bm) => bm.id === id);
   };
 
-  const updateWidgetPosition = async (
-    id: string,
-    newPos: { x: number; y: number },
-  ) => {
+  const updateWidgetPosition = async (id: string, newPos: { x: number; y: number }) => {
     if (!settings?.widgetConfigs?.[id]) return;
     const updated = {
       ...settings,
@@ -91,9 +79,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     await updateAndPersistSettings({ widgetConfigs: updated.widgetConfigs });
   };
 
-  const updateGithubSettings = async (
-    githubSettings: Partial<GitHubSyncSettings>,
-  ) => {
+  const updateGithubSettings = async (githubSettings: Partial<GitHubSyncSettings>) => {
     if (!settings) return;
     const updated = {
       ...settings.githubSync,
@@ -128,7 +114,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useSettings = () => {
   const context = useContext(SettingsContext);
-  if (!context)
-    throw new Error("useSettings must be used within SettingsProvider");
+  if (!context) throw new Error('useSettings must be used within SettingsProvider');
   return context;
 };
