@@ -149,7 +149,7 @@ export interface GitHubAPIMessage {
   type: 'GITHUB_GIST_API';
   action: 'findGist' | 'createOrUpdateLooiGist';
   gistId?: string;
-  payload: Settings;
+  payload?: Settings;
 }
 
 export interface GistFile {

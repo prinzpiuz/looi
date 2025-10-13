@@ -36,7 +36,11 @@ export const saveSettings = (
   setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
 ) => {
   ext?.storage.local.set({ settings: settings });
-  if (settings.githubSync.tokenSaved && settings.githubSync.autoSync) {
+  if (
+    settings.githubSync.tokenSaved &&
+    settings.githubSync.autoSync &&
+    settings.githubSync.lastSync !== null
+  ) {
     void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then((data) => {
       ext?.storage.local.set({ settings: data.settings });
       setSettings?.(data.settings);

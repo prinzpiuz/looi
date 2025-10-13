@@ -94,13 +94,12 @@ export const pollForToken = (
   );
 };
 
-export const findGist = (gistId: string, payload: Settings): Promise<GithubAPIResponse> => {
+export const findGist = (gistId: string): Promise<GithubAPIResponse> => {
   return new Promise((resolve, reject) => {
     const message: MessageData = {
       type: 'GITHUB_GIST_API',
       action: 'findGist',
       gistId,
-      payload,
     };
     ext?.runtime.sendMessage(
       message,

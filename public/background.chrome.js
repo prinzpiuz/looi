@@ -94,10 +94,10 @@
           } else if (action === "createOrUpdateLooiGist") {
             const body = {
               description: "Settings for looi extension",
-              public: payload.githubSync.publicGist,
+              public: payload?.githubSync.publicGist,
               files: {
                 "settings.json": {
-                  content: settingsToJSONString(payload)
+                  content: payload ? settingsToJSONString(payload) : ""
                 }
               }
             };
