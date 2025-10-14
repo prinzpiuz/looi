@@ -58,7 +58,10 @@ export default [
       ...tsEslint.configs['eslint-recommended'].rules,
       ...tsEslint.configs['recommended'].rules,
       ...tsEslint.configs['recommended-requiring-type-checking'].rules,
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       ...reactPlugin.configs.recommended.rules,

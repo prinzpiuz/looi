@@ -16,7 +16,9 @@ const buttonStyles: React.CSSProperties = {
   position: 'relative',
 };
 
-const CloseSettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
+const CloseSettingsIcon: React.FC<SettingsButtonProps> = ({
+  openSettingsPanel,
+}) => {
   const toggleSettings = () => openSettingsPanel((prevValue) => !prevValue);
   return (
     <ToolTip message="Close Settings" extraStyles={toolTipPosition}>

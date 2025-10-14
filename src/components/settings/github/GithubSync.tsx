@@ -16,7 +16,9 @@ const selectionDivStyle: React.CSSProperties = {
 
 const GitHubSync: React.FC = () => {
   const { settings, updateGithubSettings } = useSettings();
-  const [tokenAvailable, setTokenAvailable] = useState(settings?.githubSync?.tokenSaved || false);
+  const [tokenAvailable, setTokenAvailable] = useState(
+    settings?.githubSync?.tokenSaved || false,
+  );
   const [authTab, setAuthTab] = useState<'device' | 'pat'>('device');
 
   const onToken = (token: string) => {
@@ -52,7 +54,10 @@ const GitHubSync: React.FC = () => {
       return (
         <>
           <div style={selectionDivStyle}>
-            <button style={connectButtonStyle} onClick={() => setAuthTab('device')}>
+            <button
+              style={connectButtonStyle}
+              onClick={() => setAuthTab('device')}
+            >
               <FaGithub /> Login
             </button>
             <button style={authButtonStyle} onClick={() => setAuthTab('pat')}>

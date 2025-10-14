@@ -50,7 +50,8 @@ const modalStyle: React.CSSProperties = {
   transform: 'translate(-50%, -50%)',
   background: 'rgba(240,241,245,0.4)',
   borderRadius: 18,
-  boxShadow: '0 6px 36px rgba(25,44,81,0.18), 0 0.5px 1.6px 0 rgba(82,99,140,0.09)',
+  boxShadow:
+    '0 6px 36px rgba(25,44,81,0.18), 0 0.5px 1.6px 0 rgba(82,99,140,0.09)',
   padding: '33px 35px 20px 35px',
   zIndex: 1050,
   transition: 'opacity .28s cubic-bezier(.4,0,.2,1)',
@@ -159,7 +160,10 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
   };
 
   const handleSubmit = () => {
-    if (!url || (!url.startsWith('http') && !url.match(/^([\w.-]+\.)+\w{2,}/))) {
+    if (
+      !url ||
+      (!url.startsWith('http') && !url.match(/^([\w.-]+\.)+\w{2,}/))
+    ) {
       setError('Enter a valid URL');
       return;
     }
@@ -214,7 +218,12 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
 
   return (
     <div style={modalStyle}>
-      <button type="button" aria-label="Close" style={closeIconStyle} onClick={handleCancel}>
+      <button
+        type="button"
+        aria-label="Close"
+        style={closeIconStyle}
+        onClick={handleCancel}
+      >
         <FaTimes />
       </button>
       <h2 style={headerStyle}>Add Bookmark</h2>
@@ -264,7 +273,12 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         <button type="button" style={cancelButtonStyle} onClick={handleCancel}>
           Cancel
         </button>
-        <button type="button" style={addButtonStyle} onClick={handleSubmit} disabled={!url}>
+        <button
+          type="button"
+          style={addButtonStyle}
+          onClick={handleSubmit}
+          disabled={!url}
+        >
           <FaPlus style={AddIconStyle} />
           {isEdit ? 'Update' : 'Add'}
         </button>

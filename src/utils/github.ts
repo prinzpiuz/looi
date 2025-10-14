@@ -13,7 +13,9 @@ import { ext } from './browserApi';
 export const startDeviceFlow = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
-  setDeviceData: React.Dispatch<React.SetStateAction<GithubDeviceCodeResponse | undefined>>,
+  setDeviceData: React.Dispatch<
+    React.SetStateAction<GithubDeviceCodeResponse | undefined>
+  >,
   setdataReceived: React.Dispatch<React.SetStateAction<boolean>>,
   setStarted: React.Dispatch<React.SetStateAction<boolean>>,
 ): Promise<GithubDeviceCodeResponse> => {
@@ -107,7 +109,9 @@ export const findGist = (
     ext?.runtime.sendMessage(
       message,
       (
-        response: BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse> | undefined,
+        response:
+          | BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse>
+          | undefined,
       ) => {
         if (ext?.runtime.lastError) {
           reject(new Error(ext.runtime.lastError.message));
@@ -137,7 +141,9 @@ export const createOrUpdateLooiGist = (
     ext?.runtime.sendMessage(
       message,
       (
-        response: BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse> | undefined,
+        response:
+          | BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse>
+          | undefined,
       ) => {
         if (ext?.runtime.lastError) {
           reject(new Error(ext.runtime.lastError.message));

@@ -26,13 +26,23 @@ const menuItemHoverStyle: React.CSSProperties = {
   backgroundColor: '#433f4f',
 };
 
-const PopUpMenu: React.FC<PopUpMenuProps> = ({ id, wrapperRef, menuOpen, setMenuOpen, onEdit }) => {
+const PopUpMenu: React.FC<PopUpMenuProps> = ({
+  id,
+  wrapperRef,
+  menuOpen,
+  setMenuOpen,
+  onEdit,
+}) => {
   const { removeBookmark } = useSettings();
 
   // Close menu on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuOpen && wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        menuOpen &&
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setMenuOpen(false);
       }
     };
@@ -63,9 +73,12 @@ const PopUpMenu: React.FC<PopUpMenuProps> = ({ id, wrapperRef, menuOpen, setMenu
         tabIndex={0}
         role="menuitem"
         onMouseEnter={(e) =>
-          (e.currentTarget.style.backgroundColor = menuItemHoverStyle.backgroundColor ?? '433f4f')
+          (e.currentTarget.style.backgroundColor =
+            menuItemHoverStyle.backgroundColor ?? '433f4f')
         }
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.backgroundColor = 'transparent')
+        }
       >
         Edit
       </div>
@@ -78,9 +91,12 @@ const PopUpMenu: React.FC<PopUpMenuProps> = ({ id, wrapperRef, menuOpen, setMenu
         tabIndex={0}
         role="menuitem"
         onMouseEnter={(e) =>
-          (e.currentTarget.style.backgroundColor = menuItemHoverStyle.backgroundColor ?? '433f4f')
+          (e.currentTarget.style.backgroundColor =
+            menuItemHoverStyle.backgroundColor ?? '433f4f')
         }
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.backgroundColor = 'transparent')
+        }
       >
         Remove
       </div>

@@ -28,9 +28,15 @@ const LogoAndVersion = () => {
     <div style={logoAndVersionstyle}>
       <div style={logoStyle}>
         <Logo style={{ height: 30 }} />
-        <span style={{ fontWeight: 600, letterSpacing: '.06em' }}>v{version}</span>
+        <span style={{ fontWeight: 600, letterSpacing: '.06em' }}>
+          v{version}
+        </span>
       </div>
-      <a href="https://github.com/prinzpiuz/looi" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://github.com/prinzpiuz/looi"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <FaGithub size={22} color="#ffffff" />
       </a>
     </div>

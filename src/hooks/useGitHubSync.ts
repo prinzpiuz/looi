@@ -7,9 +7,8 @@ import { defaultGithubSettings } from '../utils/manageSettings';
 export const useGitHubSync = () => {
   const { settings, updateGithubSettings } = useSettings();
 
-  const [githubSyncSettings, setGithubSyncSettings] = useState<GitHubSyncSettings>(
-    settings?.githubSync || defaultGithubSettings,
-  );
+  const [githubSyncSettings, setGithubSyncSettings] =
+    useState<GitHubSyncSettings>(settings?.githubSync || defaultGithubSettings);
   const [status, setStatus] = useState<SyncStatus>('idle');
   const [token, setToken] = useState<string | null>(null);
 
@@ -23,10 +22,10 @@ export const useGitHubSync = () => {
   }, []);
 
   // Save to storage
-  const saveSettings = useCallback((newSettings: GitHubSyncSettings) => {
+  const saveSettings = (newSettings: GitHubSyncSettings) => {
     setGithubSyncSettings(newSettings);
     void updateGithubSettings(newSettings);
-  }, []);
+  };
 
   const updateSyncSettings = useCallback(
     (patch: Partial<GitHubSyncSettings>) => {
@@ -40,7 +39,7 @@ export const useGitHubSync = () => {
     saveSettings(defaultGithubSettings);
   }, [saveSettings]);
 
-  const syncNow = useCallback(async () => {
+  const syncNow = async () => {
     setStatus('syncing');
     try {
       await new Promise((res) => setTimeout(res, 1500));
@@ -50,7 +49,7 @@ export const useGitHubSync = () => {
       setStatus('error');
     }
     setTimeout(() => setStatus('idle'), 2000);
-  }, [token, updateSyncSettings]);
+  };
 
   return {
     githubSyncSettings,

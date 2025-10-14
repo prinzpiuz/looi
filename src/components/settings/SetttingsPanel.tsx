@@ -29,7 +29,11 @@ const SettingsPanel: React.FC = () => {
       }
     };
     const handleClickOutside = (e: MouseEvent) => {
-      if (settingsOpen && panelRef.current && !panelRef.current.contains(e.target as Node)) {
+      if (
+        settingsOpen &&
+        panelRef.current &&
+        !panelRef.current.contains(e.target as Node)
+      ) {
         setSettingsOpen(false);
       }
     };
@@ -73,10 +77,16 @@ const SettingsPanel: React.FC = () => {
           <ColorPanel />
           <BgImageURL />
         </FoldableSection>
-        <FoldableSection icon={<FaListUl color={sectionIconColor} />} title="Widgets">
+        <FoldableSection
+          icon={<FaListUl color={sectionIconColor} />}
+          title="Widgets"
+        >
           <AddWidget />
         </FoldableSection>
-        <FoldableSection icon={<FaGithub color={sectionIconColor} />} title="GitHub Sync">
+        <FoldableSection
+          icon={<FaGithub color={sectionIconColor} />}
+          title="GitHub Sync"
+        >
           <GitHubSync />
         </FoldableSection>
         <LogoAndVersion />

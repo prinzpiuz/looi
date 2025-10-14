@@ -91,7 +91,13 @@ const GithubDeviceFlow: React.FC<{
   const startAuth = useCallback(async () => {
     setLoading(true);
     setError(null);
-    await startDeviceFlow(setLoading, setError, setDeviceData, setdataReceived, setStarted);
+    await startDeviceFlow(
+      setLoading,
+      setError,
+      setDeviceData,
+      setdataReceived,
+      setStarted,
+    );
   }, []);
 
   // Poll for token continuously
@@ -161,7 +167,8 @@ const GithubDeviceFlow: React.FC<{
       {dataReceived && deviceData && (
         <div>
           <p style={infoDivStyle}>
-            To authenticate with GitHub, click the button below and enter your device code:
+            To authenticate with GitHub, click the button below and enter your
+            device code:
           </p>
           <p
             style={codeBlockStyle}
@@ -172,7 +179,11 @@ const GithubDeviceFlow: React.FC<{
 
           <button
             onClick={() =>
-              window.open(deviceData.verification_uri, '_blank', 'noopener,noreferrer')
+              window.open(
+                deviceData.verification_uri,
+                '_blank',
+                'noopener,noreferrer',
+              )
             }
             style={enterCodeButtonStyle}
           >

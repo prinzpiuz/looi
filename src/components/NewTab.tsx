@@ -45,7 +45,11 @@ const NewTabPage: React.FC = () => {
         return <DraggableWidget key={id} id={id} config={config} />;
       })}
       <Bookmarks />
-      <BookmarkForm showBookmarkForm={showBookmarkForm} onCancel={setShowBookmarkForm} mode="add" />
+      <BookmarkForm
+        showBookmarkForm={showBookmarkForm}
+        onCancel={setShowBookmarkForm}
+        mode="add"
+      />
     </div>
   );
 };

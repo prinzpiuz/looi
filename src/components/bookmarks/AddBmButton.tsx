@@ -25,10 +25,16 @@ const iconStyle: React.CSSProperties = {
   verticalAlign: -3,
 };
 
-const AddBookmarkButton: React.FC<AddBookmarkButtonProps> = ({ showBookmarkForm }) => {
+const AddBookmarkButton: React.FC<AddBookmarkButtonProps> = ({
+  showBookmarkForm,
+}) => {
   return (
     <ToolTip message="Add Bookmark" extraStyles={toolTipPosition}>
-      <button aria-label="Add Bookmark" onClick={() => showBookmarkForm(true)} style={buttonStyles}>
+      <button
+        aria-label="Add Bookmark"
+        onClick={() => showBookmarkForm(true)}
+        style={buttonStyles}
+      >
         <MdOutlineBookmarkAdd style={iconStyle} />
       </button>
     </ToolTip>

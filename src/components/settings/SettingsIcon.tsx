@@ -29,7 +29,11 @@ const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
   const toggleSettings = () => openSettingsPanel((prevValue) => !prevValue);
   return (
     <ToolTip message="Settings" extraStyles={toolTipPosition}>
-      <button aria-label="Open settings" onClick={toggleSettings} style={buttonStyles}>
+      <button
+        aria-label="Open settings"
+        onClick={toggleSettings}
+        style={buttonStyles}
+      >
         <HiOutlineCog6Tooth style={iconStyle} />
       </button>
     </ToolTip>

@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { GithubAPIResponse, GithubUnAuthorizedResponse, Settings } from '../utils/types';
+import {
+  GithubAPIResponse,
+  GithubUnAuthorizedResponse,
+  Settings,
+} from '../utils/types';
 import { findGist } from '../utils/github';
 import { isAPIResponse } from '../utils/utils';
 
@@ -28,7 +32,8 @@ export const useGistVerifier = () => {
     setError(null);
 
     try {
-      const response: GithubAPIResponse | GithubUnAuthorizedResponse = await findGist(gistId);
+      const response: GithubAPIResponse | GithubUnAuthorizedResponse =
+        await findGist(gistId);
 
       if (!response) {
         setValid(false);

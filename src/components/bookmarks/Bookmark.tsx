@@ -15,7 +15,8 @@ const bookmarkStyle: React.CSSProperties = {
   borderRadius: '15px',
   backdropFilter: 'blur(7px)',
   padding: '18px 8px 12px 8px',
-  transition: 'transform 0.12s cubic-bezier(.4,0,.2,1), box-shadow 0.12s cubic-bezier(.4,0,.2,1)',
+  transition:
+    'transform 0.12s cubic-bezier(.4,0,.2,1), box-shadow 0.12s cubic-bezier(.4,0,.2,1)',
 };
 
 const linkStyle: React.CSSProperties = {
@@ -99,11 +100,13 @@ const BookmarkDiv: React.FC<{
             style={bookmarkDivStyle}
             onMouseEnter={(e) => {
               ((e.currentTarget.style.transform = 'scale(1.025)'),
-                (e.currentTarget.style.backgroundColor = 'rgba(22, 22, 22, 0.7)'));
+                (e.currentTarget.style.backgroundColor =
+                  'rgba(22, 22, 22, 0.7)'));
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.backgroundColor = bookmarkBackgroundColor || '';
+              e.currentTarget.style.backgroundColor =
+                bookmarkBackgroundColor || '';
             }}
           >
             <a

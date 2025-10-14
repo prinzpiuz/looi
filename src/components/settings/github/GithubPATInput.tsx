@@ -52,7 +52,9 @@ const GithubPATInput: React.FC<{
     borderRadius: 5,
     outline: focus ? '2px solid #2189fa' : '1.2px solid #dfdff5',
     background: 'rgba(255,255,255,0.16)',
-    boxShadow: focus ? '0 2px 10px rgba(33,137,250,0.13)' : '0 1.5px 5px rgba(60,90,160,0.04)',
+    boxShadow: focus
+      ? '0 2px 10px rgba(33,137,250,0.13)'
+      : '0 1.5px 5px rgba(60,90,160,0.04)',
     fontSize: '1rem',
     padding: '24px 38px 8px 35px',
     color: '#1f283b',
@@ -82,7 +84,9 @@ const GithubPATInput: React.FC<{
 
   return (
     <div style={patDivStyle}>
-      <h5 style={labelStyle}>Note: Paste your GitHub Personal Access Token (scope: gist)</h5>
+      <h5 style={labelStyle}>
+        Note: Paste your GitHub Personal Access Token (scope: gist)
+      </h5>
       <label htmlFor="token-input" style={inputLabelStyle}>
         Github Token
       </label>

@@ -59,16 +59,19 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ success: true, data });
           } else if (message.action === 'getToken') {
             // Step 2: Poll for access token
-            const resp = await fetch(`${DeviceBaseFlowURL}/oauth/access_token`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Accept: 'application/json',
+            const resp = await fetch(
+              `${DeviceBaseFlowURL}/oauth/access_token`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                  Accept: 'application/json',
+                },
+                body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
+                  message.device_code,
+                )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`,
               },
-              body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
-                message.device_code,
-              )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`,
-            });
+            );
 
             if (!resp.ok) {
               throw new Error(`HTTP error! status: ${resp.status}`);
@@ -145,7 +148,9 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ success: true, data: data || null });
           }
           if (!resp.ok) {
-            throw new Error(`GitHub API error: ${resp.status} ${resp.statusText}`);
+            throw new Error(
+              `GitHub API error: ${resp.status} ${resp.statusText}`,
+            );
           }
 
           const response: GistResponse = await resp.json();

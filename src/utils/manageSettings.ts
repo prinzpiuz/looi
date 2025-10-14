@@ -36,7 +36,9 @@ export const loadDefaultSettings: Settings = {
  * Checks if GitHub sync should be performed based on settings.
  */
 const shouldPerformGitHubSync = (githubSync: GitHubSyncSettings): boolean => {
-  return githubSync.tokenSaved && githubSync.autoSync && githubSync.lastSync !== null;
+  return (
+    githubSync.tokenSaved && githubSync.autoSync && githubSync.lastSync !== null
+  );
 };
 
 /**
@@ -48,6 +50,8 @@ const performGitHubSync = async (
   setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
 ): Promise<void> => {
   try {
+    console.log('Performing GitHub sync...');
+    console.log(settings);
     const data = await createOrUpdateLooiGist(gistId, settings);
     if (!isAPIResponse(data)) {
       /* empty */
@@ -76,10 +80,16 @@ export const updateSettings = async (
 ) => {
   const currentSettings = await getSettings();
   const updatedSettings: Settings = {
-    bgColor: newSettings.bgColor ?? currentSettings.bgColor ?? loadDefaultSettings.bgColor,
-    bgUrl: newSettings.bgUrl ?? currentSettings.bgUrl ?? loadDefaultSettings.bgUrl,
+    bgColor:
+      newSettings.bgColor ??
+      currentSettings.bgColor ??
+      loadDefaultSettings.bgColor,
+    bgUrl:
+      newSettings.bgUrl ?? currentSettings.bgUrl ?? loadDefaultSettings.bgUrl,
     githubSync:
-      newSettings.githubSync ?? currentSettings.githubSync ?? loadDefaultSettings.githubSync,
+      newSettings.githubSync ??
+      currentSettings.githubSync ??
+      loadDefaultSettings.githubSync,
     ...(newSettings.bookmarks !== undefined
       ? { bookmarks: newSettings.bookmarks }
       : currentSettings.bookmarks

@@ -41,7 +41,11 @@ const ToolTip: React.FC<{
   };
 
   return (
-    <div style={tooltipStyle} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+    <div
+      style={tooltipStyle}
+      onMouseOver={handleMouseOver}
+      onMouseLeave={handleMouseLeave}
+    >
       {children}
       <span style={styles}>{message}</span>
     </div>

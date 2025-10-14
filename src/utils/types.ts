@@ -48,7 +48,10 @@ export interface SettingsContextType {
   updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
   enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
   updateGithubSettings: (s: Partial<GitHubSyncSettings>) => Promise<void>;
-  updateAndPersistSettings: (s: Partial<Settings>, saveChanges?: boolean) => Promise<void>;
+  updateAndPersistSettings: (
+    s: Partial<Settings>,
+    saveChanges?: boolean,
+  ) => Promise<void>;
 }
 
 export interface SettingsButtonProps {

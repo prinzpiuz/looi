@@ -93,11 +93,22 @@ const verifyDivStyle: React.CSSProperties = {
 const SyncSettings: React.FC<{
   onTokenReset: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ onTokenReset }) => {
-  const { githubSyncSettings, status, updateSyncSettings, resetToken, syncNow } = useGitHubSync();
-  const { verifyGistId, verifying, valid, error, pulledSettings } = useGistVerifier();
+  const {
+    githubSyncSettings,
+    status,
+    updateSyncSettings,
+    resetToken,
+    syncNow,
+  } = useGitHubSync();
+  const { verifyGistId, verifying, valid, error, pulledSettings } =
+    useGistVerifier();
   const { setSettings, updateAndPersistSettings } = useSettings();
-  const [localAutoSync, setLocalAutoSync] = useState(githubSyncSettings.autoSync);
-  const [localPublicGist, setLocalPublicGist] = useState(githubSyncSettings.publicGist);
+  const [localAutoSync, setLocalAutoSync] = useState(
+    githubSyncSettings.autoSync,
+  );
+  const [localPublicGist, setLocalPublicGist] = useState(
+    githubSyncSettings.publicGist,
+  );
 
   const [displayLastSync, setDisplayLastSync] = useState('Never');
   const [focus, setFocus] = useState(false);
@@ -122,7 +133,9 @@ const SyncSettings: React.FC<{
     borderRadius: 5,
     outline: focus ? '2px solid #2189fa' : '1.2px solid #dfdff5',
     background: 'rgba(255,255,255,0.16)',
-    boxShadow: focus ? '0 2px 10px rgba(33,137,250,0.13)' : '0 1.5px 5px rgba(60,90,160,0.04)',
+    boxShadow: focus
+      ? '0 2px 10px rgba(33,137,250,0.13)'
+      : '0 1.5px 5px rgba(60,90,160,0.04)',
     fontSize: '1rem',
     padding: '24px 38px 8px 35px',
     color: '#1f283b',
@@ -186,11 +199,16 @@ const SyncSettings: React.FC<{
     if (gistId.length >= 8) {
       void verifyGistId(gistId);
       setTimeout(() => {
-        if (!verifying && valid === true && error === null && pulledSettings !== null) {
+        if (
+          !verifying &&
+          valid === true &&
+          error === null &&
+          pulledSettings !== null
+        ) {
           pulledSettings.githubSync.gistId = gistId;
-          setSettings(pulledSettings);
           updateSyncSettings({ gistId: gistId });
-          void updateAndPersistSettings(pulledSettings);
+          setSettings(pulledSettings);
+          void syncNow();
         }
         if (!verifying && error === VerifyErrors.TOKEN_EXPIRED) {
           handleResetToken();
@@ -240,8 +258,8 @@ const SyncSettings: React.FC<{
         </div>
         {showNote && (
           <h5 style={labelStyle}>
-            Note: Paste your Gist ID, if you already have Looi Settings Gist And then click Sync
-            Now.
+            Note: Paste your Gist ID, if you already have Looi Settings Gist And
+            then click Sync Now.
             <br />
             If you dont have one, click Sync Now for creating one.
           </h5>
