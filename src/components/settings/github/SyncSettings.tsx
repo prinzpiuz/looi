@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FaSyncAlt, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import ToggleButton from 'react-toggle-button';
 import { useGitHubSync } from '../../../hooks/useGitHubSync';
-import { useGistVerifier } from '../../../hooks/gistVerifier';
+import { useGistVerifier, VerifyErrors } from '../../../hooks/gistVerifier';
+import { useSettings } from '../../../hooks/settingsContext';
 
 const rowStyle: React.CSSProperties = {
   display: 'flex',
@@ -93,7 +94,8 @@ const SyncSettings: React.FC<{
   onTokenReset: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ onTokenReset }) => {
   const { githubSyncSettings, status, updateSyncSettings, resetToken, syncNow } = useGitHubSync();
-  const { verifyGistId, verifying, valid } = useGistVerifier();
+  const { verifyGistId, verifying, valid, error, pulledSettings } = useGistVerifier();
+  const { setSettings, updateAndPersistSettings } = useSettings();
   const [localAutoSync, setLocalAutoSync] = useState(githubSyncSettings.autoSync);
   const [localPublicGist, setLocalPublicGist] = useState(githubSyncSettings.publicGist);
 
@@ -184,12 +186,16 @@ const SyncSettings: React.FC<{
     if (gistId.length >= 8) {
       void verifyGistId(gistId);
       setTimeout(() => {
-        if (!verifying && valid === true) {
-          updateSyncSettings({
-            gistId: gistId,
-          });
+        if (!verifying && valid === true && error === null && pulledSettings !== null) {
+          pulledSettings.githubSync.gistId = gistId;
+          setSettings(pulledSettings);
+          updateSyncSettings({ gistId: gistId });
+          void updateAndPersistSettings(pulledSettings);
         }
-      }, 5000);
+        if (!verifying && error === VerifyErrors.TOKEN_EXPIRED) {
+          handleResetToken();
+        }
+      }, 2000);
     }
   };
 
@@ -248,7 +254,7 @@ const SyncSettings: React.FC<{
           onClick={() => void verifyGistID()}
           disabled={status === 'syncing'}
         >
-          Verify Gist
+          Verify & Pull
         </button>
         <button
           style={connectButtonStyle}

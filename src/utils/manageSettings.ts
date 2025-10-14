@@ -1,6 +1,7 @@
 import { ext } from './browserApi';
 import { createOrUpdateLooiGist } from './github';
 import { Settings, GitHubSyncSettings } from './types';
+import { isAPIResponse } from './utils';
 
 export const defaultGithubSettings: GitHubSyncSettings = {
   lastSync: null,
@@ -31,20 +32,41 @@ export const loadDefaultSettings: Settings = {
   },
 };
 
+/**
+ * Checks if GitHub sync should be performed based on settings.
+ */
+const shouldPerformGitHubSync = (githubSync: GitHubSyncSettings): boolean => {
+  return githubSync.tokenSaved && githubSync.autoSync && githubSync.lastSync !== null;
+};
+
+/**
+ * Handles the asynchronous GitHub sync operation.
+ */
+const performGitHubSync = async (
+  gistId: string | undefined,
+  settings: Settings,
+  setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
+): Promise<void> => {
+  try {
+    const data = await createOrUpdateLooiGist(gistId, settings);
+    if (!isAPIResponse(data)) {
+      /* empty */
+    } else {
+      ext?.storage.local.set({ settings: data.settings });
+      setSettings?.(data.settings);
+    }
+  } catch (_) {
+    /* empty */
+  }
+};
+
 export const saveSettings = (
   settings: Settings,
   setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
 ) => {
   ext?.storage.local.set({ settings: settings });
-  if (
-    settings.githubSync.tokenSaved &&
-    settings.githubSync.autoSync &&
-    settings.githubSync.lastSync !== null
-  ) {
-    void createOrUpdateLooiGist(settings.githubSync.gistId, settings).then((data) => {
-      ext?.storage.local.set({ settings: data.settings });
-      setSettings?.(data.settings);
-    });
+  if (shouldPerformGitHubSync(settings.githubSync)) {
+    void performGitHubSync(settings.githubSync.gistId, settings, setSettings);
   }
 };
 

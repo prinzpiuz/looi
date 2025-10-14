@@ -1,20 +1,20 @@
-import { widgetIcons } from "../../../utils/widgetsRegistry";
-import { useSettings } from "../../../hooks/settingsContext";
-import { capitalize } from "../../../utils/utils";
+import { widgetIcons } from '../../../utils/widgetsRegistry';
+import { useSettings } from '../../../hooks/settingsContext';
+import { capitalize } from '../../../utils/utils';
 
 const widgetsDivStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
+  display: 'flex',
+  flexDirection: 'column',
   gap: 16,
 };
 
 const singleWidgetStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 };
 
 const widgetIconStyle: React.CSSProperties = {
-  color: "#789ef7",
+  color: '#789ef7',
   fontSize: 19,
   marginRight: 10,
   marginLeft: 5,
@@ -22,19 +22,19 @@ const widgetIconStyle: React.CSSProperties = {
 
 const widgetNameStyle: React.CSSProperties = {
   flex: 1,
-  color: "#ffffff",
+  color: '#ffffff',
   fontWeight: 600,
 };
 
 const widgetAddButtonStyle: React.CSSProperties = {
-  background: "linear-gradient(90deg,#2f82e4,#4559f9)",
-  color: "#ffffff",
-  border: "none",
+  background: 'linear-gradient(90deg,#2f82e4,#4559f9)',
+  color: '#ffffff',
+  border: 'none',
   borderRadius: 6,
-  padding: "4px 16px",
+  padding: '4px 16px',
   fontWeight: 700,
   fontSize: 13,
-  cursor: "pointer",
+  cursor: 'pointer',
   marginLeft: 6,
   width: 80,
 };
@@ -48,7 +48,7 @@ const AddWidget: React.FC = () => {
       {Object.entries(widgetConfigs).map(([id, config]) => {
         if (!widgetIcons[id]) return null;
         const WidgetIcon = widgetIcons[id];
-        const buttonText = config.enabled ? "Remove" : "Add";
+        const buttonText = config.enabled ? 'Remove' : 'Add';
         return (
           <div key={id} style={singleWidgetStyle}>
             <WidgetIcon style={widgetIconStyle} />

@@ -1,11 +1,20 @@
 import { useState } from 'react';
-import { GithubAPIResponse } from '../utils/types';
+import { GithubAPIResponse, GithubUnAuthorizedResponse, Settings } from '../utils/types';
 import { findGist } from '../utils/github';
+import { isAPIResponse } from '../utils/utils';
 
-export function useGistVerifier() {
+export enum VerifyErrors {
+  INVALID_GIST_ID = 'Invalid Gist ID or not accessible',
+  TOKEN_EXPIRED = 'Token Expired',
+  SETTINGS_FILE_EMPTY = 'Settings file is empty',
+  UNEXPECTED_ERROR = 'Unexpected error while verifying Gist',
+}
+
+export const useGistVerifier = () => {
   const [verifying, setVerifying] = useState(false);
   const [valid, setValid] = useState<null | boolean>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pulledSettings, setData] = useState<null | Settings>(null);
 
   const verifyGistId = async (gistId: string) => {
     if (!gistId.trim()) {
@@ -19,32 +28,37 @@ export function useGistVerifier() {
     setError(null);
 
     try {
-      const response: GithubAPIResponse = await findGist(gistId);
+      const response: GithubAPIResponse | GithubUnAuthorizedResponse = await findGist(gistId);
 
       if (!response) {
         setValid(false);
-        setError('Invalid Gist ID or not accessible');
+        setError(VerifyErrors.INVALID_GIST_ID);
+        return;
+      }
+      if (!isAPIResponse(response)) {
+        setValid(false);
+        setError(VerifyErrors.TOKEN_EXPIRED);
         return;
       }
 
       if (!response.settings) {
         setValid(false);
-        setError('Settings file is empty');
+        setError(VerifyErrors.SETTINGS_FILE_EMPTY);
         return;
       }
-
       setValid(true);
       setError(null);
+      setData(response.settings);
       return;
     } catch (err) {
       // eslint-disable-next-line no-undef
       console.error('Error verifying gist:', err);
       setValid(false);
-      setError('Unexpected error while verifying Gist');
+      setError(VerifyErrors.UNEXPECTED_ERROR);
     } finally {
       setVerifying(false);
     }
   };
 
-  return { verifyGistId, verifying, valid, error };
-}
+  return { verifyGistId, verifying, valid, error, pulledSettings };
+};

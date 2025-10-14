@@ -13,6 +13,7 @@ import {
   GithubAPIResponse,
   Settings,
   GistResponse,
+  GithubUnAuthorizedResponse,
 } from '../utils/types';
 import { getToken } from '../utils/github';
 import { settingsToJSONString } from '../utils/utils';
@@ -96,6 +97,13 @@ ext.runtime.onMessage.addListener(
           const resp = await fetch(apiUrl, {
             headers: headers,
           });
+          if (resp.status === 401) {
+            const data: GithubUnAuthorizedResponse = {
+              statusCode: resp.status,
+              ok: resp.ok,
+            };
+            sendResponse({ success: true, data: data || null });
+          }
           if (!resp.ok) throw new Error('Failed to fetch gist');
           const response: GistResponse = await resp.json();
           const content = response.files['settings.json'].content as string;
@@ -123,7 +131,13 @@ ext.runtime.onMessage.addListener(
             headers: headers,
             body: JSON.stringify(body),
           });
-
+          if (resp.status === 401) {
+            const data: GithubUnAuthorizedResponse = {
+              statusCode: resp.status,
+              ok: resp.ok,
+            };
+            sendResponse({ success: true, data: data || null });
+          }
           if (!resp.ok) {
             throw new Error(`GitHub API error: ${resp.status} ${resp.statusText}`);
           }

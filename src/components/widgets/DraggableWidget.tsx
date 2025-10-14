@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
-import Draggable, { DraggableData } from "react-draggable";
-import { widgetRegistry } from "../../utils/widgetsRegistry";
-import { WidgetConfig } from "../../utils/types";
-import { useSettings } from "../../hooks/settingsContext";
+import { useRef, useState } from 'react';
+import Draggable, { DraggableData } from 'react-draggable';
+import { widgetRegistry } from '../../utils/widgetsRegistry';
+import { WidgetConfig } from '../../utils/types';
+import { useSettings } from '../../hooks/settingsContext';
 
 const DraggableWidget: React.FC<{
   id: string;
@@ -25,7 +25,7 @@ const DraggableWidget: React.FC<{
         void updateWidgetPosition(id, newPos);
       }}
     >
-      <div ref={nodeRef} style={{ position: "absolute" }}>
+      <div ref={nodeRef} style={{ position: 'absolute' }}>
         <WidgetComponent />
       </div>
     </Draggable>

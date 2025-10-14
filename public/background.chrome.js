@@ -79,6 +79,13 @@
             const resp = await fetch(apiUrl, {
               headers
             });
+            if (resp.status === 401) {
+              const data2 = {
+                statusCode: resp.status,
+                ok: resp.ok
+              };
+              sendResponse({ success: true, data: data2 || null });
+            }
             if (!resp.ok) throw new Error("Failed to fetch gist");
             const response = await resp.json();
             const content = response.files["settings.json"].content;
@@ -106,6 +113,13 @@
               headers,
               body: JSON.stringify(body)
             });
+            if (resp.status === 401) {
+              const data2 = {
+                statusCode: resp.status,
+                ok: resp.ok
+              };
+              sendResponse({ success: true, data: data2 || null });
+            }
             if (!resp.ok) {
               throw new Error(`GitHub API error: ${resp.status} ${resp.statusText}`);
             }

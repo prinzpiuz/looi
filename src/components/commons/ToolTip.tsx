@@ -4,35 +4,34 @@ const ToolTip: React.FC<{
   extraStyles?: React.CSSProperties;
 }> = ({ message, children, extraStyles }) => {
   const tooltipStyle: React.CSSProperties = {
-    position: "fixed",
-    display: "inline-block",
-    cursor: "pointer",
-    borderBottom: "1px dotted black",
+    position: 'fixed',
+    display: 'inline-block',
+    cursor: 'pointer',
   };
 
   const tooltipTextStyle: React.CSSProperties = {
-    visibility: "hidden",
-    width: "120px",
-    backgroundColor: "black",
-    color: "#fff",
-    textAlign: "center",
-    borderRadius: "6px",
-    padding: "5px 0",
-    position: "fixed",
+    visibility: 'hidden',
+    width: '120px',
+    backgroundColor: 'black',
+    color: '#fff',
+    textAlign: 'center',
+    borderRadius: '6px',
+    padding: '5px 0',
+    position: 'fixed',
     zIndex: 1,
   };
 
   const handleMouseOver = (e: React.MouseEvent) => {
-    const tooltipText = e.currentTarget.querySelector("span");
+    const tooltipText = e.currentTarget.querySelector('span');
     if (tooltipText) {
-      tooltipText.style.visibility = "visible";
+      tooltipText.style.visibility = 'visible';
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent) => {
-    const tooltipText = e.currentTarget.querySelector("span");
+    const tooltipText = e.currentTarget.querySelector('span');
     if (tooltipText) {
-      tooltipText.style.visibility = "hidden";
+      tooltipText.style.visibility = 'hidden';
     }
   };
 
@@ -42,11 +41,7 @@ const ToolTip: React.FC<{
   };
 
   return (
-    <div
-      style={tooltipStyle}
-      onMouseOver={handleMouseOver}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div style={tooltipStyle} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
       {children}
       <span style={styles}>{message}</span>
     </div>

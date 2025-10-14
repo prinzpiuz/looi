@@ -1,5 +1,5 @@
-import NewTabPage from "./components/NewTab";
-import { SettingsProvider } from "./hooks/settingsContext";
+import NewTabPage from './components/NewTab';
+import { SettingsProvider } from './hooks/settingsContext';
 
 const App: React.FC = () => {
   return (

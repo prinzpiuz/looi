@@ -1,4 +1,4 @@
-import { Settings } from './types';
+import { GithubAPIResponse, GithubUnAuthorizedResponse, Settings } from './types';
 
 export const capitalize = (s: string): string => {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -10,4 +10,10 @@ export const removeProtocol = (url: string): string => {
 
 export const settingsToJSONString = (settings: Settings): string => {
   return JSON.stringify(settings, null, 2); // pretty-print with 2-space indent
+};
+
+export const isAPIResponse = (
+  response: GithubAPIResponse | GithubUnAuthorizedResponse,
+): response is GithubAPIResponse => {
+  return (response as GithubAPIResponse).settings !== undefined;
 };

@@ -85,11 +85,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       ...settings.githubSync,
       ...githubSettings,
     };
-    const updatedSettings = {
-      ...settings,
-      githubSync: updated,
-    };
-    await updateAndPersistSettings(updatedSettings);
+    await updateAndPersistSettings({ githubSync: updated });
   };
 
   return (

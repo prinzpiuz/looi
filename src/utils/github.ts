@@ -5,6 +5,7 @@ import {
   BackgroundResponse,
   GithubAPIResponse,
   Settings,
+  GithubUnAuthorizedResponse,
 } from './types';
 
 import { ext } from './browserApi';
@@ -94,7 +95,9 @@ export const pollForToken = (
   );
 };
 
-export const findGist = (gistId: string): Promise<GithubAPIResponse> => {
+export const findGist = (
+  gistId: string,
+): Promise<GithubAPIResponse | GithubUnAuthorizedResponse> => {
   return new Promise((resolve, reject) => {
     const message: MessageData = {
       type: 'GITHUB_GIST_API',
@@ -103,12 +106,13 @@ export const findGist = (gistId: string): Promise<GithubAPIResponse> => {
     };
     ext?.runtime.sendMessage(
       message,
-      (response: BackgroundResponse<GithubAPIResponse> | undefined) => {
+      (
+        response: BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse> | undefined,
+      ) => {
         if (ext?.runtime.lastError) {
           reject(new Error(ext.runtime.lastError.message));
           return;
         }
-
         if (response?.success && response.data) {
           resolve(response.data);
         } else {
@@ -122,7 +126,7 @@ export const findGist = (gistId: string): Promise<GithubAPIResponse> => {
 export const createOrUpdateLooiGist = (
   gistId: string | undefined,
   payload: Settings,
-): Promise<GithubAPIResponse> => {
+): Promise<GithubAPIResponse | GithubUnAuthorizedResponse> => {
   return new Promise((resolve, reject) => {
     const message: MessageData = {
       type: 'GITHUB_GIST_API',
@@ -132,7 +136,9 @@ export const createOrUpdateLooiGist = (
     };
     ext?.runtime.sendMessage(
       message,
-      (response: BackgroundResponse<GithubAPIResponse> | undefined) => {
+      (
+        response: BackgroundResponse<GithubAPIResponse | GithubUnAuthorizedResponse> | undefined,
+      ) => {
         if (ext?.runtime.lastError) {
           reject(new Error(ext.runtime.lastError.message));
           return;

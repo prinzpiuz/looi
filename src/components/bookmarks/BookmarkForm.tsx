@@ -1,71 +1,70 @@
-import { useState, useRef, useEffect } from "react";
-import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from "react-icons/fa";
-import { Bookmark, BookmarkFormProps } from "../../utils/types";
-import { useSettings } from "../../hooks/settingsContext";
-import { removeProtocol } from "../../utils/utils";
+import { useState, useRef, useEffect } from 'react';
+import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from 'react-icons/fa';
+import { Bookmark, BookmarkFormProps } from '../../utils/types';
+import { useSettings } from '../../hooks/settingsContext';
+import { removeProtocol } from '../../utils/utils';
 
 const inputWrapperStyle: React.CSSProperties = {
-  position: "relative",
-  margin: "20px 0",
+  position: 'relative',
+  margin: '20px 0',
 };
 
 const labelStyle: React.CSSProperties = {
-  position: "absolute",
+  position: 'absolute',
   left: 42,
   top: 13,
-  color: "rgba(240,241,245,0.4)",
+  color: 'rgba(240,241,245,0.4)',
   fontWeight: 600,
-  pointerEvents: "none",
-  transition: "all .16s",
+  pointerEvents: 'none',
+  transition: 'all .16s',
 };
 
 const inputStyle: React.CSSProperties = {
-  width: "80%",
-  padding: "16px 16px 16px 42px",
+  width: '80%',
+  padding: '16px 16px 16px 42px',
   borderRadius: 11,
-  border: "none",
-  outline: "none",
+  border: 'none',
+  outline: 'none',
   fontSize: 15,
-  background: "rgba(248,248,255,0.84)",
+  background: 'rgba(248,248,255,0.84)',
   //   color: "#194",
-  boxShadow: "0 2px 7px rgba(111,135,246,0.06)",
-  transition: "box-shadow .17s, outline .14s",
+  boxShadow: '0 2px 7px rgba(111,135,246,0.06)',
+  transition: 'box-shadow .17s, outline .14s',
   marginTop: 3,
 };
 
 const iconStyle = {
-  position: "absolute",
+  position: 'absolute',
   left: 15,
   top: 18,
   fontSize: 16,
-  color: "#8792b0bb",
+  color: '#8792b0bb',
 };
 
 const modalStyle: React.CSSProperties = {
   minWidth: 360,
   maxWidth: 430,
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  background: "rgba(240,241,245,0.4)",
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  background: 'rgba(240,241,245,0.4)',
   borderRadius: 18,
-  boxShadow:
-    "0 6px 36px rgba(25,44,81,0.18), 0 0.5px 1.6px 0 rgba(82,99,140,0.09)",
-  padding: "33px 35px 20px 35px",
+  boxShadow: '0 6px 36px rgba(25,44,81,0.18), 0 0.5px 1.6px 0 rgba(82,99,140,0.09)',
+  padding: '33px 35px 20px 35px',
   zIndex: 1050,
-  transition: "opacity .28s cubic-bezier(.4,0,.2,1)",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "stretch",
-  backdropFilter: "blur(50px)",
+  transition: 'opacity .28s cubic-bezier(.4,0,.2,1)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  backdropFilter: 'blur(50px)',
 };
 
 const buttonBarStyle: React.CSSProperties = {
-  display: "flex",
+  display: 'flex',
   gap: 13,
   marginTop: 28,
-  justifyContent: "flex-end",
+  justifyContent: 'flex-end',
 };
 
 const actionButtonStyle: React.CSSProperties = {
@@ -73,42 +72,42 @@ const actionButtonStyle: React.CSSProperties = {
   fontSize: 15,
   border: 0,
   borderRadius: 8,
-  padding: "11px 24px",
-  cursor: "pointer",
-  boxShadow: "0 2.5px 8px rgba(83,99,190,0.05)",
-  transition: "background .14s, color .14s, box-shadow .13s",
+  padding: '11px 24px',
+  cursor: 'pointer',
+  boxShadow: '0 2.5px 8px rgba(83,99,190,0.05)',
+  transition: 'background .14s, color .14s, box-shadow .13s',
 };
 
 const cancelButtonStyle = {
   ...actionButtonStyle,
-  background: "rgba(228,234,254,0.83)",
-  color: "#000000",
+  background: 'rgba(228,234,254,0.83)',
+  color: '#000000',
 };
 
 const addButtonStyle = {
   ...actionButtonStyle,
-  background: "linear-gradient(90deg,#2f82e4,#4559f9)",
-  color: "#162242",
+  background: 'linear-gradient(90deg,#2f82e4,#4559f9)',
+  color: '#162242',
   marginLeft: 4,
 };
 
 const closeIconStyle: React.CSSProperties = {
-  position: "absolute",
+  position: 'absolute',
   top: 20,
   right: 22,
   fontSize: 22,
-  color: "#ffffff",
-  background: "none",
-  border: "none",
-  cursor: "pointer",
+  color: '#ffffff',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
   zIndex: 20,
 };
 
 const errorDivStyle: React.CSSProperties = {
-  color: "#ffffff",
-  padding: "7px 12px",
+  color: '#ffffff',
+  padding: '7px 12px',
   fontWeight: 600,
-  textAlign: "center",
+  textAlign: 'center',
 };
 
 const AddIconStyle: React.CSSProperties = {
@@ -122,9 +121,9 @@ const headerStyle: React.CSSProperties = {
   marginBottom: 18,
   fontWeight: 800,
   fontSize: 21,
-  color: "#ffffff",
-  letterSpacing: ".07em",
-  textAlign: "center",
+  color: '#ffffff',
+  letterSpacing: '.07em',
+  textAlign: 'center',
 };
 
 const BookmarkForm: React.FC<BookmarkFormProps> = ({
@@ -134,18 +133,18 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
   initialData = {},
   bookmarkId,
 }) => {
-  const isEdit = mode === "edit";
+  const isEdit = mode === 'edit';
   const { addBookmark, updateBookmark } = useSettings();
-  const [url, setUrl] = useState(initialData.url || "");
-  const [name, setName] = useState(initialData.name || "");
-  const [icon, setIcon] = useState(initialData.icon || "");
+  const [url, setUrl] = useState(initialData.url || '');
+  const [name, setName] = useState(initialData.name || '');
+  const [icon, setIcon] = useState(initialData.icon || '');
   const [error, setError] = useState<string | null>(null);
 
   const firstInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    setUrl(initialData.url || "");
-    setName(initialData.name || "");
-    setIcon(initialData.icon || "");
+    setUrl(initialData.url || '');
+    setName(initialData.name || '');
+    setIcon(initialData.icon || '');
     if (showBookmarkForm && firstInput.current) {
       firstInput.current.focus();
     }
@@ -153,21 +152,18 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
 
   const handleCancel = () => {
     onCancel(false);
-    setUrl(initialData.url || "");
-    setName(initialData.name || "");
-    setIcon(initialData.icon || "");
+    setUrl(initialData.url || '');
+    setName(initialData.name || '');
+    setIcon(initialData.icon || '');
     setError(null);
   };
 
   const handleSubmit = () => {
-    if (
-      !url ||
-      (!url.startsWith("http") && !url.match(/^([\w.-]+\.)+\w{2,}/))
-    ) {
-      setError("Enter a valid URL");
+    if (!url || (!url.startsWith('http') && !url.match(/^([\w.-]+\.)+\w{2,}/))) {
+      setError('Enter a valid URL');
       return;
     }
-    const normalizedUrl = url.startsWith("http") ? url : `https://${url}`;
+    const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
     const finalIcon = icon || `https://icon.horse/icon/${removeProtocol(url)}`;
 
     if (isEdit && bookmarkId) {
@@ -192,38 +188,33 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
     ...labelStyle,
     top: name ? 3 : 13,
     fontSize: name ? 12 : 14,
-    color: name ? "#1d2a49" : "#92a0c3",
+    color: name ? '#1d2a49' : '#92a0c3',
   };
 
   const urlLabelStyle: React.CSSProperties = {
     ...labelStyle,
     top: url ? 3 : 13,
     fontSize: url ? 12 : 14,
-    color: url ? "#1d2a49" : "#92a0c3",
+    color: url ? '#1d2a49' : '#92a0c3',
   };
 
   const iconabelStyle: React.CSSProperties = {
     ...labelStyle,
     top: icon ? 3 : 13,
     fontSize: icon ? 12 : 14,
-    color: icon ? "#1d2a49" : "#92a0c3",
+    color: icon ? '#1d2a49' : '#92a0c3',
   };
 
   const allInputStyle: React.CSSProperties = {
     ...inputStyle,
-    border: error && !name ? "1.5px solid #b10707ff" : "1.3px solid #ebeef7",
+    border: error && !name ? '1.5px solid #b10707ff' : '1.3px solid #ebeef7',
   };
 
   if (!showBookmarkForm) return null;
 
   return (
     <div style={modalStyle}>
-      <button
-        type="button"
-        aria-label="Close"
-        style={closeIconStyle}
-        onClick={handleCancel}
-      >
+      <button type="button" aria-label="Close" style={closeIconStyle} onClick={handleCancel}>
         <FaTimes />
       </button>
       <h2 style={headerStyle}>Add Bookmark</h2>
@@ -273,14 +264,9 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         <button type="button" style={cancelButtonStyle} onClick={handleCancel}>
           Cancel
         </button>
-        <button
-          type="button"
-          style={addButtonStyle}
-          onClick={handleSubmit}
-          disabled={!url}
-        >
+        <button type="button" style={addButtonStyle} onClick={handleSubmit} disabled={!url}>
           <FaPlus style={AddIconStyle} />
-          {isEdit ? "Update" : "Add"}
+          {isEdit ? 'Update' : 'Add'}
         </button>
       </div>
     </div>

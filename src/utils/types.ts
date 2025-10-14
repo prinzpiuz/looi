@@ -170,6 +170,11 @@ export interface GithubAPIResponse {
   settings: Settings;
 }
 
+export interface GithubUnAuthorizedResponse {
+  statusCode: number;
+  ok: boolean;
+}
+
 export interface GitHubAPIResponseMessage {
   type: 'GITHUB_GIST_API';
   action: 'findGist' | 'createOrUpdateLooiGist';
@@ -183,7 +188,11 @@ export type MessageData =
 
 export interface GithubResponses {
   success: boolean;
-  data?: GithubDeviceCodeResponse | GithubTokenResponse | GithubAPIResponse;
+  data?:
+    | GithubDeviceCodeResponse
+    | GithubTokenResponse
+    | GithubAPIResponse
+    | GithubUnAuthorizedResponse;
   error?: string;
 }
 
