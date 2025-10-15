@@ -64,7 +64,7 @@ const GithubPATInput: React.FC<{
     const inputLabelStyle: React.CSSProperties = {
         position: 'absolute',
         left: 75,
-        bottom: focus || pat ? 322 : 311,
+        bottom: focus || pat ? 346 : 336,
         fontSize: focus || pat ? 13 : 16,
         color: focus ? '#ffffffff' : '#8d97ad',
         padding: '0 3px',

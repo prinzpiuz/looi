@@ -53,6 +53,7 @@ const performGitHubSync = async (
     setSettings?: React.Dispatch<React.SetStateAction<Settings | null>>,
 ): Promise<void> => {
     try {
+        console.log('Performing GitHub sync');
         const data = await createOrUpdateLooiGist(gistId, settings);
         if (!isAPIResponse(data)) {
             /* empty */

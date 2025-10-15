@@ -5,6 +5,8 @@ import GithubPATInput from './GithubPATInput';
 import { saveToken } from '../../../utils/github';
 import SyncSettings from './SyncSettings';
 import { useSettings } from '../../../hooks/settingsContext';
+import { GitHubSyncSettings } from '../../../utils/types';
+import { isTokenExpired } from '../../../utils/utils';
 
 const githubSyncDivStyle: React.CSSProperties = { margin: '7px 0 27px' };
 const selectionDivStyle: React.CSSProperties = {
@@ -14,16 +16,23 @@ const selectionDivStyle: React.CSSProperties = {
     marginBottom: -10,
 };
 
+const checkTokenStatus = (
+    githubSync: GitHubSyncSettings | undefined,
+): boolean => {
+    if (githubSync === undefined) return false;
+    return githubSync?.tokenSaved && !isTokenExpired(githubSync.storedAt);
+};
+
 const GitHubSync: React.FC = () => {
     const { settings, updateGithubSettings } = useSettings();
-    const [tokenAvailable, setTokenAvailable] = useState(
-        settings?.githubSync?.tokenSaved || false,
-    );
     const [authTab, setAuthTab] = useState<'device' | 'pat'>('device');
 
+    const [tokenAvailable, setTokenAvailable] = useState(
+        checkTokenStatus(settings?.githubSync),
+    );
     const onToken = (token: string) => {
         saveToken(token);
-        void updateGithubSettings({ tokenSaved: true });
+        void updateGithubSettings({ tokenSaved: true, storedAt: Date.now() });
         setTokenAvailable(true);
     };
 

@@ -33,3 +33,9 @@ export const closeTabAndOpen = () => {
     window.close();
     return;
 };
+
+export const isTokenExpired = (storedAt: number) => {
+    const now = Date.now();
+    const expiryTime = 8 * 60 * 60 * 1000; // 8 hours in ms
+    return now - storedAt > expiryTime;
+};

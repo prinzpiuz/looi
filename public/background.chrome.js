@@ -24,16 +24,21 @@
         void (async () => {
           try {
             if (message.action === "startDeviceFlow") {
-              const resp = await fetch(`${DeviceBaseFlowURL}device/code`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  Accept: "application/json"
-                },
-                body: `client_id=${encodeURIComponent(CLIENT_ID)}&scope=gist`
-              });
+              const resp = await fetch(
+                `${DeviceBaseFlowURL}device/code`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Accept: "application/json"
+                  },
+                  body: `client_id=${encodeURIComponent(CLIENT_ID)}&scope=gist`
+                }
+              );
               if (!resp.ok) {
-                throw new Error(`HTTP error! status: ${resp.status}`);
+                throw new Error(
+                  `HTTP error! status: ${resp.status}`
+                );
               }
               const data = await resp.json();
               sendResponse({ success: true, data });
@@ -52,7 +57,9 @@
                 }
               );
               if (!resp.ok) {
-                throw new Error(`HTTP error! status: ${resp.status}`);
+                throw new Error(
+                  `HTTP error! status: ${resp.status}`
+                );
               }
               const data = await resp.json();
               sendResponse({ success: true, data });
