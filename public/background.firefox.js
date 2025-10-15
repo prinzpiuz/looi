@@ -1004,10 +1004,20 @@
   try {
     browser2 = require_browser_polyfill();
   } catch {
-    console.warn("webextension-polyfill is not available \u2014 running in non-extension env?");
+    console.warn(
+      "webextension-polyfill is not available \u2014 running in non-extension env?"
+    );
   }
-  var isExtensionEnv = () => !!browser2;
-  var isFirefox = () => isExtensionEnv() && browser2?.runtime.getBrowserInfo().then((info) => info.name === "Firefox");
+  var getBrowserType = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes("firefox")) return "firefox";
+    if (userAgent.includes("edg/")) return "edge";
+    if (userAgent.includes("opr/") || userAgent.includes("opera")) return "opera";
+    if (userAgent.includes("chrome")) return "chrome";
+    if (userAgent.includes("safari")) return "safari";
+    return "unknown";
+  };
+  var isFirefox = () => getBrowserType() === "firefox";
 
   // src/utils/github.ts
   var getToken = async () => {
@@ -1045,16 +1055,19 @@
               const data = await resp.json();
               sendResponse({ success: true, data });
             } else if (message.action === "getToken") {
-              const resp = await fetch(`${DeviceBaseFlowURL}/oauth/access_token`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  Accept: "application/json"
-                },
-                body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
-                  message.device_code
-                )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`
-              });
+              const resp = await fetch(
+                `${DeviceBaseFlowURL}/oauth/access_token`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Accept: "application/json"
+                  },
+                  body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
+                    message.device_code
+                  )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`
+                }
+              );
               if (!resp.ok) {
                 throw new Error(`HTTP error! status: ${resp.status}`);
               }
@@ -1126,7 +1139,9 @@
               sendResponse({ success: true, data: data2 || null });
             }
             if (!resp.ok) {
-              throw new Error(`GitHub API error: ${resp.status} ${resp.statusText}`);
+              throw new Error(
+                `GitHub API error: ${resp.status} ${resp.statusText}`
+              );
             }
             const response = await resp.json();
             const content = response.files["settings.json"].content;

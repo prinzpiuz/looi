@@ -1,14 +1,12 @@
 "use strict";
 (() => {
-  // src/utils/utils.ts
-  var settingsToJSONString = (settings) => {
-    return JSON.stringify(settings, null, 2);
-  };
-
   // src/background_workers/background.chrome.ts
   var CLIENT_ID = "Iv23li5frjjDBAV3DfuR";
   var DeviceBaseFlowURL = "https://github.com/login/";
   var GistBaseURL = "https://api.github.com/gists";
+  var settingsToJSONString = (settings) => {
+    return JSON.stringify(settings, null, 2);
+  };
   var getToken = async () => {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get("github_token", (stored) => {
@@ -40,16 +38,19 @@
               const data = await resp.json();
               sendResponse({ success: true, data });
             } else if (message.action === "getToken") {
-              const resp = await fetch(`${DeviceBaseFlowURL}/oauth/access_token`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  Accept: "application/json"
-                },
-                body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
-                  message.device_code
-                )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`
-              });
+              const resp = await fetch(
+                `${DeviceBaseFlowURL}/oauth/access_token`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Accept: "application/json"
+                  },
+                  body: `client_id=${encodeURIComponent(CLIENT_ID)}&device_code=${encodeURIComponent(
+                    message.device_code
+                  )}&grant_type=urn:ietf:params:oauth:grant-type:device_code`
+                }
+              );
               if (!resp.ok) {
                 throw new Error(`HTTP error! status: ${resp.status}`);
               }
@@ -121,7 +122,9 @@
               sendResponse({ success: true, data: data2 || null });
             }
             if (!resp.ok) {
-              throw new Error(`GitHub API error: ${resp.status} ${resp.statusText}`);
+              throw new Error(
+                `GitHub API error: ${resp.status} ${resp.statusText}`
+              );
             }
             const response = await resp.json();
             const content = response.files["settings.json"].content;
