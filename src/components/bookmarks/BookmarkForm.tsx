@@ -162,7 +162,8 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
     const handleSubmit = () => {
         if (
             !url ||
-            (!url.startsWith('http') && !url.match(/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}/))
+            (!url.startsWith('http') &&
+                !url.match(/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}/))
         ) {
             setError('Enter a valid URL');
             return;
