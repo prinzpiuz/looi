@@ -25,21 +25,19 @@ jobs:
               run: npm run build:chrome
 
             - name: Create zip for upload
-              run: |
-                  cd build
-                  zip -r ../extension.zip .
+              run: cd build && zip -r ../looi-extension.zip .
 
             - name: Upload & publish to Chrome Web Store
               run: |
                   npx chrome-webstore-upload-cli upload \
                     --source extension.zip \
                     --extension-id ${{ secrets.EXTENSION_ID }} \
-                    --client-id ${{ secrets.CLIENT_ID }} \
-                    --client-secret ${{ secrets.CLIENT_SECRET }} \
-                    --refresh-token ${{ secrets.REFRESH_TOKEN }}
+                    --client-id ${{ secrets.CHROME_CLIENT_ID }} \
+                    --client-secret ${{ secrets.CHROME_CLIENT_SECRET }} \
+                    --refresh-token ${{ secrets.CHROME_REFRESH_TOKEN }}
 
                   npx chrome-webstore-upload-cli publish \
                     --extension-id ${{ secrets.EXTENSION_ID }} \
-                    --client-id ${{ secrets.CLIENT_ID }} \
-                    --client-secret ${{ secrets.CLIENT_SECRET }} \
-                    --refresh-token ${{ secrets.REFRESH_TOKEN }}
+                    --client-id ${{ secrets.CHROME_CLIENT_ID }} \
+                    --client-secret ${{ secrets.CHROME_CLIENT_SECRET }} \
+                    --refresh-token ${{ secrets.CHROME_REFRESH_TOKEN }}
