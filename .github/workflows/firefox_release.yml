@@ -1,4 +1,4 @@
-name: Extension Build & Publish
+name: Extension Build & Publish to Firefox & Github
 
 on:
   push:
@@ -26,11 +26,9 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: |
-          npm run build:chrome
-          npm run build:firefox
+        run: npm run build:firefox
 
-      - name: Zip Chrome Extension
+      - name: Zip Firefox Extension
         run: cd build && zip -r ../looi-extension.zip . && cd
 
       - name: Upload extension zip artifact
@@ -38,24 +36,6 @@ jobs:
         with:
           name: looi-extension
           path: looi-extension.zip
-
-  #   publish_chrome:
-  #     needs: build
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - name: Download chrome zip
-  #         uses: actions/download-artifact@v4
-  #         with:
-  #           name: chrome-extension
-
-  #       - name: Publish to Chrome Web Store
-  #         uses: Passy/chrome-webstore-upload-action@v2
-  #         with:
-  #           extension_id: ${{ secrets.CHROME_EXTENSION_ID }}
-  #           client_id: ${{ secrets.CHROME_CLIENT_ID }}
-  #           client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-  #           refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-  #           file: chrome-extension.zip
 
   publish_firefox:
     needs: build

@@ -1,0 +1,45 @@
+name: Extension Build & Publish to Chrome
+
+on:
+    push:
+        branches:
+            - release
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build extension
+              run: npm run build:chrome
+
+            - name: Create zip for upload
+              run: |
+                  cd build
+                  zip -r ../extension.zip .
+
+            - name: Upload & publish to Chrome Web Store
+              run: |
+                  npx chrome-webstore-upload-cli upload \
+                    --source extension.zip \
+                    --extension-id ${{ secrets.EXTENSION_ID }} \
+                    --client-id ${{ secrets.CLIENT_ID }} \
+                    --client-secret ${{ secrets.CLIENT_SECRET }} \
+                    --refresh-token ${{ secrets.REFRESH_TOKEN }}
+
+                  npx chrome-webstore-upload-cli publish \
+                    --extension-id ${{ secrets.EXTENSION_ID }} \
+                    --client-id ${{ secrets.CLIENT_ID }} \
+                    --client-secret ${{ secrets.CLIENT_SECRET }} \
+                    --refresh-token ${{ secrets.REFRESH_TOKEN }}

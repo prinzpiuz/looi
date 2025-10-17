@@ -23,8 +23,8 @@
     "scripts": {
         "start": "PORT=3001 react-scripts start",
         "build": "react-scripts build",
-        "build:chrome": "node build.js && react-scripts build && cp public/manifest.chrome.json build/manifest.json",
-        "build:firefox": "node build.js && react-scripts build && cp public/manifest.firefox.json build/manifest.json",
+        "build:chrome": "node build.js chrome && react-scripts build && cp manifest_files/manifest.chrome.json build/manifest.json",
+        "build:firefox": "node build.js firefox && react-scripts build && cp manifest_files/manifest.firefox.json build/manifest.json",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "commit": "cz",
@@ -43,6 +43,7 @@
         "@types/webextension-polyfill": "^0.12.3",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
+        "chrome-webstore-upload-cli": "^3.5.0",
         "commitizen": "^4.3.1",
         "cz-conventional-changelog": "^3.3.0",
         "esbuild": "^0.25.8",
