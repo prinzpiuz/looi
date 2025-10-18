@@ -6,3 +6,4 @@ declare module 'react-icons/fa';
 declare module 'react-icons/md';
 declare module 'react-icons/hi2';
 declare const browser: typeof chrome;
+declare module '@atlaskit/pragmatic-drag-and-drop';

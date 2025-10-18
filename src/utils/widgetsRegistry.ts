@@ -1,6 +1,7 @@
 import { FaCalendarAlt, FaTasks } from 'react-icons/fa';
 import { IconProps } from './types';
 import CalendarWidget from '../components/widgets/calendar/Calendar';
+import TodoWidget from '../components/widgets/todo/Todo';
 
 export const widgetIcons: Record<string, IconProps> = {
     calendar: FaCalendarAlt,
@@ -9,6 +10,6 @@ export const widgetIcons: Record<string, IconProps> = {
 
 export const widgetRegistry: Record<string, React.FC> = {
     calendar: CalendarWidget,
-    // todo: TodoWidget,
+    todo: TodoWidget,
     // add more
 };
