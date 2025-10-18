@@ -4,14 +4,22 @@ import {
     dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
+import {
+    FaTasks,
+    FaChevronDown,
+    FaChevronUp,
+    FaPlus,
+    FaMinus,
+} from 'react-icons/fa';
 import '../../../assets/css/todo.css';
-import { Priority, Task } from '../../../utils/types';
+import { Task } from '../../../utils/types';
 
 const TodoWidget: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [newTask, setNewTask] = useState('');
     const [expanded, setExpanded] = useState(true);
     const listRef = useRef<HTMLUListElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const addTask = () => {
         if (!newTask.trim()) return;
@@ -19,10 +27,10 @@ const TodoWidget: React.FC = () => {
             id: crypto.randomUUID(),
             text: newTask,
             completed: false,
-            priority: 'medium',
         };
         setTasks((prev) => [...prev, task]);
         setNewTask('');
+        inputRef.current?.focus();
     };
 
     const removeTask = (id: string) => {
@@ -34,12 +42,6 @@ const TodoWidget: React.FC = () => {
             prev.map((task) =>
                 task.id === id ? { ...task, completed: !task.completed } : task,
             ),
-        );
-    };
-
-    const changePriority = (id: string, priority: Priority) => {
-        setTasks((prev) =>
-            prev.map((task) => (task.id === id ? { ...task, priority } : task)),
         );
     };
 
@@ -92,25 +94,46 @@ const TodoWidget: React.FC = () => {
         };
     }, [tasks]);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.altKey && e.key === 'c') {
+                setExpanded((prev) => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup the event listener
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
         <div className={`todo-widget ${expanded ? 'expanded' : 'collapsed'}`}>
             <div className="todo-header">
-                <h3>To-Do List</h3>
-                <button onClick={() => setExpanded((prev) => !prev)}>
-                    {expanded ? '−' : '+'}
-                </button>
+                <FaTasks className="todo-icon" />
+                To-Do
+                <div onClick={() => setExpanded((prev) => !prev)}>
+                    {expanded ? <FaChevronUp /> : <FaChevronDown />}
+                </div>
             </div>
 
             {expanded && (
                 <>
                     <div className="todo-input">
                         <input
+                            className="task-input"
+                            ref={inputRef}
                             type="text"
                             value={newTask}
                             onChange={(e) => setNewTask(e.target.value)}
-                            placeholder="Add a new task..."
+                            placeholder="Add Task"
                         />
-                        <button onClick={addTask}>Add</button>
+
+                        <div onClick={addTask}>
+                            <FaPlus />
+                        </div>
                     </div>
 
                     <ul ref={listRef} className="todo-list">
@@ -127,27 +150,12 @@ const TodoWidget: React.FC = () => {
                                     {task.text}
                                 </span>
 
-                                <select
-                                    value={task.priority}
-                                    onChange={(e) =>
-                                        changePriority(
-                                            task.id,
-                                            e.target.value as Priority,
-                                        )
-                                    }
-                                    className={`priority ${task.priority}`}
-                                >
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-
-                                <button
+                                <div
                                     className="delete-btn"
                                     onClick={() => removeTask(task.id)}
                                 >
-                                    ✕
-                                </button>
+                                    <FaMinus />
+                                </div>
                             </li>
                         ))}
                     </ul>
