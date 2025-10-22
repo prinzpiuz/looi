@@ -28,7 +28,7 @@ jobs:
               run: cd build && zip -r ../looi-extension.zip .
 
             - name: Set up GCP authentication
-              uses: google-github-actions/auth@v0
+              uses: google-github-actions/auth@v1
               with:
                   credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
