@@ -32,16 +32,23 @@ jobs:
               with:
                   credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
+            - name: Get OAuth2 access token
+              run: |
+                  ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
+                  echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
+
             - name: Upload & publish to Chrome Web Store
               run: |
                   # Install chrome-webstore-upload-cli if not already installed
                   npm install -g chrome-webstore-upload-cli
 
-                  # Upload the extension
+                  # Upload the extension using the access token
                   npx chrome-webstore-upload-cli upload \
-                    --source looi-extension.zip \
-                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }}
+                      --source looi-extension.zip \
+                      --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
+                      --access-token ${{ env.ACCESS_TOKEN }}
 
                   # Publish the extension (auto-publish after upload)
                   npx chrome-webstore-upload-cli publish \
-                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }}
+                      --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
+                      --access-token ${{ env.ACCESS_TOKEN }}

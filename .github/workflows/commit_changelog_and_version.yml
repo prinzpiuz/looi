@@ -3,7 +3,7 @@ name: Commit Changelog And Version
 on:
   push:
     branches:
-      - "main"
+      - main1
 
 concurrency: production
 jobs:
