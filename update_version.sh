@@ -18,8 +18,8 @@ fi
 
 NEW_VERSION="$1"
 PACKAGE_JSON="package.json"
-FIREFOX_MANIFEST_JSON="public/manifest.firefox.json"
-CHROME_MANIFEST_JSON="public/manifest.chrome.json"
+FIREFOX_MANIFEST_JSON="manifest_files/manifest.chrome.json"
+CHROME_MANIFEST_JSON="manifest_files/manifest.chrome.json"
 
 echo "Attempting to update version to: $NEW_VERSION"
 
