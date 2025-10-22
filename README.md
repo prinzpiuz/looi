@@ -7,7 +7,7 @@
 <img alt="get in firefox" src="https://blog.mozilla.org/addons/files/2015/11/get-the-addon-small.png">
 </a>
 
-<a href="" alt="Chrome WebStore">
+<a href="https://chromewebstore.google.com/detail/looi/cjdjdglhngkmbmmhpmmfkmhimidefhen" alt="Chrome WebStore">
 <img alt="get in chrome" src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-043497a3d766e.png">
 </a>
 </p>
