@@ -1,14 +1,15 @@
-import { FaCalendarAlt, FaTasks } from "react-icons/fa";
-import { IconProps } from "./types";
-import CalendarWidget from "../components/widgets/calendar/Calendar";
+import { FaCalendarAlt, FaTasks } from 'react-icons/fa';
+import { IconProps } from './types';
+import CalendarWidget from '../components/widgets/calendar/Calendar';
+import TodoWidget from '../components/widgets/todo/Todo';
 
 export const widgetIcons: Record<string, IconProps> = {
-  calendar: FaCalendarAlt,
-  todo: FaTasks,
+    calendar: FaCalendarAlt,
+    todo: FaTasks,
 };
 
 export const widgetRegistry: Record<string, React.FC> = {
-  calendar: CalendarWidget,
-  // todo: TodoWidget,
-  // add more
+    calendar: CalendarWidget,
+    todo: TodoWidget,
+    // add more
 };

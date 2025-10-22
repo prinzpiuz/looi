@@ -3,7 +3,7 @@
 <p align="center"><b>A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.</b></p>
 
 <p align="center">
-<a href="" alt="Firefox AddOn">
+<a href="https://addons.mozilla.org/en-US/firefox/addon/looi/" alt="Firefox AddOn">
 <img alt="get in firefox" src="https://blog.mozilla.org/addons/files/2015/11/get-the-addon-small.png">
 </a>
 
@@ -19,9 +19,9 @@ The name "Looi" was my first dog's name. Unfortunately, he is no longer with us.
 #### Features
 
 - Widgets
-  - Calendar
-  - To-Do
-  - Speed Checker
+    - Calendar
+    - To-Do
+    - Speed Checker
 - Bookmarks
 - Sync settings with GitHub
 
@@ -30,7 +30,7 @@ The name "Looi" was my first dog's name. Unfortunately, he is no longer with us.
 Install dependencies with `npm install` before running the following scripts.
 
 - Local development server
-  - `npm run start`
+    - `npm run start`
 - Production build
-  - Firefox: `npm run build:firefox`
-  - Chrome: `npm run build:chrome`
+    - Firefox: `npm run build:firefox`
+    - Chrome: `npm run build:chrome`

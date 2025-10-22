@@ -1,31 +1,31 @@
 name: Checks
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  pre-commit-checks:
-    runs-on: ubuntu-latest
+    pre-commit-checks:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
 
-      - name: Install Node.js dependencies
-        run: npm ci
+            - name: Install Node.js dependencies
+              run: npm ci
 
-      - name: Install pre-commit
-        run: pip install pre-commit
+            - name: Install pre-commit
+              run: pip install pre-commit
 
-      - name: Run pre-commit hooks
-        run: pre-commit run --all-files --show-diff-on-failure
+            - name: Run pre-commit hooks
+              run: pre-commit run --all-files --show-diff-on-failure

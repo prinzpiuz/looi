@@ -1,0 +1,36 @@
+name: Extension Build & Publish to Firefox & Github
+
+on:
+    push:
+        branches:
+            - release
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build
+              run: npm run build:firefox
+
+            - name: Zip Firefox Extension
+              run: cd build && zip -r ../looi-extension.zip .
+
+            - name: Publish to Firefox Add-ons
+              uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+              with:
+                  zipFilePath: looi-extension.zip
+                  extensionId: ${{ secrets.FF_EXTENSION_ID }}
+                  jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
+                  jwtSecret: ${{ secrets.FF_JWT_SECRET }}

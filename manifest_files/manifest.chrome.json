@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Looi",
+    "version": "1.1.0",
+    "description": "A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "permissions": ["storage"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": ["https://api.github.com/*", "https://github.com/"],
+    "icons": {
+        "16": "icons/looi-16.png",
+        "48": "icons/looi-48.png",
+        "96": "icons/looi-96.png",
+        "128": "icons/looi-128.png"
+    }
+}
