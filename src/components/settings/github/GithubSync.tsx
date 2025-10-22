@@ -1,80 +1,92 @@
-import React, { useState } from "react";
-import { FaGithub } from "react-icons/fa";
-import GithubDeviceFlow from "./GithubDeviceFlow";
-import GithubPATInput from "./GithubPATInput";
-import { saveToken } from "../../../utils/github";
-import SyncSettings from "./SyncSettings";
-import { useSettings } from "../../../hooks/settingsContext";
+import React, { useState } from 'react';
+import { FaGithub } from 'react-icons/fa';
+import GithubDeviceFlow from './GithubDeviceFlow';
+import GithubPATInput from './GithubPATInput';
+import { saveToken } from '../../../utils/github';
+import SyncSettings from './SyncSettings';
+import { useSettings } from '../../../hooks/settingsContext';
+import { GitHubSyncSettings } from '../../../utils/types';
+import { isTokenExpired } from '../../../utils/utils';
 
-const githubSyncDivStyle: React.CSSProperties = { margin: "7px 0 27px" };
+const githubSyncDivStyle: React.CSSProperties = { margin: '7px 0 27px' };
 const selectionDivStyle: React.CSSProperties = {
-  display: "flex",
-  borderBottom: "1px solid #ffffff",
-  gap: 0,
-  marginBottom: -10,
+    display: 'flex',
+    borderBottom: '1px solid #ffffff',
+    gap: 0,
+    marginBottom: -10,
+};
+
+const checkTokenStatus = (
+    githubSync: GitHubSyncSettings | undefined,
+): boolean => {
+    if (githubSync === undefined) return false;
+    return githubSync?.tokenSaved && !isTokenExpired(githubSync.storedAt);
 };
 
 const GitHubSync: React.FC = () => {
-  const { settings, updateGithubSettings } = useSettings();
-  const [tokenAvailable, setTokenAvailable] = useState(
-    settings?.githubSync?.tokenSaved || false,
-  );
-  const [authTab, setAuthTab] = useState<"device" | "pat">("device");
+    const { settings, updateGithubSettings } = useSettings();
+    const [authTab, setAuthTab] = useState<'device' | 'pat'>('device');
 
-  const onToken = (token: string) => {
-    saveToken(token);
-    void updateGithubSettings({ tokenSaved: true });
-    setTokenAvailable(true);
-  };
+    const [tokenAvailable, setTokenAvailable] = useState(
+        checkTokenStatus(settings?.githubSync),
+    );
+    const onToken = (token: string) => {
+        saveToken(token);
+        void updateGithubSettings({ tokenSaved: true, storedAt: Date.now() });
+        setTokenAvailable(true);
+    };
 
-  const connectButtonStyle: React.CSSProperties = {
-    flex: 1,
-    background: authTab === "device" ? "#ffffff" : "none",
-    border: "none",
-    fontWeight: 700,
-    fontSize: 15,
-    padding: "12px 0",
-    borderRadius: "8px 8px 0 0",
-  };
+    const connectButtonStyle: React.CSSProperties = {
+        flex: 1,
+        background: authTab === 'device' ? '#ffffff' : 'none',
+        border: 'none',
+        fontWeight: 700,
+        fontSize: 15,
+        padding: '12px 0',
+        borderRadius: '8px 8px 0 0',
+    };
 
-  const authButtonStyle: React.CSSProperties = {
-    flex: 1,
-    background: authTab === "pat" ? "#ffffff" : "none",
-    border: "none",
-    fontWeight: 700,
-    fontSize: 15,
-    padding: "12px 0",
-    borderRadius: "8px 8px 0 0",
-  };
+    const authButtonStyle: React.CSSProperties = {
+        flex: 1,
+        background: authTab === 'pat' ? '#ffffff' : 'none',
+        border: 'none',
+        fontWeight: 700,
+        fontSize: 15,
+        padding: '12px 0',
+        borderRadius: '8px 8px 0 0',
+    };
 
-  const getSection = () => {
-    if (tokenAvailable) {
-      return <SyncSettings onTokenReset={setTokenAvailable} />;
-    } else {
-      return (
-        <>
-          <div style={selectionDivStyle}>
-            <button
-              style={connectButtonStyle}
-              onClick={() => setAuthTab("device")}
-            >
-              <FaGithub /> Login
-            </button>
-            <button style={authButtonStyle} onClick={() => setAuthTab("pat")}>
-              <FaGithub /> Token
-            </button>
-          </div>
-          {authTab === "device" ? (
-            <GithubDeviceFlow onToken={onToken} />
-          ) : (
-            <GithubPATInput onToken={onToken} />
-          )}
-        </>
-      );
-    }
-  };
+    const getSection = () => {
+        if (tokenAvailable) {
+            return <SyncSettings onTokenReset={setTokenAvailable} />;
+        } else {
+            return (
+                <>
+                    <div style={selectionDivStyle}>
+                        <button
+                            style={connectButtonStyle}
+                            onClick={() => setAuthTab('device')}
+                        >
+                            <FaGithub /> Login
+                        </button>
+                        <button
+                            style={authButtonStyle}
+                            onClick={() => setAuthTab('pat')}
+                        >
+                            <FaGithub /> Token
+                        </button>
+                    </div>
+                    {authTab === 'device' ? (
+                        <GithubDeviceFlow onToken={onToken} />
+                    ) : (
+                        <GithubPATInput onToken={onToken} />
+                    )}
+                </>
+            );
+        }
+    };
 
-  return <div style={githubSyncDivStyle}>{getSection()}</div>;
+    return <div style={githubSyncDivStyle}>{getSection()}</div>;
 };
 
 export default GitHubSync;

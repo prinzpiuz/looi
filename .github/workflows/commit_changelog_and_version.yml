@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "main"
+
 concurrency: production
 jobs:
   tag:
@@ -19,8 +20,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
           skipInvalidTags: true
+          noVersionBumpBehavior: patch
     outputs:
       new_tag: ${{ steps.autoversion.outputs.nextStrict }}
+
   commit_changelog_and_version:
     needs: tag
     runs-on: ubuntu-latest
@@ -35,6 +38,7 @@ jobs:
         id: git-cliff
         with:
           config: cliff.toml
+          args: --sort newest --tag ${{ needs.tag.outputs.new_tag }}
         env:
           OUTPUT: CHANGES.md
       - name: Copy changelog to workspace
@@ -46,7 +50,7 @@ jobs:
         if: ${{ success() }}
         uses: EndBug/add-and-commit@v9
         with:
-          add: '["CHANGELOG.md", "package.json", "public/manifest.firefox.json", "public/manifest.chrome.json"]'
+          add: '["CHANGELOG.md", "package.json", "manifest_files/manifest.firefox.json", "manifest_files/manifest.chrome.json"]'
           pull: "--rebase --autostash ."
           message: "chore: changelog generated & version updated automatically"
           default_author: github_actions
