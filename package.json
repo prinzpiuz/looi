@@ -2,7 +2,7 @@
   "name": "looi",
   "description": "A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.",
   "author": "prinzpiuz",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "GPL-3.0-only",
   "private": true,
   "type": "module",
