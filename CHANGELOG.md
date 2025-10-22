@@ -1,42 +1,43 @@
 ## What's Changed in 1.1.0
-
-- fix: fix for draggable element taking full width by @prinzpiuz in [#34](https://github.com/prinzpiuz/looi/pull/34)
-- feat: To-Do widget by @prinzpiuz in [#38](https://github.com/prinzpiuz/looi/pull/38)
-- build: update action secrets by @prinzpiuz
-- chore: README update by @prinzpiuz
-- build: improved build and release process by @prinzpiuz
-- build: github action for chrome release by @prinzpiuz
-- chore: pre-commit fixes by @prinzpiuz
-- Potential fix for code scanning alert no. 11: Inefficient regular expression by @prinzpiuz
-- chore :removed unwanted code by @prinzpiuz
-- feat: add support for importing from existing gist by @prinzpiuz
-- fix: pre-commit by @prinzpiuz
-- fix: pre-commit by @prinzpiuz
-- fix: pre-commit by @prinzpiuz
-- feat: import settings using gist id by @prinzpiuz
-- fix: color picker effecting github rate limit by @prinzpiuz
-- fix: issue running background workers in chrome fixed by @prinzpiuz
-- fix: bookmarks missing after adding by @prinzpiuz
-- fix: fix for draggable element taking full width by @prinzpiuz
-- chore: changelog generated & version updated automatically by @github-actions[bot]
-- Merge branch 'release' into main by @prinzpiuz
-- Release v1.1.0 by @prinzpiuz in [#15](https://github.com/prinzpiuz/looi/pull/15)
-- chore: changelog generated & version updated automatically by @github-actions[bot]
-- build: error fixes by @prinzpiuz in [#16](https://github.com/prinzpiuz/looi/pull/16)
-- chore: changelog generated & version updated automatically by @github-actions[bot]
-- build: release automation by @prinzpiuz in [#14](https://github.com/prinzpiuz/looi/pull/14)
-- chore: changelog generated & version updated automatically by @github-actions[bot]
-- Build error fixes by @prinzpiuz in [#13](https://github.com/prinzpiuz/looi/pull/13)
-- build: github workflows by @prinzpiuz in [#3](https://github.com/prinzpiuz/looi/pull/3)
-- initial by @prinzpiuz
-- Initial commit by @prinzpiuz
-- initial by @prinzpiuz
-- Initialize project using Create React App by @prinzpiuz
+* fix: automated release fixes by @prinzpiuz in [#41](https://github.com/prinzpiuz/looi/pull/41)
+* fix: automated release fixes by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* fix: fix for draggable element taking full width by @prinzpiuz in [#34](https://github.com/prinzpiuz/looi/pull/34)
+* feat: To-Do widget by @prinzpiuz in [#38](https://github.com/prinzpiuz/looi/pull/38)
+* build: update action secrets by @prinzpiuz
+* chore: README update by @prinzpiuz
+* build: improved build and release process by @prinzpiuz
+* build: github action for chrome release by @prinzpiuz
+* chore: pre-commit fixes by @prinzpiuz
+* Potential fix for code scanning alert no. 11: Inefficient regular expression by @prinzpiuz
+* chore :removed unwanted code by @prinzpiuz
+* feat: add support for importing from existing gist by @prinzpiuz
+* fix: pre-commit by @prinzpiuz
+* fix: pre-commit by @prinzpiuz
+* fix: pre-commit by @prinzpiuz
+* feat: import settings using gist id by @prinzpiuz
+* fix: color picker effecting github rate limit by @prinzpiuz
+* fix: issue running background workers in chrome fixed by @prinzpiuz
+* fix: bookmarks missing after adding by @prinzpiuz
+* fix: fix for draggable element taking full width by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* Merge branch 'release' into main by @prinzpiuz
+* Release v1.1.0 by @prinzpiuz in [#15](https://github.com/prinzpiuz/looi/pull/15)
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* build: error fixes by @prinzpiuz in [#16](https://github.com/prinzpiuz/looi/pull/16)
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* build: release automation by @prinzpiuz in [#14](https://github.com/prinzpiuz/looi/pull/14)
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* Build error fixes by @prinzpiuz in [#13](https://github.com/prinzpiuz/looi/pull/13)
+* build: github workflows by @prinzpiuz in [#3](https://github.com/prinzpiuz/looi/pull/3)
+* initial by @prinzpiuz
+* Initial commit by @prinzpiuz
+* initial by @prinzpiuz
+* Initialize project using Create React App by @prinzpiuz
 
 ## New Contributors
-
-- @prinzpiuz made their first contribution in [#34](https://github.com/prinzpiuz/looi/pull/34)
-- @github-actions[bot] made their first contribution
+* @prinzpiuz made their first contribution in [#41](https://github.com/prinzpiuz/looi/pull/41)
+* @github-actions[bot] made their first contribution
 
 **Full Changelog**: https://github.com/prinzpiuz/looi/compare/v1.0.0...1.1.0
 
