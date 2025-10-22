@@ -1,4 +1,4 @@
-name: Extension Build & Publish to Firefox & Github
+name: Extension Build & Publish to Firefox
 
 on:
     push:
