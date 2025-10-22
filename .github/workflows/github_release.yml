@@ -44,8 +44,8 @@ jobs:
               id: create_release
               uses: softprops/action-gh-release@v2
               with:
-                  name: Looi-${VERSION}
-                  tag_name: ${VERSION}
+                  name: Looi-${{ env.VERSION }}
+                  tag_name: ${{ env.VERSION }}
                   body_path: CHANGELOG.md
                   draft: false
                   prerelease: false
