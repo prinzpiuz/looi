@@ -3,7 +3,7 @@ name: Extension Build & Publish to Chrome
 on:
     push:
         branches:
-            - release
+            - main
 
 jobs:
     publish:
@@ -27,68 +27,63 @@ jobs:
             - name: Create zip for upload
               run: cd build && zip -r ../looi-extension.zip .
 
+            # Authenticate using Service Account and get access token
             - name: Set up GCP authentication
               uses: google-github-actions/auth@v1
               with:
                   credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
+            # Obtain an OAuth2 access token using Service Account
             - name: Get OAuth2 access token
               run: |
                   ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
                   echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
 
+            # Upload and Publish to Chrome Web Store using axios
             - name: Upload and Publish to Chrome Web Store
               run: |
-                  npm install googleapis
+                  npm install axios form-data
 
-                  # Set up the Google API client
                   node -e "
-                  const { google } = require('googleapis');
-                  const path = require('path');
+                  const axios = require('axios');
                   const fs = require('fs');
+                  const FormData = require('form-data');
+                  const path = require('path');
 
-                  // Load credentials from environment variable
-                  const accessToken = process.env.ACCESS_TOKEN;
                   const extensionId = '${{ secrets.CHROME_EXTENSION_ID }}';
+                  const accessToken = process.env.ACCESS_TOKEN;
 
-                  const chromeWebStore = google.chromewebstore('v1.1');
+                  const filePath = path.join(__dirname, 'looi-extension.zip');
+                  const fileStream = fs.createReadStream(filePath);
 
-                  // Authenticate with the access token
-                  const auth = new google.auth.OAuth2();
-                  auth.setCredentials({ access_token: accessToken });
+                  // Prepare form data
+                  const form = new FormData();
+                  form.append('file', fileStream);
 
-                  async function uploadAndPublish() {
-                      try {
-                      const file = fs.createReadStream(path.join(__dirname, 'looi-extension.zip'));
+                  // Upload the extension
+                  axios.post('https://www.googleapis.com/upload/chromewebstore/v1.1/items/' + extensionId + '/upload', form, {
+                    headers: {
+                      ...form.getHeaders(),
+                      'Authorization': 'Bearer ' + accessToken,
+                    }
+                  })
+                  .then(response => {
+                    console.log('Upload response:', response.data);
 
-                      // Upload the extension
-                      const uploadResponse = await chromeWebStore.items.upload({
-                          auth,
-                          extensionId: extensionId,
-                          media: {
-                          body: file
-                          }
-                      });
-
-                      console.log('Extension upload response:', uploadResponse.data);
-
-                      // Publish the extension after upload
-                      const publishResponse = await chromeWebStore.items.update({
-                          auth,
-                          extensionId: extensionId,
-                          requestBody: {
-                          status: 'default'  // 'default' will publish the extension
-                          }
-                      });
-
-                      console.log('Extension publish response:', publishResponse.data);
-                      } catch (err) {
-                      console.error('Error uploading and publishing extension:', err);
-                      process.exit(1);
+                    // After uploading, publish the extension
+                    return axios.post('https://www.googleapis.com/chromewebstore/v1.1/items/' + extensionId + '/publish', {}, {
+                      headers: {
+                        'Authorization': 'Bearer ' + accessToken,
                       }
-                  }
-
-                  uploadAndPublish();
+                    });
+                  })
+                  .then(response => {
+                    console.log('Publish response:', response.data);
+                  })
+                  .catch(error => {
+                    console.error('Error uploading and publishing extension:', error);
+                    process.exit(1);
+                  });
                   "
               env:
                   ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
