@@ -27,17 +27,21 @@ jobs:
             - name: Create zip for upload
               run: cd build && zip -r ../looi-extension.zip .
 
+            - name: Set up GCP authentication
+              uses: google-github-actions/auth@v0
+              with:
+                  credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
             - name: Upload & publish to Chrome Web Store
               run: |
+                  # Install chrome-webstore-upload-cli if not already installed
+                  npm install -g chrome-webstore-upload-cli
+
+                  # Upload the extension
                   npx chrome-webstore-upload-cli upload \
                     --source looi-extension.zip \
-                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
-                    --client-id ${{ secrets.CHROME_CLIENT_ID }} \
-                    --client-secret ${{ secrets.CHROME_CLIENT_SECRET }} \
-                    --refresh-token ${{ secrets.CHROME_REFRESH_TOKEN }}
+                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }}
 
+                  # Publish the extension (auto-publish after upload)
                   npx chrome-webstore-upload-cli publish \
-                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
-                    --client-id ${{ secrets.CHROME_CLIENT_ID }} \
-                    --client-secret ${{ secrets.CHROME_CLIENT_SECRET }} \
-                    --refresh-token ${{ secrets.CHROME_REFRESH_TOKEN }}
+                    --extension-id ${{ secrets.CHROME_EXTENSION_ID }}

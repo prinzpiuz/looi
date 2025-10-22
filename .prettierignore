@@ -16,3 +16,4 @@ src/utils/unformatted-file.js
 CHANGELOG.md
 manifest_files/
 package.json
+package-lock.json
