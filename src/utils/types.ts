@@ -226,3 +226,10 @@ export interface GistResponse {
     files: Record<string, GistFile>;
     public: boolean;
 }
+
+export type Task = {
+    id: string;
+    text: string;
+    completed: boolean;
+    reminder?: Date;
+};

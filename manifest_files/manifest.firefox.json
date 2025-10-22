@@ -13,7 +13,6 @@
     },
     "permissions": [
         "storage",
-        "tabs",
         "https://github.com/",
         "https://api.github.com/*"
     ],
