@@ -1,4 +1,12 @@
+## What's Changed in 1.1.2
+* fix: version issue with firefox fixed by @prinzpiuz in [#47](https://github.com/prinzpiuz/looi/pull/47)
+* build: chrome release refresh token issue fixed by @prinzpiuz
+* fix: version issue with firfox fixed by @prinzpiuz
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.1...1.1.2
+
 ## What's Changed in 1.1.1
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * chore: files added to prettierignore by @prinzpiuz in [#45](https://github.com/prinzpiuz/looi/pull/45)
 * chore: files added to prettierignore by @prinzpiuz
 * chore: changelog generated & version updated automatically by @github-actions[bot]
@@ -46,8 +54,8 @@
 * Initialize project using Create React App by @prinzpiuz
 
 ## New Contributors
-* @prinzpiuz made their first contribution in [#45](https://github.com/prinzpiuz/looi/pull/45)
 * @github-actions[bot] made their first contribution
+* @prinzpiuz made their first contribution in [#45](https://github.com/prinzpiuz/looi/pull/45)
 
 **Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.0...1.1.1
 
