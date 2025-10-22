@@ -13,3 +13,6 @@ src/utils/unformatted-file.js
 
 # Ignore files inside a directory, but not the directory itself
 /scripts/*
+CHANGELOG.md
+manifest_files/
+package.json
