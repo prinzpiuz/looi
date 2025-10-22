@@ -62,28 +62,30 @@ jobs:
 
                   // Upload the extension
                   axios.post('https://www.googleapis.com/upload/chromewebstore/v1.1/items/' + extensionId + '/upload', form, {
-                    headers: {
-                      ...form.getHeaders(),
-                      'Authorization': 'Bearer ' + accessToken,
-                    }
-                  })
-                  .then(response => {
-                    console.log('Upload response:', response.data);
-
-                    // After uploading, publish the extension
-                    return axios.post('https://www.googleapis.com/chromewebstore/v1.1/items/' + extensionId + '/publish', {}, {
-                      headers: {
-                        'Authorization': 'Bearer ' + accessToken,
-                      }
+                        headers: {
+                            ...form.getHeaders(),
+                            'Authorization': 'Bearer ' + accessToken,
+                        },
+                        maxRedirects: 0, // Don't follow redirects automatically
+                        validateStatus: function(status) {
+                            return true; // always resolve, regardless of status
+                        }
+                    })
+                    .then(response => {
+                        console.log('Upload response:', response.data);
+                        return axios.post('https://www.googleapis.com/chromewebstore/v1.1/items/' + extensionId + '/publish', {}, {
+                            headers: {
+                                'Authorization': 'Bearer ' + accessToken,
+                            }
+                        });
+                    })
+                    .then(response => {
+                        console.log('Publish response:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error uploading and publishing extension:', error.response ? error.response.data : error.message);
+                        process.exit(1);
                     });
-                  })
-                  .then(response => {
-                    console.log('Publish response:', response.data);
-                  })
-                  .catch(error => {
-                    console.error('Error uploading and publishing extension:', error);
-                    process.exit(1);
-                  });
                   "
               env:
                   ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
