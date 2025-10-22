@@ -37,18 +37,58 @@ jobs:
                   ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
                   echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
 
-            - name: Upload & publish to Chrome Web Store
+            - name: Upload and Publish to Chrome Web Store
               run: |
-                  # Install chrome-webstore-upload-cli if not already installed
-                  npm install -g chrome-webstore-upload-cli
+                  npm install googleapis
 
-                  # Upload the extension using the access token
-                  npx chrome-webstore-upload-cli upload \
-                      --source looi-extension.zip \
-                      --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
-                      --access-token ${{ env.ACCESS_TOKEN }}
+                  # Set up the Google API client
+                  node -e "
+                  const { google } = require('googleapis');
+                  const path = require('path');
+                  const fs = require('fs');
 
-                  # Publish the extension (auto-publish after upload)
-                  npx chrome-webstore-upload-cli publish \
-                      --extension-id ${{ secrets.CHROME_EXTENSION_ID }} \
-                      --access-token ${{ env.ACCESS_TOKEN }}
+                  // Load credentials from environment variable
+                  const accessToken = process.env.ACCESS_TOKEN;
+                  const extensionId = '${{ secrets.CHROME_EXTENSION_ID }}';
+
+                  const chromeWebStore = google.chromewebstore('v1.1');
+
+                  // Authenticate with the access token
+                  const auth = new google.auth.OAuth2();
+                  auth.setCredentials({ access_token: accessToken });
+
+                  async function uploadAndPublish() {
+                      try {
+                      const file = fs.createReadStream(path.join(__dirname, 'looi-extension.zip'));
+
+                      // Upload the extension
+                      const uploadResponse = await chromeWebStore.items.upload({
+                          auth,
+                          extensionId: extensionId,
+                          media: {
+                          body: file
+                          }
+                      });
+
+                      console.log('Extension upload response:', uploadResponse.data);
+
+                      // Publish the extension after upload
+                      const publishResponse = await chromeWebStore.items.update({
+                          auth,
+                          extensionId: extensionId,
+                          requestBody: {
+                          status: 'default'  // 'default' will publish the extension
+                          }
+                      });
+
+                      console.log('Extension publish response:', publishResponse.data);
+                      } catch (err) {
+                      console.error('Error uploading and publishing extension:', err);
+                      process.exit(1);
+                      }
+                  }
+
+                  uploadAndPublish();
+                  "
+              env:
+                  ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
