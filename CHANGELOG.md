@@ -1,4 +1,7 @@
 ## What's Changed in 1.1.1
+* chore: files added to prettierignore by @prinzpiuz in [#45](https://github.com/prinzpiuz/looi/pull/45)
+* chore: files added to prettierignore by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * fix: bug in action file fixed by @prinzpiuz in [#44](https://github.com/prinzpiuz/looi/pull/44)
 * fix: bug in action file fixed by @prinzpiuz
 * chore: changelog generated & version updated automatically by @github-actions[bot]
@@ -43,7 +46,7 @@
 * Initialize project using Create React App by @prinzpiuz
 
 ## New Contributors
-* @prinzpiuz made their first contribution in [#44](https://github.com/prinzpiuz/looi/pull/44)
+* @prinzpiuz made their first contribution in [#45](https://github.com/prinzpiuz/looi/pull/45)
 * @github-actions[bot] made their first contribution
 
 **Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.0...1.1.1
