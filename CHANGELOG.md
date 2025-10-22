@@ -1,4 +1,11 @@
+## What's Changed in 1.1.3
+* build: chrome release action version update by @prinzpiuz in [#49](https://github.com/prinzpiuz/looi/pull/49)
+* build: chrome release action version update by @prinzpiuz
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.2...1.1.3
+
 ## What's Changed in 1.1.2
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * fix: version issue with firefox fixed by @prinzpiuz in [#47](https://github.com/prinzpiuz/looi/pull/47)
 * build: chrome release refresh token issue fixed by @prinzpiuz
 * fix: version issue with firfox fixed by @prinzpiuz
