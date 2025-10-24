@@ -86,7 +86,33 @@ export default [
         },
     },
 
-    // 3. Import plugin rules (for both JS and TS)
+    // 3. JavaScript files (Node.js environment)
+    {
+        files: ['**/*.js'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: {
+                console: 'readonly',
+                process: 'readonly',
+                __dirname: 'readonly',
+                require: 'readonly',
+                module: 'readonly',
+                exports: 'readonly',
+                global: 'readonly',
+                Buffer: 'readonly',
+                setTimeout: 'readonly',
+                clearTimeout: 'readonly',
+                setInterval: 'readonly',
+                clearInterval: 'readonly',
+            },
+        },
+        rules: {
+            'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        },
+    },
+
+    // 4. Import plugin rules (for both JS and TS)
     {
         plugins: {
             import: importPlugin,
