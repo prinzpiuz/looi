@@ -3,7 +3,7 @@ name: Build & Release Extensions
 on:
     push:
         branches:
-            - release1
+            - release
 
 jobs:
     release:

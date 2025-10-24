@@ -27,3 +27,5 @@ yarn-error.log*
 build/*
 public/background.js
 public/background.js.map
+
+looi-extension.zip
