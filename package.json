@@ -40,7 +40,7 @@
     "@eslint/js": "^9.39.1",
     "@google-github-actions/auth": "github:google-github-actions/auth",
     "@types/chrome": "^0.1.27",
-    "@types/firefox-webext-browser": "^120.0.4",
+    "@types/firefox-webext-browser": "^143.0.0",
     "@types/react-color": "^3.0.13",
     "@types/webextension-polyfill": "^0.12.3",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
