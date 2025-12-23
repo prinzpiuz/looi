@@ -98,14 +98,17 @@ export interface PopUpMenuProps {
 }
 
 interface Runtime {
-    sendMessage: (message: any, callback: (response?: any) => void) => void;
+    sendMessage: (
+        message: unknown,
+        callback: (response?: unknown) => void,
+    ) => void;
     lastError?: { message: string };
 }
 
 interface Storage {
     local: {
-        set: (items: Record<string, any>) => void;
-        get: (key: string) => Promise<Record<string, any>>;
+        set: (items: Record<string, unknown>) => void;
+        get: (key: string) => Promise<Record<string, unknown>>;
         remove: (key: string) => Promise<void>;
     };
 }

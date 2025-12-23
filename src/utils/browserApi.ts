@@ -5,6 +5,7 @@ export const ext: BrowserAPI | undefined =
     typedWindow.browser || typedWindow.chrome;
 
 try {
+    /* eslint-disable @typescript-eslint/no-require-imports */
     browser = require('webextension-polyfill');
 } catch {
     // eslint-disable-next-line no-undef

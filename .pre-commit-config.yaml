@@ -1,13 +1,18 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: ^(build/|dist/|node_modules/)
       - id: end-of-file-fixer
+        exclude: ^(build/|dist/|node_modules/)
       - id: check-yaml
       - id: check-json
+      - id: check-toml
       - id: mixed-line-ending
+        exclude: ^(build/|dist/|node_modules/)
       - id: check-added-large-files
+        args: [--maxkb=500]
       - id: check-merge-conflict
       - id: check-case-conflict
 
@@ -17,13 +22,15 @@ repos:
       - id: prettier
         name: Prettier
         files: '\.(js|jsx|ts|tsx|json|css|scss|md|html)$'
+        exclude: ^(build/|dist/|node_modules/)
         args: [--write]
 
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.37.0
+  - repo: local
     hooks:
       - id: eslint
         name: ESLint
-        files: '\.(js|jsx|ts|tsx)$'
+        entry: npx eslint
+        language: system
+        files: \.(js|jsx|ts|tsx)$
+        exclude: ^(build/|dist/|node_modules/)
         args: [--fix]
-        types: [javascript]

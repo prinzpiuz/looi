@@ -1,3 +1,4 @@
+/* eslint import/no-unresolved: "off" */
 import js from '@eslint/js';
 import reactPlugin from 'eslint-plugin-react';
 import importPlugin from 'eslint-plugin-import';

@@ -101,9 +101,9 @@ const BookmarkDiv: React.FC<{
                     <div
                         style={bookmarkDivStyle}
                         onMouseEnter={(e) => {
-                            ((e.currentTarget.style.transform = 'scale(1.025)'),
-                                (e.currentTarget.style.backgroundColor =
-                                    'rgba(22, 22, 22, 0.7)'));
+                            e.currentTarget.style.transform = 'scale(1.025)';
+                            e.currentTarget.style.backgroundColor =
+                                'rgba(22, 22, 22, 0.7)';
                         }}
                         onMouseLeave={(e) => {
                             e.currentTarget.style.transform = 'scale(1)';

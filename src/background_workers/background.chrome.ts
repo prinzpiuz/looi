@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 /// <reference types="chrome"/>
 import {
     GithubResponses,
@@ -25,7 +22,7 @@ const getToken = async (): Promise<string> => {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get('github_token', (stored) => {
             if (chrome.runtime.lastError) {
-                reject(chrome.runtime.lastError);
+                reject(new Error(chrome.runtime.lastError.message));
                 return;
             }
             resolve((stored?.github_token as string) ?? '');
