@@ -1,4 +1,38 @@
+## What's Changed in 1.1.4
+* chore: testing chrome release action by @prinzpiuz in [#57](https://github.com/prinzpiuz/looi/pull/57)
+* fix: eslint error fixes by @prinzpiuz
+* fix: pre-commit errors by @prinzpiuz
+* chore(merge conflicts resolved): merge conflicts resolved by @prinzpiuz
+* Bump eslint-plugin-prettier from 5.5.3 to 5.5.4 by @prinzpiuz in [#8](https://github.com/prinzpiuz/looi/pull/8)
+* Bump eslint-plugin-prettier from 5.5.3 to 5.5.4 by @dependabot[bot]
+* build(deps-dev): bump eslint from 8.57.1 to 9.38.0 by @prinzpiuz in [#40](https://github.com/prinzpiuz/looi/pull/40)
+* build(deps-dev): bump eslint from 8.57.1 to 9.38.0 by @dependabot[bot]
+* Bump the npm_and_yarn group across 1 directory with 2 updates by @prinzpiuz in [#2](https://github.com/prinzpiuz/looi/pull/2)
+* Bump the npm_and_yarn group across 1 directory with 2 updates by @dependabot[bot]
+* Bump form-data from 3.0.3 to 3.0.4 by @prinzpiuz in [#1](https://github.com/prinzpiuz/looi/pull/1)
+* Bump form-data from 3.0.3 to 3.0.4 by @dependabot[bot]
+* build(deps-dev): bump @eslint/js from 9.32.0 to 9.38.0 by @prinzpiuz in [#39](https://github.com/prinzpiuz/looi/pull/39)
+* build(deps-dev): bump @eslint/js from 9.32.0 to 9.38.0 by @dependabot[bot]
+* build(deps-dev): bump @types/chrome from 0.1.3 to 0.1.27 by @prinzpiuz in [#58](https://github.com/prinzpiuz/looi/pull/58)
+* build(deps-dev): bump @types/chrome from 0.1.3 to 0.1.27 by @dependabot[bot]
+* fix: chrome release issue fixed by @prinzpiuz
+* chore: testing chrome release action by @prinzpiuz
+* chrome release fixes by @prinzpiuz in [#56](https://github.com/prinzpiuz/looi/pull/56)
+* chrome release fixes by @prinzpiuz
+* chrome release fixes by @prinzpiuz in [#55](https://github.com/prinzpiuz/looi/pull/55)
+* chrome release fixes by @prinzpiuz
+* chrome release by @prinzpiuz in [#53](https://github.com/prinzpiuz/looi/pull/53)
+* chrome release by @prinzpiuz
+* build: fixing chrome release issue by @prinzpiuz in [#51](https://github.com/prinzpiuz/looi/pull/51)
+* build: fixing chrome release issue by @prinzpiuz
+
+## New Contributors
+* @dependabot[bot] made their first contribution
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.3...1.1.4
+
 ## What's Changed in 1.1.3
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * build: chrome release action version update by @prinzpiuz in [#49](https://github.com/prinzpiuz/looi/pull/49)
 * build: chrome release action version update by @prinzpiuz
 
