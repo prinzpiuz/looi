@@ -65,6 +65,12 @@ const imageStyle: React.CSSProperties = {
     boxShadow: '0 1.5px 7px 0 rgba(0,0,0,0.08)',
 };
 
+const getDraggableStyle = (isMenuOpen: boolean): React.CSSProperties => ({
+    ...draggableStyle,
+    position: 'relative' as const,
+    zIndex: isMenuOpen ? 1000 : 1,
+});
+
 const BookmarkDiv: React.FC<{
     bookmark: Bookmark;
     index: number;
@@ -107,7 +113,11 @@ const BookmarkDiv: React.FC<{
                 onStop={handleStop}
                 bounds="#root"
             >
-                <div ref={nodeRef} tabIndex={index} style={draggableStyle}>
+                <div
+                    ref={nodeRef}
+                    tabIndex={index}
+                    style={getDraggableStyle(menuOpen)}
+                >
                     <div
                         style={bookmarkDivStyle}
                         onMouseEnter={(e) => {
