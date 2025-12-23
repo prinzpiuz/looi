@@ -22,18 +22,28 @@ const bookmarkStyle: React.CSSProperties = {
 const linkStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     gap: '8px',
     color: '#f1f1f1',
     fontWeight: 600,
     fontSize: '0.83rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
     textDecoration: 'none',
     margin: '5px 0 0 0',
     textAlign: 'center',
-    maxWidth: '80px',
+    width: '100%',
     transition: 'color 0.1s ease',
+};
+
+const bookmarkNameStyle: React.CSSProperties = {
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordBreak: 'break-word',
+    lineHeight: '1.3',
+    maxWidth: '100%',
+    textAlign: 'center',
 };
 
 const draggableStyle: React.CSSProperties = {
@@ -131,7 +141,9 @@ const BookmarkDiv: React.FC<{
                                 height={44}
                                 style={imageStyle}
                             />
-                            {bookmark.name}
+                            <span style={bookmarkNameStyle}>
+                                {bookmark.name}
+                            </span>
                         </a>
                         <div ref={wrapperRef}>
                             <div
