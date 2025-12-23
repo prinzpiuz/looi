@@ -1,18 +1,19 @@
 import { typedWindow, BrowserAPI, BrowserType } from './types';
-
-export let browser: typeof import('webextension-polyfill') | null = null;
 export const ext: BrowserAPI | undefined =
     typedWindow.browser || typedWindow.chrome;
 
-try {
-    /* eslint-disable @typescript-eslint/no-require-imports */
-    browser = require('webextension-polyfill');
-} catch {
-    // eslint-disable-next-line no-undef
-    console.warn(
-        'webextension-polyfill is not available — running in non-extension env?',
-    );
-}
+export let browser: typeof import('webextension-polyfill') | null = null;
+
+void (async () => {
+    try {
+        browser = await import('webextension-polyfill');
+    } catch {
+        // eslint-disable-next-line no-undef
+        console.warn(
+            'webextension-polyfill is not available — running in non-extension env?',
+        );
+    }
+})();
 
 export const getBrowserType = (): BrowserType => {
     const userAgent = navigator.userAgent.toLowerCase();
