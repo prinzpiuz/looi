@@ -1,3 +1,4 @@
+/* eslint import/no-unresolved: "off" */
 import js from '@eslint/js';
 import reactPlugin from 'eslint-plugin-react';
 import importPlugin from 'eslint-plugin-import';
@@ -68,6 +69,7 @@ export default [
             ...reactPlugin.configs.recommended.rules,
             'react/react-in-jsx-scope': 'off',
             'react/prop-types': 'off',
+            '@typescript-eslint/no-require-imports': 'error',
         },
         settings: {
             react: {
@@ -86,7 +88,33 @@ export default [
         },
     },
 
-    // 3. Import plugin rules (for both JS and TS)
+    // 3. JavaScript files (Node.js environment)
+    {
+        files: ['**/*.js'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: {
+                console: 'readonly',
+                process: 'readonly',
+                __dirname: 'readonly',
+                require: 'readonly',
+                module: 'readonly',
+                exports: 'readonly',
+                global: 'readonly',
+                Buffer: 'readonly',
+                setTimeout: 'readonly',
+                clearTimeout: 'readonly',
+                setInterval: 'readonly',
+                clearInterval: 'readonly',
+            },
+        },
+        rules: {
+            'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        },
+    },
+
+    // 4. Import plugin rules (for both JS and TS)
     {
         plugins: {
             import: importPlugin,
