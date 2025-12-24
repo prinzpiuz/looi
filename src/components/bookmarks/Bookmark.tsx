@@ -7,6 +7,7 @@ import PopUpMenu from './PopUpMenu';
 import BookmarkForm from './BookmarkForm';
 
 const bookmarkStyle: React.CSSProperties = {
+    position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -22,23 +23,34 @@ const bookmarkStyle: React.CSSProperties = {
 const linkStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     gap: '8px',
     color: '#f1f1f1',
     fontWeight: 600,
     fontSize: '0.83rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
     textDecoration: 'none',
     margin: '5px 0 0 0',
     textAlign: 'center',
-    maxWidth: '80px',
+    width: '100%',
     transition: 'color 0.1s ease',
+};
+
+const bookmarkNameStyle: React.CSSProperties = {
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordBreak: 'break-word',
+    lineHeight: '1.3',
+    maxWidth: '100%',
+    textAlign: 'center',
 };
 
 const draggableStyle: React.CSSProperties = {
     width: 'auto !important',
     display: 'inline-block',
+    pointerEvents: 'auto',
 };
 
 const moreIconStyle: React.CSSProperties = {
@@ -54,6 +66,12 @@ const imageStyle: React.CSSProperties = {
     background: 'rgba(255,255,255,0.08)',
     boxShadow: '0 1.5px 7px 0 rgba(0,0,0,0.08)',
 };
+
+const getDraggableStyle = (isMenuOpen: boolean): React.CSSProperties => ({
+    ...draggableStyle,
+    position: 'relative' as const,
+    zIndex: isMenuOpen ? 1000 : 1,
+});
 
 const BookmarkDiv: React.FC<{
     bookmark: Bookmark;
@@ -97,7 +115,11 @@ const BookmarkDiv: React.FC<{
                 onStop={handleStop}
                 bounds="#root"
             >
-                <div ref={nodeRef} tabIndex={index} style={draggableStyle}>
+                <div
+                    ref={nodeRef}
+                    tabIndex={index}
+                    style={getDraggableStyle(menuOpen)}
+                >
                     <div
                         style={bookmarkDivStyle}
                         onMouseEnter={(e) => {
@@ -131,7 +153,9 @@ const BookmarkDiv: React.FC<{
                                 height={44}
                                 style={imageStyle}
                             />
-                            {bookmark.name}
+                            <span style={bookmarkNameStyle}>
+                                {bookmark.name}
+                            </span>
                         </a>
                         <div ref={wrapperRef}>
                             <div

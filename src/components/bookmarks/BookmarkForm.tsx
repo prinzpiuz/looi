@@ -127,6 +127,24 @@ const headerStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
+const getCenteredPosition = (): { x: number; y: number } => {
+    const bookmarkWidth = 80;
+    const bookmarkHeight = 70;
+
+    // Calculate center of viewport
+    const centerX = Math.round((window.innerWidth - bookmarkWidth) / 2);
+    const centerY = Math.round((window.innerHeight - bookmarkHeight) / 2);
+
+    // Add small random offset to prevent exact stacking when adding multiple bookmarks
+    const offsetX = Math.round((Math.random() - 0.5) * 100);
+    const offsetY = Math.round((Math.random() - 0.5) * 100);
+
+    return {
+        x: centerX + offsetX,
+        y: centerY + offsetY,
+    };
+};
+
 const BookmarkForm: React.FC<BookmarkFormProps> = ({
     onCancel,
     showBookmarkForm,
@@ -184,6 +202,7 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
                 url: normalizedUrl,
                 name: name || url,
                 icon: finalIcon,
+                position: getCenteredPosition(),
             };
             void addBookmark(bookmark);
         }
