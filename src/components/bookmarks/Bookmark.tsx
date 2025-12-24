@@ -7,6 +7,7 @@ import PopUpMenu from './PopUpMenu';
 import BookmarkForm from './BookmarkForm';
 
 const bookmarkStyle: React.CSSProperties = {
+    position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -49,6 +50,7 @@ const bookmarkNameStyle: React.CSSProperties = {
 const draggableStyle: React.CSSProperties = {
     width: 'auto !important',
     display: 'inline-block',
+    pointerEvents: 'auto',
 };
 
 const moreIconStyle: React.CSSProperties = {
