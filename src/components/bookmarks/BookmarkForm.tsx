@@ -1,8 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from 'react-icons/fa';
 import { Bookmark, BookmarkFormProps } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
 import { removeProtocol } from '../../utils/utils';
+
+const overlayStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1040,
+};
 
 const inputWrapperStyle: React.CSSProperties = {
     position: 'relative',
@@ -27,13 +38,12 @@ const inputStyle: React.CSSProperties = {
     outline: 'none',
     fontSize: 15,
     background: 'rgba(248,248,255,0.84)',
-    //   color: "#194",
     boxShadow: '0 2px 7px rgba(111,135,246,0.06)',
     transition: 'box-shadow .17s, outline .14s',
     marginTop: 3,
 };
 
-const iconStyle = {
+const iconStyle: React.CSSProperties = {
     position: 'absolute',
     left: 15,
     top: 18,
@@ -79,13 +89,13 @@ const actionButtonStyle: React.CSSProperties = {
     transition: 'background .14s, color .14s, box-shadow .13s',
 };
 
-const cancelButtonStyle = {
+const cancelButtonStyle: React.CSSProperties = {
     ...actionButtonStyle,
     background: 'rgba(228,234,254,0.83)',
     color: '#000000',
 };
 
-const addButtonStyle = {
+const addButtonStyle: React.CSSProperties = {
     ...actionButtonStyle,
     background: 'linear-gradient(90deg,#2f82e4,#4559f9)',
     color: '#162242',
@@ -131,11 +141,9 @@ const getCenteredPosition = (): { x: number; y: number } => {
     const bookmarkWidth = 80;
     const bookmarkHeight = 70;
 
-    // Calculate center of viewport
     const centerX = Math.round((window.innerWidth - bookmarkWidth) / 2);
     const centerY = Math.round((window.innerHeight - bookmarkHeight) / 2);
 
-    // Add small random offset to prevent exact stacking when adding multiple bookmarks
     const offsetX = Math.round((Math.random() - 0.5) * 100);
     const offsetY = Math.round((Math.random() - 0.5) * 100);
 
@@ -160,6 +168,8 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
     const [error, setError] = useState<string | null>(null);
 
     const firstInput = useRef<HTMLInputElement>(null);
+    const modalRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         setUrl(initialData.url || '');
         setName(initialData.name || '');
@@ -169,12 +179,30 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         }
     }, [initialData.url, initialData.name, initialData.icon, showBookmarkForm]);
 
+    // Handle Escape key to close
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && showBookmarkForm) {
+                handleCancel();
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [showBookmarkForm]);
+
     const handleCancel = () => {
         onCancel(false);
         setUrl(initialData.url || '');
         setName(initialData.name || '');
         setIcon(initialData.icon || '');
         setError(null);
+    };
+
+    const handleOverlayClick = (e: React.MouseEvent) => {
+        // Close if clicking the overlay (not the modal itself)
+        if (e.target === e.currentTarget) {
+            handleCancel();
+        }
     };
 
     const handleSubmit = () => {
@@ -223,7 +251,7 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         color: url ? '#1d2a49' : '#92a0c3',
     };
 
-    const iconabelStyle: React.CSSProperties = {
+    const iconLabelStyle: React.CSSProperties = {
         ...labelStyle,
         top: icon ? 3 : 13,
         fontSize: icon ? 12 : 14,
@@ -238,79 +266,90 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
 
     if (!showBookmarkForm) return null;
 
-    return (
-        <div style={modalStyle}>
-            <button
-                type="button"
-                aria-label="Close"
-                style={closeIconStyle}
-                onClick={handleCancel}
+    // Use Portal to render at document body level
+    const modalContent = (
+        <div style={overlayStyle} onClick={handleOverlayClick}>
+            <div
+                ref={modalRef}
+                style={modalStyle}
+                onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
             >
-                <FaTimes />
-            </button>
-            <h2 style={headerStyle}>Add Bookmark</h2>
-            <div style={inputWrapperStyle}>
-                <FaFont style={iconStyle} />
-                <input
-                    ref={firstInput}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    style={allInputStyle}
-                    placeholder=" "
-                    autoComplete="off"
-                />
-                <label style={nameLabelStyle}>Name</label>
-            </div>
-            <div style={inputWrapperStyle}>
-                <FaLink style={iconStyle} />
-                <input
-                    value={url}
-                    onChange={(e) => {
-                        setUrl(e.target.value);
-                        if (error) setError(null);
-                    }}
-                    style={allInputStyle}
-                    placeholder=" "
-                    autoComplete="off"
-                    inputMode="url"
-                />
-                <label style={urlLabelStyle}>URL</label>
-            </div>
-            <div style={inputWrapperStyle}>
-                <FaImage style={iconStyle} />
-                <input
-                    value={icon}
-                    onChange={(e) => setIcon(e.target.value)}
-                    style={inputStyle}
-                    placeholder=" "
-                    autoComplete="off"
-                    inputMode="url"
-                />
-                <label style={iconabelStyle}>Icon URL (optional)</label>
-            </div>
-
-            {error && <div style={errorDivStyle}>{error}</div>}
-
-            <div style={buttonBarStyle}>
                 <button
                     type="button"
-                    style={cancelButtonStyle}
+                    aria-label="Close"
+                    style={closeIconStyle}
                     onClick={handleCancel}
                 >
-                    Cancel
+                    <FaTimes />
                 </button>
-                <button
-                    type="button"
-                    style={addButtonStyle}
-                    onClick={handleSubmit}
-                    disabled={!url}
-                >
-                    <FaPlus style={AddIconStyle} />
-                    {isEdit ? 'Update' : 'Add'}
-                </button>
+                <h2 style={headerStyle}>
+                    {isEdit ? 'Edit Bookmark' : 'Add Bookmark'}
+                </h2>
+                <div style={inputWrapperStyle}>
+                    <FaFont style={iconStyle} />
+                    <input
+                        ref={firstInput}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={allInputStyle}
+                        placeholder=" "
+                        autoComplete="off"
+                    />
+                    <label style={nameLabelStyle}>Name</label>
+                </div>
+                <div style={inputWrapperStyle}>
+                    <FaLink style={iconStyle} />
+                    <input
+                        value={url}
+                        onChange={(e) => {
+                            setUrl(e.target.value);
+                            if (error) setError(null);
+                        }}
+                        style={allInputStyle}
+                        placeholder=" "
+                        autoComplete="off"
+                        inputMode="url"
+                    />
+                    <label style={urlLabelStyle}>URL</label>
+                </div>
+                <div style={inputWrapperStyle}>
+                    <FaImage style={iconStyle} />
+                    <input
+                        value={icon}
+                        onChange={(e) => setIcon(e.target.value)}
+                        style={inputStyle}
+                        placeholder=" "
+                        autoComplete="off"
+                        inputMode="url"
+                    />
+                    <label style={iconLabelStyle}>Icon URL (optional)</label>
+                </div>
+
+                {error && <div style={errorDivStyle}>{error}</div>}
+
+                <div style={buttonBarStyle}>
+                    <button
+                        type="button"
+                        style={cancelButtonStyle}
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        style={addButtonStyle}
+                        onClick={handleSubmit}
+                        disabled={!url}
+                    >
+                        <FaPlus style={AddIconStyle} />
+                        {isEdit ? 'Update' : 'Add'}
+                    </button>
+                </div>
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };
 
 export default BookmarkForm;
