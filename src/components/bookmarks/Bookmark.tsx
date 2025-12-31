@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { FaEllipsis } from 'react-icons/fa6';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
-import { Bookmark } from '../../utils/types';
+import { Bookmark, Position } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
 import PopUpMenu from './PopUpMenu';
 import BookmarkForm from './BookmarkForm';
+import { findValidPosition } from './utils';
 
 const bookmarkStyle: React.CSSProperties = {
     position: 'absolute',
@@ -79,6 +80,9 @@ const BookmarkDiv: React.FC<{
 }> = ({ bookmark, index }) => {
     const nodeRef = useRef(null);
     const { settings, updateBookmark } = useSettings();
+    const originalPositionRef = useRef<Position>(
+        bookmark.position || { x: 0, y: 0 },
+    );
     const [position, setPosition] = useState(
         bookmark.position || { x: 0, y: 0 },
     );
@@ -88,15 +92,39 @@ const BookmarkDiv: React.FC<{
 
     const toggleMenu = () => setMenuOpen((open) => !open);
 
-    const handleStop = (_: DraggableEvent, data: DraggableData) => {
-        setPosition({ x: data.x, y: data.y });
-        void updateBookmark(bookmark.id, {
-            position: {
-                x: data.x,
-                y: data.y,
-            },
-        });
-    };
+    const handleStop = useCallback(
+        (_: DraggableEvent, data: DraggableData) => {
+            const newPos: Position = { x: data.x, y: data.y };
+
+            // Get fresh bookmarks from settings
+            const currentBookmarks = settings?.bookmarks || [];
+
+            // Check for collision and find valid position
+            const validPosition = findValidPosition(
+                newPos,
+                originalPositionRef.current,
+                bookmark.id,
+                currentBookmarks,
+            );
+
+            // Update position
+            setPosition(validPosition);
+
+            // Update the original position ref for future drags
+            originalPositionRef.current = validPosition;
+
+            // Persist to storage
+            void updateBookmark(bookmark.id, {
+                position: validPosition,
+            });
+        },
+        [bookmark.id, settings?.bookmarks, updateBookmark],
+    );
+
+    const handleStart = useCallback(() => {
+        // Store current position before dragging starts
+        originalPositionRef.current = position;
+    }, [position]);
 
     const bookmarkBackgroundColor = settings?.bgColor;
 
@@ -112,6 +140,7 @@ const BookmarkDiv: React.FC<{
                 key={bookmark.id}
                 nodeRef={nodeRef}
                 position={position}
+                onStart={handleStart}
                 onStop={handleStop}
                 bounds="#root"
             >

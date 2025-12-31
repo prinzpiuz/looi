@@ -4,6 +4,7 @@ import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from 'react-icons/fa';
 import { Bookmark, BookmarkFormProps } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
 import { removeProtocol } from '../../utils/utils';
+// import { findAvailablePosition } from './utils';
 
 const overlayStyle: React.CSSProperties = {
     position: 'fixed',
@@ -137,22 +138,6 @@ const headerStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
-const getCenteredPosition = (): { x: number; y: number } => {
-    const bookmarkWidth = 80;
-    const bookmarkHeight = 70;
-
-    const centerX = Math.round((window.innerWidth - bookmarkWidth) / 2);
-    const centerY = Math.round((window.innerHeight - bookmarkHeight) / 2);
-
-    const offsetX = Math.round((Math.random() - 0.5) * 100);
-    const offsetY = Math.round((Math.random() - 0.5) * 100);
-
-    return {
-        x: centerX + offsetX,
-        y: centerY + offsetY,
-    };
-};
-
 const BookmarkForm: React.FC<BookmarkFormProps> = ({
     onCancel,
     showBookmarkForm,
@@ -225,12 +210,15 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
                 icon: finalIcon,
             });
         } else {
+            // const existingBookmarks = settings?.bookmarks || [];
+            // const position = findAvailablePosition(existingBookmarks);
+
             const bookmark: Bookmark = {
                 id: crypto.randomUUID(),
                 url: normalizedUrl,
                 name: name || url,
                 icon: finalIcon,
-                position: getCenteredPosition(),
+                //   position: position,
             };
             void addBookmark(bookmark);
         }
