@@ -1,10 +1,15 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { FaEllipsis } from 'react-icons/fa6';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
-import { Bookmark } from '../../utils/types';
+import { BookmarkDivProps, Position } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
 import PopUpMenu from './PopUpMenu';
 import BookmarkForm from './BookmarkForm';
+import {
+    gridToPixel,
+    pixelToGrid,
+    getCellOccupant,
+} from '../../utils/gridUtils';
 
 const bookmarkStyle: React.CSSProperties = {
     position: 'absolute',
@@ -47,6 +52,17 @@ const bookmarkNameStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
+const swapTargetStyle: React.CSSProperties = {
+    border: '2px solid #4dabf7',
+    boxShadow: '0 0 12px 2px rgba(77, 171, 247, 0.5)',
+};
+
+const draggingStyle: React.CSSProperties = {
+    opacity: 0.8,
+    transform: 'scale(1.05)',
+    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+};
+
 const draggableStyle: React.CSSProperties = {
     width: 'auto !important',
     display: 'inline-block',
@@ -73,37 +89,95 @@ const getDraggableStyle = (isMenuOpen: boolean): React.CSSProperties => ({
     zIndex: isMenuOpen ? 1000 : 1,
 });
 
-const BookmarkDiv: React.FC<{
-    bookmark: Bookmark;
-    index: number;
-}> = ({ bookmark, index }) => {
+const BookmarkDiv: React.FC<BookmarkDivProps> = ({
+    bookmark,
+    index,
+    isBeingDragged,
+    isSwapTarget,
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+}) => {
     const nodeRef = useRef(null);
     const { settings, updateBookmark } = useSettings();
-    const [position, setPosition] = useState(
-        bookmark.position || { x: 0, y: 0 },
+
+    // Store grid position and convert to pixels for rendering
+    const gridPosition = bookmark.position || { x: 0, y: 0 };
+    const [pixelPosition, setPixelPosition] = useState<Position>(() =>
+        gridToPixel(gridPosition),
     );
+
+    const originalGridPosRef = useRef<Position>(gridPosition);
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [showBookmarkForm, setShowBookmarkForm] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => setMenuOpen((open) => !open);
 
-    const handleStop = (_: DraggableEvent, data: DraggableData) => {
-        setPosition({ x: data.x, y: data.y });
-        void updateBookmark(bookmark.id, {
-            position: {
-                x: data.x,
-                y: data.y,
-            },
-        });
-    };
+    const handleStart = useCallback(() => {
+        originalGridPosRef.current = bookmark.position || { x: 0, y: 0 };
+        onDragStart(bookmark.id);
+    }, [bookmark.position, bookmark.id, onDragStart]);
+
+    const handleDrag = useCallback(
+        (_: DraggableEvent, data: DraggableData) => {
+            const currentPixelPos: Position = { x: data.x, y: data.y };
+            const currentGridPos = pixelToGrid(currentPixelPos);
+            onDragMove(currentGridPos, bookmark.id);
+        },
+        [bookmark.id, onDragMove],
+    );
+
+    const handleStop = useCallback(
+        (_: DraggableEvent, data: DraggableData) => {
+            const dropPixelPos: Position = { x: data.x, y: data.y };
+            const newGridPos = pixelToGrid(dropPixelPos);
+            const currentBookmarks = settings?.bookmarks || [];
+
+            // Check if target cell is occupied
+            const occupantId = getCellOccupant(
+                newGridPos,
+                currentBookmarks,
+                bookmark.id,
+            );
+
+            if (occupantId) {
+                void updateBookmark(bookmark.id, {
+                    position: bookmark.position,
+                });
+                onDragEnd();
+                return;
+            }
+
+            const newPixelPos = gridToPixel(newGridPos);
+            setPixelPosition(newPixelPos);
+
+            void updateBookmark(bookmark.id, {
+                position: newGridPos,
+            });
+
+            onDragEnd();
+        },
+        [bookmark.id, settings?.bookmarks, updateBookmark],
+    );
+
+    const currentGridPos = bookmark.position || { x: 0, y: 0 };
+    const expectedPixelPos = gridToPixel(currentGridPos);
+    if (
+        pixelPosition.x !== expectedPixelPos.x ||
+        pixelPosition.y !== expectedPixelPos.y
+    ) {
+        setPixelPosition(expectedPixelPos);
+    }
 
     const bookmarkBackgroundColor = settings?.bgColor;
 
     const bookmarkDivStyle: React.CSSProperties = {
         ...bookmarkStyle,
-        ...bookmark.position,
         backgroundColor: bookmarkBackgroundColor,
+        ...(isSwapTarget ? swapTargetStyle : {}),
+        ...(isBeingDragged ? draggingStyle : {}),
     };
 
     return (
@@ -111,8 +185,10 @@ const BookmarkDiv: React.FC<{
             <Draggable
                 key={bookmark.id}
                 nodeRef={nodeRef}
-                position={position}
+                position={pixelPosition}
+                onStart={handleStart}
                 onStop={handleStop}
+                onDrag={handleDrag}
                 bounds="#root"
             >
                 <div

@@ -22,13 +22,13 @@ export const loadDefaultSettings: Settings = {
             id: 'calendar',
             name: 'Calendar',
             enabled: true,
-            position: { x: 100, y: 200 },
+            position: { x: 0, y: 0 },
         },
         todo: {
             id: 'todo',
             name: 'To-Do List',
             enabled: false,
-            position: { x: 300, y: 150 },
+            position: { x: 1, y: 0 },
         },
     },
 };

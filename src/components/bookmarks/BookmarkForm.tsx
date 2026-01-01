@@ -4,6 +4,7 @@ import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from 'react-icons/fa';
 import { Bookmark, BookmarkFormProps } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
 import { removeProtocol } from '../../utils/utils';
+import { findFirstEmptyCell } from '../../utils/gridUtils';
 
 const overlayStyle: React.CSSProperties = {
     position: 'fixed',
@@ -137,22 +138,6 @@ const headerStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
-const getCenteredPosition = (): { x: number; y: number } => {
-    const bookmarkWidth = 80;
-    const bookmarkHeight = 70;
-
-    const centerX = Math.round((window.innerWidth - bookmarkWidth) / 2);
-    const centerY = Math.round((window.innerHeight - bookmarkHeight) / 2);
-
-    const offsetX = Math.round((Math.random() - 0.5) * 100);
-    const offsetY = Math.round((Math.random() - 0.5) * 100);
-
-    return {
-        x: centerX + offsetX,
-        y: centerY + offsetY,
-    };
-};
-
 const BookmarkForm: React.FC<BookmarkFormProps> = ({
     onCancel,
     showBookmarkForm,
@@ -161,7 +146,7 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
     bookmarkId,
 }) => {
     const isEdit = mode === 'edit';
-    const { addBookmark, updateBookmark } = useSettings();
+    const { settings, addBookmark, updateBookmark } = useSettings();
     const [url, setUrl] = useState(initialData.url || '');
     const [name, setName] = useState(initialData.name || '');
     const [icon, setIcon] = useState(initialData.icon || '');
@@ -225,12 +210,16 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
                 icon: finalIcon,
             });
         } else {
+            // Find first empty grid cell
+            const existingBookmarks = settings?.bookmarks || [];
+            const gridPosition = findFirstEmptyCell(existingBookmarks);
+
             const bookmark: Bookmark = {
                 id: crypto.randomUUID(),
                 url: normalizedUrl,
                 name: name || url,
                 icon: finalIcon,
-                position: getCenteredPosition(),
+                position: gridPosition,
             };
             void addBookmark(bookmark);
         }

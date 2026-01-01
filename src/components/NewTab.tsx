@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import SettingsPanel from './settings/SetttingsPanel';
 import AddBookmarkButton from './bookmarks/AddBmButton';
-import Bookmarks from './bookmarks/Bookmarks';
+import GenerateBookmarks from './bookmarks/GenerateBookmarks';
 import BookmarkForm from './bookmarks/BookmarkForm';
 import DraggableWidget from './widgets/DraggableWidget';
 import { useSettings } from '../hooks/settingsContext';
@@ -47,7 +47,7 @@ const NewTabPage: React.FC = () => {
                 if (!config.enabled) return null;
                 return <DraggableWidget key={id} id={id} config={config} />;
             })}
-            <Bookmarks />
+            <GenerateBookmarks />
             <BookmarkForm
                 showBookmarkForm={showBookmarkForm}
                 onCancel={setShowBookmarkForm}

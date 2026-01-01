@@ -6,6 +6,18 @@ export interface Position {
     y: number;
 }
 
+export interface DragState {
+    isDragging: boolean;
+    draggingId: string | null;
+    hoverGridPos: Position | null;
+    hoveredBookmarkId: string | null;
+}
+
+export interface Grid {
+    cols: number;
+    rows: number;
+}
+
 export interface Bookmark {
     id: string;
     url: string;
@@ -69,6 +81,16 @@ export interface BookmarkFormProps {
     mode: 'add' | 'edit';
     onCancel: React.Dispatch<React.SetStateAction<boolean>>;
     showBookmarkForm: boolean;
+}
+
+export interface BookmarkDivProps {
+    bookmark: Bookmark;
+    index: number;
+    isBeingDragged: boolean;
+    isSwapTarget: boolean;
+    onDragStart: (bookmarkId: string) => void;
+    onDragMove: (gridPos: Position, draggingId: string) => void;
+    onDragEnd: () => void;
 }
 
 export interface WidgetProps {
