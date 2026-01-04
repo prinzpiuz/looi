@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useSettings } from '../../hooks/settingsContext';
 import { PopUpMenuProps } from '../../utils/types';
+import { useSettings } from '../../hooks/settingsContext';
 
 const popupMenuStyle: React.CSSProperties = {
     position: 'absolute',
@@ -9,7 +9,7 @@ const popupMenuStyle: React.CSSProperties = {
     background: 'rgba(28, 28, 28, 0.95)',
     borderRadius: 8,
     boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-    zIndex: 100,
+    zIndex: 10000,
     minWidth: 110,
     padding: '6px 0',
 };

@@ -1,15 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import { GitHubSyncSettings, SyncStatus } from '../utils/types';
 import { getToken, removeToken } from '../utils/github';
+import { DEFAULT_GITHUB_SYNC_SETTINGS } from '../utils/constants';
 import { useSettings } from './settingsContext';
-import { defaultGithubSettings } from '../utils/manageSettings';
 
 export const useGitHubSync = () => {
     const { settings, updateGithubSettings } = useSettings();
 
     const [githubSyncSettings, setGithubSyncSettings] =
         useState<GitHubSyncSettings>(
-            settings?.githubSync || defaultGithubSettings,
+            settings?.githubSync || DEFAULT_GITHUB_SYNC_SETTINGS,
         );
     const [status, setStatus] = useState<SyncStatus>('idle');
     const [token, setToken] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const useGitHubSync = () => {
 
     const resetToken = useCallback(() => {
         void removeToken();
-        saveSettings(defaultGithubSettings);
+        saveSettings(DEFAULT_GITHUB_SYNC_SETTINGS);
     }, [saveSettings]);
 
     const syncNow = async () => {

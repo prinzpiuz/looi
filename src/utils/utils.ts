@@ -1,4 +1,5 @@
 import { isChrome, isFirefox } from './browserApi';
+import { TOKEN_EXPIRY_TIME } from './constants';
 import {
     GithubAPIResponse,
     GithubUnAuthorizedResponse,
@@ -36,6 +37,5 @@ export const closeTabAndOpen = () => {
 
 export const isTokenExpired = (storedAt: number) => {
     const now = Date.now();
-    const expiryTime = 8 * 60 * 60 * 1000; // 8 hours in ms
-    return now - storedAt > expiryTime;
+    return now - storedAt > TOKEN_EXPIRY_TIME;
 };

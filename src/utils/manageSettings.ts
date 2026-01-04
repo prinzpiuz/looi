@@ -1,37 +1,8 @@
 import { ext } from './browserApi';
+import { LOAD_DEFAULT_SETTINGS } from './constants';
 import { createOrUpdateLooiGist } from './github';
 import { Settings, GitHubSyncSettings } from './types';
 import { isAPIResponse } from './utils';
-
-export const defaultGithubSettings: GitHubSyncSettings = {
-    lastSync: null,
-    autoSync: true,
-    publicGist: false,
-    tokenSaved: false,
-    gistId: undefined,
-    storedAt: 0,
-};
-
-export const loadDefaultSettings: Settings = {
-    bgColor: '#000000',
-    bgUrl: '',
-    githubSync: defaultGithubSettings,
-    bookmarks: [],
-    widgetConfigs: {
-        calendar: {
-            id: 'calendar',
-            name: 'Calendar',
-            enabled: true,
-            position: { x: 100, y: 200 },
-        },
-        todo: {
-            id: 'todo',
-            name: 'To-Do List',
-            enabled: false,
-            position: { x: 300, y: 150 },
-        },
-    },
-};
 
 /**
  * Checks if GitHub sync should be performed based on settings.
@@ -88,15 +59,15 @@ export const updateSettings = async (
         bgColor:
             newSettings.bgColor ??
             currentSettings.bgColor ??
-            loadDefaultSettings.bgColor,
+            LOAD_DEFAULT_SETTINGS.bgColor,
         bgUrl:
             newSettings.bgUrl ??
             currentSettings.bgUrl ??
-            loadDefaultSettings.bgUrl,
+            LOAD_DEFAULT_SETTINGS.bgUrl,
         githubSync:
             newSettings.githubSync ??
             currentSettings.githubSync ??
-            loadDefaultSettings.githubSync,
+            LOAD_DEFAULT_SETTINGS.githubSync,
         ...(newSettings.bookmarks !== undefined
             ? { bookmarks: newSettings.bookmarks }
             : currentSettings.bookmarks
@@ -105,7 +76,7 @@ export const updateSettings = async (
         widgetConfigs:
             newSettings.widgetConfigs ??
             currentSettings.widgetConfigs ??
-            loadDefaultSettings.widgetConfigs,
+            LOAD_DEFAULT_SETTINGS.widgetConfigs,
         ...newSettings,
     };
     saveSettings(updatedSettings, setSettings);
@@ -113,16 +84,16 @@ export const updateSettings = async (
 };
 
 export const getSettings = async (): Promise<Settings> => {
-    if (!ext) return loadDefaultSettings;
+    if (!ext) return LOAD_DEFAULT_SETTINGS;
     const stored = await ext.storage.local.get('settings');
     if (stored.settings) {
         return stored.settings as Settings;
     } else {
-        ext.storage.local.set({ settings: loadDefaultSettings });
-        return loadDefaultSettings;
+        ext.storage.local.set({ settings: LOAD_DEFAULT_SETTINGS });
+        return LOAD_DEFAULT_SETTINGS;
     }
 };
 export const resetSettings = () => {
-    if (!ext) return loadDefaultSettings;
-    ext.storage.local.set({ settings: loadDefaultSettings });
+    if (!ext) return LOAD_DEFAULT_SETTINGS;
+    ext.storage.local.set({ settings: LOAD_DEFAULT_SETTINGS });
 };

@@ -6,6 +6,7 @@ import {
     SettingsContextType,
     GitHubSyncSettings,
 } from '../utils/types';
+import { LayoutItem } from 'react-grid-layout';
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
     undefined,
@@ -54,7 +55,13 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const removeBookmark = async (id: string) => {
         const updatedBookmarks = bookmarks.filter((bm) => bm.id !== id);
-        await updateAndPersistSettings({ bookmarks: updatedBookmarks });
+        const updatedLayouts = (settings?.bookmarkLayouts || []).filter(
+            (l) => l.i !== id,
+        );
+        await updateAndPersistSettings({
+            bookmarks: updatedBookmarks,
+            bookmarkLayouts: updatedLayouts,
+        });
     };
 
     const getBookmarkById = (id: string): Bookmark | undefined => {
@@ -93,9 +100,23 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 },
             },
         };
+        if (!enabled) {
+            updated.widgetLayouts = (settings.widgetLayouts || []).filter(
+                (l) => l.i !== id,
+            );
+        }
+
         await updateAndPersistSettings({
             widgetConfigs: updated.widgetConfigs,
         });
+    };
+
+    const updateWidgetLayouts = async (layouts: LayoutItem[]) => {
+        await updateAndPersistSettings({ widgetLayouts: layouts });
+    };
+
+    const updateBookmarkLayouts = async (layouts: LayoutItem[]) => {
+        await updateAndPersistSettings({ bookmarkLayouts: layouts });
     };
 
     const updateGithubSettings = async (
@@ -118,6 +139,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 updateBookmark,
                 removeBookmark,
                 getBookmarkById,
+                updateWidgetLayouts,
+                updateBookmarkLayouts,
                 updateWidgetPosition,
                 enableDisableWidget,
                 updateGithubSettings,

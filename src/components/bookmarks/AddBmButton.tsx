@@ -19,6 +19,7 @@ const buttonStyles: React.CSSProperties = {
     color: '#ffffff',
     cursor: 'pointer',
     fontSize: 23,
+    zIndex: 1000,
 };
 
 const iconStyle: React.CSSProperties = {
