@@ -41,11 +41,12 @@ const widgetAddButtonStyle: React.CSSProperties = {
 
 const AddWidget: React.FC = () => {
     const { settings, enableDisableWidget } = useSettings();
-    const widgetConfigs = settings?.widgetConfigs || {};
+    const widgetConfigs = settings?.widgetConfigs || [];
 
     return (
         <div style={widgetsDivStyle}>
-            {Object.entries(widgetConfigs).map(([id, config]) => {
+            {widgetConfigs.map((config) => {
+                const id = config.id;
                 if (!widgetIcons[id]) return null;
                 const WidgetIcon = widgetIcons[id];
                 const buttonText = config.enabled ? 'Remove' : 'Add';

@@ -3,6 +3,7 @@ import BookmarkForm from './BookmarkForm';
 import PopUpMenu from './PopUpMenu';
 import { BookmarkItemProps } from '../../utils/types';
 import { useState, useRef, forwardRef } from 'react';
+import { DEFAULT_HL_COLOR, DEFAULT_SCALE_FACTOR } from '../../utils/constants';
 
 const bookmarkStyle: React.CSSProperties = {
     display: 'flex',
@@ -87,9 +88,8 @@ const BookmarkItem: React.FC<BookmarkItemProps> = ({
                 className="bookmarks"
                 key={key}
                 onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.025)';
-                    e.currentTarget.style.backgroundColor =
-                        'rgba(22, 22, 22, 0.7)';
+                    e.currentTarget.style.transform = DEFAULT_SCALE_FACTOR;
+                    e.currentTarget.style.backgroundColor = DEFAULT_HL_COLOR;
                 }}
                 onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'scale(1)';

@@ -2,11 +2,6 @@
 import { CSSProperties } from 'react';
 import { LayoutItem } from 'react-grid-layout';
 
-export interface Position {
-    x: number;
-    y: number;
-}
-
 export interface Bookmark {
     id: string;
     url: string;
@@ -35,8 +30,8 @@ export interface Settings {
     bgUrl?: string;
     githubSync: GitHubSyncSettings;
     bookmarks?: Bookmark[];
-    widgetConfigs: Record<string, WidgetConfig>;
-    bookmarkLayouts?: LayoutItem[];
+    widgetConfigs: WidgetConfig[];
+    gridLayouts?: LayoutItem[];
 }
 
 export interface SettingsContextType {
@@ -46,8 +41,7 @@ export interface SettingsContextType {
     updateBookmark: (s: string, bm: Partial<Bookmark>) => Promise<void>;
     removeBookmark: (s: string) => Promise<void>;
     getBookmarkById: (s: string) => Bookmark | undefined;
-    updateBookmarkLayouts: (layouts: LayoutItem[]) => Promise<void>;
-    updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
+    updateGridLayouts: (layouts: LayoutItem[]) => Promise<void>;
     enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
     updateGithubSettings: (s: Partial<GitHubSyncSettings>) => Promise<void>;
     updateAndPersistSettings: (
@@ -76,10 +70,6 @@ export interface BookmarkFormProps {
     mode: 'add' | 'edit';
     onCancel: React.Dispatch<React.SetStateAction<boolean>>;
     showBookmarkForm: boolean;
-}
-
-export interface WidgetProps {
-    config: WidgetConfig;
 }
 
 export interface FoldableSectionProps {

@@ -17,6 +17,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
     const [settings, setSettings] = useState<Settings | null>(null);
     const bookmarks = settings?.bookmarks || [];
+    const widgetConfigs = settings?.widgetConfigs || [];
 
     useEffect(() => {
         const load = async () => {
@@ -55,12 +56,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const removeBookmark = async (id: string) => {
         const updatedBookmarks = bookmarks.filter((bm) => bm.id !== id);
-        const updatedLayouts = (settings?.bookmarkLayouts || []).filter(
+        const updatedLayouts = (settings?.gridLayouts || []).filter(
             (l) => l.i !== id,
         );
         await updateAndPersistSettings({
             bookmarks: updatedBookmarks,
-            bookmarkLayouts: updatedLayouts,
+            gridLayouts: updatedLayouts,
         });
     };
 
@@ -68,46 +69,16 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         return bookmarks.find((bm) => bm.id === id);
     };
 
-    const updateWidgetPosition = async (
-        id: string,
-        newPos: { x: number; y: number },
-    ) => {
-        if (!settings?.widgetConfigs?.[id]) return;
-        const updated = {
-            ...settings,
-            widgetConfigs: {
-                ...settings.widgetConfigs,
-                [id]: {
-                    ...settings.widgetConfigs[id],
-                    position: newPos,
-                },
-            },
-        };
-        await updateAndPersistSettings({
-            widgetConfigs: updated.widgetConfigs,
-        });
-    };
-
     const enableDisableWidget = async (id: string, enabled: boolean) => {
-        if (!settings?.widgetConfigs?.[id]) return;
-        const updated = {
-            ...settings,
-            widgetConfigs: {
-                ...settings.widgetConfigs,
-                [id]: {
-                    ...settings.widgetConfigs[id],
-                    enabled,
-                },
-            },
-        };
-
-        await updateAndPersistSettings({
-            widgetConfigs: updated.widgetConfigs,
-        });
+        if (!widgetConfigs) return;
+        const updatedWidgetConfigs = widgetConfigs.map((config) =>
+            config.id === id ? { ...config, enabled } : config,
+        );
+        await updateAndPersistSettings({ widgetConfigs: updatedWidgetConfigs });
     };
 
-    const updateBookmarkLayouts = async (layouts: LayoutItem[]) => {
-        await updateAndPersistSettings({ bookmarkLayouts: layouts });
+    const updateGridLayouts = async (layouts: LayoutItem[]) => {
+        await updateAndPersistSettings({ gridLayouts: layouts });
     };
 
     const updateGithubSettings = async (
@@ -130,8 +101,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 updateBookmark,
                 removeBookmark,
                 getBookmarkById,
-                updateBookmarkLayouts,
-                updateWidgetPosition,
+                updateGridLayouts,
                 enableDisableWidget,
                 updateGithubSettings,
                 updateAndPersistSettings,

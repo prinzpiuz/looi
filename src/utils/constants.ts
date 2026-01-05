@@ -2,6 +2,10 @@ import { GitHubSyncSettings, Settings } from './types';
 
 export const DEFAULT_BG_COLOR = 'rgba(0, 0, 0, 0.6)';
 
+export const DEFAULT_HL_COLOR = '#161616b3';
+
+export const DEFAULT_SCALE_FACTOR = 'scale(1.025)';
+
 export const TOKEN_EXPIRY_TIME = 8 * 60 * 60 * 1000;
 
 export const DEFAULT_GITHUB_SYNC_SETTINGS: GitHubSyncSettings = {
@@ -18,18 +22,18 @@ export const LOAD_DEFAULT_SETTINGS: Settings = {
     bgUrl: '',
     githubSync: DEFAULT_GITHUB_SYNC_SETTINGS,
     bookmarks: [],
-    widgetConfigs: {
-        calendar: {
+    widgetConfigs: [
+        {
             id: 'calendar',
             name: 'Calendar',
             enabled: true,
         },
-        todo: {
+        {
             id: 'todo',
             name: 'To-Do List',
             enabled: false,
         },
-    },
+    ],
 };
 
 export const GRID_CONFIG = {

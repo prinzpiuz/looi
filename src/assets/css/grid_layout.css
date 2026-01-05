@@ -1,9 +1,3 @@
-/* ============================================
-   React Grid Layout Custom Styles
-   Add this to your main CSS file or import it
-   ============================================ */
-
-/* Base grid layout styles (required) */
 .react-grid-layout {
     position: relative;
     transition: height 200ms ease;

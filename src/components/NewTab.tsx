@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import SettingsPanel from './settings/SetttingsPanel';
 import AddBookmarkButton from './bookmarks/AddBmButton';
-import BookmarkGrid from './bookmarks/BookmarkGrid';
+import Grid from './Grid';
 import BookmarkForm from './bookmarks/BookmarkForm';
 import { DEFAULT_BG_COLOR } from '../utils/constants';
 import { useSettings } from '../hooks/settingsContext';
@@ -58,7 +58,7 @@ const NewTabPage: React.FC = () => {
                     <AddBookmarkButton showBookmarkForm={setShowBookmarkForm} />
                 </div>
             </div>
-            <BookmarkGrid />
+            <Grid />
             <BookmarkForm
                 showBookmarkForm={showBookmarkForm}
                 onCancel={setShowBookmarkForm}
