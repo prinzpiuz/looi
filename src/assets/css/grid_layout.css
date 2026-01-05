@@ -126,11 +126,11 @@
 /* ============================================
    Bookmark Grid Specific Styles
    ============================================ */
-.bookmark-grid-layout {
-    min-height: 200px;
+.grid-layout {
+    min-height: 400px;
 }
 
-.bookmark-grid-layout .react-grid-item {
+.grid-layout .react-grid-item {
     overflow: visible; /* Allow popup menus to overflow */
 }
 
@@ -170,7 +170,7 @@
 }
 
 /* Grid item sizing, bookmark size */
-.react-grid-item {
+.bookmarks {
     width: 70px !important;
     height: 80px !important;
 }

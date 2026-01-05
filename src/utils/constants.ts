@@ -23,18 +23,16 @@ export const LOAD_DEFAULT_SETTINGS: Settings = {
             id: 'calendar',
             name: 'Calendar',
             enabled: true,
-            position: { x: 100, y: 200 },
         },
         todo: {
             id: 'todo',
             name: 'To-Do List',
             enabled: false,
-            position: { x: 300, y: 150 },
         },
     },
 };
 
-export const BOOKMARK_GRID_CONFIG = {
+export const GRID_CONFIG = {
     minItemWidth: 90, // Minimum width per bookmark in pixels
     maxItemWidth: 120, // Maximum width per bookmark
     rowHeight: 80,

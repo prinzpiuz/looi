@@ -3,7 +3,6 @@ import SettingsPanel from './settings/SetttingsPanel';
 import AddBookmarkButton from './bookmarks/AddBmButton';
 import BookmarkGrid from './bookmarks/BookmarkGrid';
 import BookmarkForm from './bookmarks/BookmarkForm';
-import LoadWidgets from './widgets/LoadWidgets';
 import { DEFAULT_BG_COLOR } from '../utils/constants';
 import { useSettings } from '../hooks/settingsContext';
 
@@ -59,7 +58,6 @@ const NewTabPage: React.FC = () => {
                     <AddBookmarkButton showBookmarkForm={setShowBookmarkForm} />
                 </div>
             </div>
-            <LoadWidgets />
             <BookmarkGrid />
             <BookmarkForm
                 showBookmarkForm={showBookmarkForm}

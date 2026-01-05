@@ -100,19 +100,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 },
             },
         };
-        if (!enabled) {
-            updated.widgetLayouts = (settings.widgetLayouts || []).filter(
-                (l) => l.i !== id,
-            );
-        }
 
         await updateAndPersistSettings({
             widgetConfigs: updated.widgetConfigs,
         });
-    };
-
-    const updateWidgetLayouts = async (layouts: LayoutItem[]) => {
-        await updateAndPersistSettings({ widgetLayouts: layouts });
     };
 
     const updateBookmarkLayouts = async (layouts: LayoutItem[]) => {
@@ -139,7 +130,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 updateBookmark,
                 removeBookmark,
                 getBookmarkById,
-                updateWidgetLayouts,
                 updateBookmarkLayouts,
                 updateWidgetPosition,
                 enableDisableWidget,

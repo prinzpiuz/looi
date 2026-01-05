@@ -1,21 +1,6 @@
 /// <reference types="chrome"/>
 import { CSSProperties } from 'react';
-import { Layout, LayoutItem } from 'react-grid-layout';
-
-export interface GridLayoutItem {
-    i: string; // Unique identifier (must match component key)
-    x: number; // X position in grid units
-    y: number; // Y position in grid units
-    w: number; // Width in grid units
-    h: number; // Height in grid units
-    minW?: number; // Minimum width
-    maxW?: number; // Maximum width
-    minH?: number; // Minimum height
-    maxH?: number; // Maximum height
-    static?: boolean; // If true, item cannot be moved/resized
-    isDraggable?: boolean;
-    isResizable?: boolean;
-}
+import { LayoutItem } from 'react-grid-layout';
 
 export interface Position {
     x: number;
@@ -27,16 +12,11 @@ export interface Bookmark {
     url: string;
     name: string;
     icon: string;
-    // CHANGED: Now uses grid layout instead of pixel position
-    layout?: LayoutItem;
-    // @deprecated - Keep for migration, will be removed
-    position?: Position;
 }
 
 export interface WidgetConfig {
     id: string;
     name: string;
-    position: Position;
     icon?: string;
     enabled: boolean;
 }
@@ -56,7 +36,6 @@ export interface Settings {
     githubSync: GitHubSyncSettings;
     bookmarks?: Bookmark[];
     widgetConfigs: Record<string, WidgetConfig>;
-    widgetLayouts?: LayoutItem[];
     bookmarkLayouts?: LayoutItem[];
 }
 
@@ -67,7 +46,6 @@ export interface SettingsContextType {
     updateBookmark: (s: string, bm: Partial<Bookmark>) => Promise<void>;
     removeBookmark: (s: string) => Promise<void>;
     getBookmarkById: (s: string) => Bookmark | undefined;
-    updateWidgetLayouts: (layouts: LayoutItem[]) => Promise<void>;
     updateBookmarkLayouts: (layouts: LayoutItem[]) => Promise<void>;
     updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
     enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
@@ -81,6 +59,7 @@ export interface SettingsContextType {
 export interface BookmarkItemProps {
     bookmark: Bookmark;
     bgColor: string;
+    key?: string;
 }
 
 export interface SettingsButtonProps {

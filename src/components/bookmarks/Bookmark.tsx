@@ -2,7 +2,7 @@ import { FaEllipsis } from 'react-icons/fa6';
 import BookmarkForm from './BookmarkForm';
 import PopUpMenu from './PopUpMenu';
 import { BookmarkItemProps } from '../../utils/types';
-import { useState, useRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 
 const bookmarkStyle: React.CSSProperties = {
     display: 'flex',
@@ -65,7 +65,11 @@ const itemStyle = (bgColor: string): React.CSSProperties => ({
     position: 'relative' as const,
 });
 
-const BookmarkItem: React.FC<BookmarkItemProps> = ({ bookmark, bgColor }) => {
+const BookmarkItem: React.FC<BookmarkItemProps> = ({
+    bookmark,
+    bgColor,
+    key,
+}) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [showBookmarkForm, setShowBookmarkForm] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -80,6 +84,8 @@ const BookmarkItem: React.FC<BookmarkItemProps> = ({ bookmark, bgColor }) => {
         <>
             <div
                 style={itemStyle(bgColor)}
+                className="bookmarks"
+                key={key}
                 onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'scale(1.025)';
                     e.currentTarget.style.backgroundColor =
