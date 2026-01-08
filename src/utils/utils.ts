@@ -39,3 +39,8 @@ export const isTokenExpired = (storedAt: number) => {
     const now = Date.now();
     return now - storedAt > TOKEN_EXPIRY_TIME;
 };
+
+export enum gridItemType {
+    BOOKMARK = 'bookmark',
+    WIDGET = 'widget',
+}

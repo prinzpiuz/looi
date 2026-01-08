@@ -3,11 +3,8 @@
     color: #fff;
     padding: 10px;
     border-radius: 8px;
-    width: 250px;
+    width: 410px;
     user-select: none;
-    transition:
-        background-color 0.3s ease,
-        transform 0.3s ease;
 }
 
 .todo-header {
@@ -43,14 +40,9 @@
     opacity: 0.6;
 }
 
-.todo-widget:hover {
-    background-color: rgb(0, 0, 0);
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
 .task-input {
     height: 30px;
+    width: 360px;
     border: none;
     border-radius: 5px;
     font-size: 1rem;

@@ -1,6 +1,7 @@
 /// <reference types="chrome"/>
 import { CSSProperties } from 'react';
 import { LayoutItem } from 'react-grid-layout';
+import { gridItemType } from './utils';
 
 export interface Bookmark {
     id: string;
@@ -9,11 +10,22 @@ export interface Bookmark {
     icon: string;
 }
 
+export interface WidgetSize {
+    w: number;
+    h: number;
+    minW?: number;
+    maxW?: number;
+    minH?: number;
+    maxH?: number;
+}
+
 export interface WidgetConfig {
     id: string;
     name: string;
     icon?: string;
     enabled: boolean;
+    size: WidgetSize;
+    isResizable: boolean;
 }
 
 export interface GitHubSyncSettings {
@@ -32,6 +44,16 @@ export interface Settings {
     bookmarks?: Bookmark[];
     widgetConfigs: WidgetConfig[];
     gridLayouts?: LayoutItem[];
+}
+
+export interface GridConfig {
+    cols: number;
+    rowHeight: number;
+}
+
+export interface GridItem {
+    id: string;
+    type: gridItemType;
 }
 
 export interface SettingsContextType {
@@ -53,7 +75,6 @@ export interface SettingsContextType {
 export interface BookmarkItemProps {
     bookmark: Bookmark;
     bgColor: string;
-    key?: string;
 }
 
 export interface SettingsButtonProps {

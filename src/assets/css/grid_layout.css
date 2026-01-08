@@ -13,7 +13,6 @@
     user-select: none;
 }
 
-/* Placeholder shown during drag */
 .react-grid-item.cssTransforms {
     transition-property: transform, width, height;
 }
@@ -34,20 +33,6 @@
     visibility: hidden;
 }
 
-/* Placeholder styling */
-.react-grid-item.react-grid-placeholder {
-    background: rgba(100, 149, 237, 0.3);
-    border-radius: 12px;
-    border: 2px dashed rgba(100, 149, 237, 0.6);
-    opacity: 1;
-    transition-duration: 100ms;
-    z-index: 2;
-    user-select: none;
-}
-
-/* ============================================
-   Resize Handle Styles
-   ============================================ */
 .react-resizable-handle {
     position: absolute;
     width: 20px;
@@ -65,61 +50,6 @@
     opacity: 1;
 }
 
-/* Southeast handle (bottom-right) - default */
-.react-resizable-handle-se {
-    bottom: 0;
-    right: 0;
-    cursor: se-resize;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPjxwYXRoIGQ9Ik02IDZIMFYwaDZ6IiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNikiLz48L3N2Zz4=');
-}
-
-/* Southwest handle (bottom-left) */
-.react-resizable-handle-sw {
-    bottom: 0;
-    left: 0;
-    cursor: sw-resize;
-    transform: rotate(90deg);
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPjxwYXRoIGQ9Ik02IDZIMFYwaDZ6IiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNikiLz48L3N2Zz4=');
-}
-
-/* Northeast handle (top-right) */
-.react-resizable-handle-ne {
-    top: 0;
-    right: 0;
-    cursor: ne-resize;
-    transform: rotate(180deg);
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPjxwYXRoIGQ9Ik02IDZIMFYwaDZ6IiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNikiLz48L3N2Zz4=');
-}
-
-/* Northwest handle (top-left) */
-.react-resizable-handle-nw {
-    top: 0;
-    left: 0;
-    cursor: nw-resize;
-    transform: rotate(270deg);
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPjxwYXRoIGQ9Ik02IDZIMFYwaDZ6IiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuNikiLz48L3N2Zz4=');
-}
-
-/* ============================================
-   Widget Grid Specific Styles
-   ============================================ */
-.widget-grid-layout {
-    min-height: 400px;
-}
-
-.widget-grid-layout .react-grid-item {
-    overflow: hidden;
-}
-
-/* Make widget content fill the grid item */
-.widget-grid-layout .react-grid-item > div {
-    width: 100%;
-    height: 100%;
-}
-
-/* ============================================
-   Bookmark Grid Specific Styles
-   ============================================ */
 .grid-layout {
     min-height: 400px;
 }
@@ -128,28 +58,10 @@
     overflow: visible; /* Allow popup menus to overflow */
 }
 
-/* ============================================
-   Responsive Adjustments (tablet/desktop focus)
-   ============================================ */
-
 @media (max-width: 768px) {
     .react-resizable-handle {
         width: 30px;
         height: 30px;
-    }
-}
-
-/* ============================================
-   Animation for grid items
-   ============================================ */
-@keyframes gridItemAppear {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
     }
 }
 
@@ -167,4 +79,17 @@
 .bookmarks {
     width: 70px !important;
     height: 80px !important;
+}
+/* Placeholder - HIDDEN by default */
+.react-grid-item.react-grid-placeholder {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0 !important;
+}
+
+.react-grid-item.react-draggable-dragging ~ .react-grid-placeholder {
+    opacity: 0.8 !important;
 }

@@ -1,4 +1,5 @@
 import { GitHubSyncSettings, Settings } from './types';
+import { defaultWidgetConfigs } from './widgetsRegistry';
 
 export const DEFAULT_BG_COLOR = 'rgba(0, 0, 0, 0.6)';
 
@@ -17,31 +18,30 @@ export const DEFAULT_GITHUB_SYNC_SETTINGS: GitHubSyncSettings = {
     storedAt: 0,
 };
 
+export const BOOKMARK_SIZE = {
+    w: 1,
+    h: 1,
+    minW: 1,
+    maxW: 1,
+    minH: 1,
+    maxH: 1,
+    isResizable: false,
+};
+
 export const LOAD_DEFAULT_SETTINGS: Settings = {
     bgColor: '#000000',
     bgUrl: '',
     githubSync: DEFAULT_GITHUB_SYNC_SETTINGS,
     bookmarks: [],
-    widgetConfigs: [
-        {
-            id: 'calendar',
-            name: 'Calendar',
-            enabled: true,
-        },
-        {
-            id: 'todo',
-            name: 'To-Do List',
-            enabled: false,
-        },
-    ],
+    widgetConfigs: defaultWidgetConfigs,
 };
 
 export const GRID_CONFIG = {
-    minItemWidth: 90, // Minimum width per bookmark in pixels
-    maxItemWidth: 120, // Maximum width per bookmark
+    minItemWidth: 90,
+    maxItemWidth: 120,
     rowHeight: 80,
     margin: [8, 8] as [number, number],
     containerPadding: [10, 10] as [number, number],
-    minCols: 4, // Minimum columns
-    maxCols: 16, // Maximum columns
+    minCols: 4,
+    maxCols: 16,
 };
