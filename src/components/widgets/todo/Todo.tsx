@@ -49,7 +49,6 @@ const TodoWidget: React.FC = () => {
         const container = listRef.current;
         if (!container) return;
 
-        // register all items as draggable + droppable
         const disposables = Array.from(container.children).map((child) => {
             const el = child as HTMLElement;
             const taskId = el.dataset.id;

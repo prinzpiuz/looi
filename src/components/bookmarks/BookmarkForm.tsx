@@ -251,7 +251,12 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
 
     // Use Portal to render at document body level
     const modalContent = (
-        <div style={overlayStyle} onClick={handleOverlayClick}>
+        <div
+            style={overlayStyle}
+            onClick={handleOverlayClick}
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+        >
             <div
                 ref={modalRef}
                 style={modalStyle}
