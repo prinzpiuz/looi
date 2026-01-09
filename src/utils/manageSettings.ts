@@ -78,6 +78,10 @@ export const updateSettings = async (
             currentSettings.widgetConfigs ??
             LOAD_DEFAULT_SETTINGS.widgetConfigs,
         ...newSettings,
+        widgetData:
+            newSettings.widgetData ??
+            currentSettings.widgetData ??
+            LOAD_DEFAULT_SETTINGS.widgetData,
     };
     saveSettings(updatedSettings, setSettings);
     return updatedSettings;

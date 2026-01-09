@@ -1,10 +1,17 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    useCallback,
+} from 'react';
 import { getSettings, updateSettings } from '../utils/manageSettings';
 import {
     Settings,
     Bookmark,
     SettingsContextType,
     GitHubSyncSettings,
+    VersionedWidgetData,
 } from '../utils/types';
 import { LayoutItem } from 'react-grid-layout';
 
@@ -22,6 +29,9 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     useEffect(() => {
         const load = async () => {
             const s = await getSettings();
+            if (!s.widgetData) {
+                s.widgetData = {};
+            }
             setSettings(s);
         };
         void load();
@@ -92,6 +102,44 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         await updateAndPersistSettings({ githubSync: updated });
     };
 
+    const updateWidgetData = useCallback(
+        async (widgetId: string, data: VersionedWidgetData) => {
+            if (!settings) return;
+
+            const updatedWidgetData = {
+                ...settings.widgetData,
+                [widgetId]: data,
+            };
+
+            await updateAndPersistSettings({ widgetData: updatedWidgetData });
+        },
+        [settings],
+    );
+
+    const getWidgetData = useCallback(
+        <T,>(widgetId: string): VersionedWidgetData<T> | undefined => {
+            if (!settings?.widgetData) return undefined;
+            return settings.widgetData[widgetId] as
+                | VersionedWidgetData<T>
+                | undefined;
+        },
+        [settings],
+    );
+
+    const clearWidgetData = useCallback(
+        async (widgetId: string) => {
+            if (!settings?.widgetData) return;
+
+            const { [widgetId]: _, ...rest } = settings.widgetData;
+            await updateAndPersistSettings({ widgetData: rest });
+        },
+        [settings],
+    );
+
+    const clearAllWidgetData = useCallback(async () => {
+        await updateAndPersistSettings({ widgetData: {} });
+    }, []);
+
     return (
         <SettingsContext.Provider
             value={{
@@ -105,6 +153,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
                 enableDisableWidget,
                 updateGithubSettings,
                 updateAndPersistSettings,
+                updateWidgetData,
+                getWidgetData,
+                clearWidgetData,
+                clearAllWidgetData,
             }}
         >
             {children}

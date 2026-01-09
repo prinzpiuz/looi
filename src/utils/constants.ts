@@ -1,5 +1,5 @@
-import { GitHubSyncSettings, Settings } from './types';
-import { defaultWidgetConfigs } from './widgetsRegistry';
+import { GitHubSyncSettings, Settings, WidgetDataStore } from './types';
+import { defaultWidgetConfigs, widgetType } from './widgetsRegistry';
 
 export const DEFAULT_BG_COLOR = 'rgba(0, 0, 0, 0.6)';
 
@@ -28,12 +28,15 @@ export const BOOKMARK_SIZE = {
     isResizable: false,
 };
 
+export const DEFAULT_WIDGET_DATA: WidgetDataStore = {};
+
 export const LOAD_DEFAULT_SETTINGS: Settings = {
     bgColor: '#000000',
     bgUrl: '',
     githubSync: DEFAULT_GITHUB_SYNC_SETTINGS,
     bookmarks: [],
     widgetConfigs: defaultWidgetConfigs,
+    widgetData: DEFAULT_WIDGET_DATA,
 };
 
 export const GRID_CONFIG = {

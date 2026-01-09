@@ -3,26 +3,121 @@
     color: #fff;
     padding: 10px;
     border-radius: 8px;
-    width: 410px;
     user-select: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .todo-header {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.todo-header .todo-icon {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.todo-header span {
+    flex: 1;
+}
+
+.todo-count {
+    font-size: 12px;
+    opacity: 0.6;
+    margin-right: 8px;
+}
+
+.todo-expand-btn {
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.todo-expand-btn:hover {
+    opacity: 1;
 }
 
 .todo-input {
     display: flex;
-    gap: 5px;
+    gap: 8px;
     margin: 10px 0;
     align-items: center;
+}
+
+.task-input {
+    flex: 1;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    padding: 8px 12px;
+    color: #fff;
+    background-color: #2b2b2b;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s;
+}
+
+.task-input:focus {
+    box-shadow: 0 2px 8px rgba(100, 100, 255, 0.3);
+}
+
+.task-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.add-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2b2b2b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-btn:hover {
+    background: #3b3b3b;
+}
+
+.todo-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.todo-control-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition:
+        color 0.2s,
+        background 0.2s;
+}
+
+.todo-control-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .todo-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .task-item {
@@ -32,23 +127,69 @@
     margin-bottom: 6px;
     background: #2b2b2b;
     padding: 12px;
-    border-radius: 15px;
+    border-radius: 12px;
+    cursor: grab;
+    transition:
+        background 0.2s,
+        transform 0.1s;
+}
+
+.task-item:hover {
+    background: #333;
+}
+
+.task-item:active {
+    cursor: grabbing;
 }
 
 .task-item.completed .task-text {
     text-decoration: line-through;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
-.task-input {
-    height: 30px;
-    width: 360px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    outline: rgb(0, 0, 0) solid 2px;
-    padding: 5px;
-    color: #fff;
-    background-color: #2b2b2b;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+.task-text {
+    flex: 1;
+    cursor: pointer;
+    word-break: break-word;
+}
+
+.delete-btn {
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 4px;
+    transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
+.todo-empty {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+/* Collapsed state */
+.todo-widget.collapsed {
+    height: auto;
+}
+
+/* Scrollbar styling */
+.todo-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.todo-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.todo-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.todo-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }

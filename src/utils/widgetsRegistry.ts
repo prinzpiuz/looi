@@ -4,8 +4,6 @@ import CalendarWidget from '../components/widgets/calendar/Calendar';
 import TodoWidget from '../components/widgets/todo/Todo';
 
 export enum widgetType {
-    CLOCK = 'clock',
-    WEATHER = 'weather',
     CALENDAR = 'calendar',
     TODO = 'todo',
 }
@@ -41,22 +39,6 @@ export const getWidgetSize = (
 };
 
 export const widgetDefaultSizes: Record<string, WidgetSize> = {
-    [widgetType.CLOCK]: {
-        w: 2,
-        h: 2,
-        minW: 1,
-        maxW: 4,
-        minH: 1,
-        maxH: 4,
-    },
-    [widgetType.WEATHER]: {
-        w: 3,
-        h: 2,
-        minW: 2,
-        maxW: 6,
-        minH: 2,
-        maxH: 4,
-    },
     [widgetType.CALENDAR]: {
         w: 4,
         h: 3,

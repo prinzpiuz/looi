@@ -44,6 +44,7 @@ export interface Settings {
     bookmarks?: Bookmark[];
     widgetConfigs: WidgetConfig[];
     gridLayouts?: LayoutItem[];
+    widgetData: WidgetDataStore;
 }
 
 export interface GridConfig {
@@ -70,6 +71,13 @@ export interface SettingsContextType {
         s: Partial<Settings>,
         saveChanges?: boolean,
     ) => Promise<void>;
+    updateWidgetData: (
+        widgetId: string,
+        data: VersionedWidgetData,
+    ) => Promise<void>;
+    getWidgetData: <T>(widgetId: string) => VersionedWidgetData<T> | undefined;
+    clearWidgetData: (widgetId: string) => Promise<void>;
+    clearAllWidgetData: () => Promise<void>;
 }
 
 export interface BookmarkItemProps {
@@ -248,9 +256,42 @@ export interface GistResponse {
     public: boolean;
 }
 
-export type Task = {
+export interface Task {
     id: string;
     text: string;
     completed: boolean;
-    reminder?: Date;
+    createdAt?: number;
+    completedAt?: number;
+}
+
+export interface TodoWidgetData {
+    tasks: Task[];
+    showCompleted: boolean;
+}
+
+export interface VersionedWidgetData<T = unknown> {
+    version: number;
+    data: T;
+    updatedAt: number;
+}
+
+export type WidgetDataStore = {
+    [widgetId: string]: VersionedWidgetData;
 };
+
+export type MigrationFn<T = unknown> = (oldData: unknown) => T;
+
+export interface WidgetDataConfig<T> {
+    widgetId: string;
+    version: number;
+    defaultData: T;
+    migrations?: Record<number, MigrationFn<T>>;
+}
+
+export interface UseWidgetDataReturn<T> {
+    data: T;
+    isLoading: boolean;
+    updateData: (updater: Partial<T> | ((prev: T) => T)) => void;
+    resetData: () => void;
+    lastUpdated: number | null;
+}
