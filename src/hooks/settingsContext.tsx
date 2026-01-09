@@ -4,6 +4,7 @@ import {
     useState,
     useEffect,
     useCallback,
+    useRef,
 } from 'react';
 import { getSettings, updateSettings } from '../utils/manageSettings';
 import {
@@ -23,8 +24,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [settings, setSettings] = useState<Settings | null>(null);
+    const settingsRef = useRef<Settings | null>(null);
     const bookmarks = settings?.bookmarks || [];
-    const widgetConfigs = settings?.widgetConfigs || [];
+
+    useEffect(() => {
+        settingsRef.current = settings;
+    }, [settings]);
 
     useEffect(() => {
         const load = async () => {
@@ -37,83 +42,123 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         void load();
     }, []);
 
-    const updateAndPersistSettings = async (
-        partialSettings: Partial<Settings>,
-        saveChanges = true,
-    ) => {
-        if (!settings) return;
-        const updated = { ...settings, ...partialSettings };
-        setSettings(updated);
-        if (saveChanges) {
-            await updateSettings(updated, setSettings);
+    const getFreshSettings = useCallback(async (): Promise<Settings | null> => {
+        if (settingsRef.current) {
+            return settingsRef.current;
         }
-    };
+        return await getSettings();
+    }, []);
 
-    const addBookmark = async (bookmark: Bookmark) => {
-        const newList = [...bookmarks, bookmark];
-        await updateAndPersistSettings({ bookmarks: newList });
-    };
+    const updateAndPersistSettings = useCallback(
+        async (partialSettings: Partial<Settings>, saveChanges = true) => {
+            const currentSettings = await getFreshSettings();
+            if (!currentSettings) return;
 
-    const updateBookmark = async (
-        id: string,
-        updatedBookmark: Partial<Bookmark>,
-    ) => {
-        const updatedBookmarks = bookmarks.map((bm) =>
-            bm.id === id ? { ...bm, ...updatedBookmark } : bm,
-        );
-        await updateAndPersistSettings({ bookmarks: updatedBookmarks });
-    };
+            const updated = { ...currentSettings, ...partialSettings };
+            setSettings(updated);
+            settingsRef.current = updated;
 
-    const removeBookmark = async (id: string) => {
-        const updatedBookmarks = bookmarks.filter((bm) => bm.id !== id);
-        const updatedLayouts = (settings?.gridLayouts || []).filter(
-            (l) => l.i !== id,
-        );
-        await updateAndPersistSettings({
-            bookmarks: updatedBookmarks,
-            gridLayouts: updatedLayouts,
-        });
-    };
+            if (saveChanges) {
+                await updateSettings(updated, setSettings);
+            }
+        },
+        [getFreshSettings],
+    );
 
-    const getBookmarkById = (id: string): Bookmark | undefined => {
-        return bookmarks.find((bm) => bm.id === id);
-    };
+    const addBookmark = useCallback(
+        async (bookmark: Bookmark) => {
+            const current = await getFreshSettings();
+            if (!current) return;
+            const newList = [...(current.bookmarks || []), bookmark];
+            await updateAndPersistSettings({ bookmarks: newList });
+        },
+        [getFreshSettings, updateAndPersistSettings],
+    );
 
-    const enableDisableWidget = async (id: string, enabled: boolean) => {
-        if (!widgetConfigs) return;
-        const updatedWidgetConfigs = widgetConfigs.map((config) =>
-            config.id === id ? { ...config, enabled } : config,
-        );
-        await updateAndPersistSettings({ widgetConfigs: updatedWidgetConfigs });
-    };
+    const updateBookmark = useCallback(
+        async (id: string, updatedBookmark: Partial<Bookmark>) => {
+            const current = await getFreshSettings();
+            if (!current) return;
+            const updatedBookmarks = (current.bookmarks || []).map((bm) =>
+                bm.id === id ? { ...bm, ...updatedBookmark } : bm,
+            );
+            await updateAndPersistSettings({ bookmarks: updatedBookmarks });
+        },
+        [getFreshSettings, updateAndPersistSettings],
+    );
 
-    const updateGridLayouts = async (layouts: LayoutItem[]) => {
-        await updateAndPersistSettings({ gridLayouts: layouts });
-    };
+    const removeBookmark = useCallback(
+        async (id: string) => {
+            const current = await getFreshSettings();
+            if (!current) return;
+            const updatedBookmarks = (current.bookmarks || []).filter(
+                (bm) => bm.id !== id,
+            );
+            const updatedLayouts = (current.gridLayouts || []).filter(
+                (l) => l.i !== id,
+            );
+            await updateAndPersistSettings({
+                bookmarks: updatedBookmarks,
+                gridLayouts: updatedLayouts,
+            });
+        },
+        [getFreshSettings, updateAndPersistSettings],
+    );
 
-    const updateGithubSettings = async (
-        githubSettings: Partial<GitHubSyncSettings>,
-    ) => {
-        if (!settings) return;
-        const updated = {
-            ...settings.githubSync,
-            ...githubSettings,
-        };
-        await updateAndPersistSettings({ githubSync: updated });
-    };
+    const getBookmarkById = useCallback(
+        (id: string): Bookmark | undefined => {
+            return bookmarks.find((bm) => bm.id === id);
+        },
+        [bookmarks],
+    );
+
+    const enableDisableWidget = useCallback(
+        async (id: string, enabled: boolean) => {
+            const current = await getFreshSettings();
+            if (!current?.widgetConfigs) return;
+            const updatedWidgetConfigs = current.widgetConfigs.map((config) =>
+                config.id === id ? { ...config, enabled } : config,
+            );
+            await updateAndPersistSettings({
+                widgetConfigs: updatedWidgetConfigs,
+            });
+        },
+        [getFreshSettings, updateAndPersistSettings],
+    );
+
+    const updateGridLayouts = useCallback(
+        async (layouts: LayoutItem[]) => {
+            await updateAndPersistSettings({ gridLayouts: layouts });
+        },
+        [updateAndPersistSettings],
+    );
+
+    const updateGithubSettings = useCallback(
+        async (githubSettings: Partial<GitHubSyncSettings>) => {
+            const current = await getFreshSettings();
+            if (!current) return;
+            const updated = {
+                ...current.githubSync,
+                ...githubSettings,
+            };
+            await updateAndPersistSettings({ githubSync: updated });
+        },
+        [getFreshSettings, updateAndPersistSettings],
+    );
 
     const updateWidgetData = useCallback(
         async (widgetId: string, data: VersionedWidgetData) => {
-            if (!settings) return;
+            const current = await getFreshSettings();
+            if (!current) return;
 
             const updatedWidgetData = {
-                ...settings.widgetData,
+                ...(current.widgetData || {}),
                 [widgetId]: data,
             };
 
             await updateAndPersistSettings({ widgetData: updatedWidgetData });
         },
-        [settings],
+        [getFreshSettings, updateAndPersistSettings],
     );
 
     const getWidgetData = useCallback(
@@ -128,18 +173,18 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const clearWidgetData = useCallback(
         async (widgetId: string) => {
-            if (!settings?.widgetData) return;
+            const current = await getFreshSettings();
+            if (!current?.widgetData) return;
 
-            const { [widgetId]: _, ...rest } = settings.widgetData;
+            const { [widgetId]: _, ...rest } = current.widgetData;
             await updateAndPersistSettings({ widgetData: rest });
         },
-        [settings],
+        [getFreshSettings, updateAndPersistSettings],
     );
 
     const clearAllWidgetData = useCallback(async () => {
         await updateAndPersistSettings({ widgetData: {} });
-    }, []);
-
+    }, [updateAndPersistSettings]);
     return (
         <SettingsContext.Provider
             value={{
