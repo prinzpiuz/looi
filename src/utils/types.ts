@@ -247,6 +247,29 @@ export interface DeviceFlowAuthProps {
     onTokenReceived: (token: string) => void;
 }
 
+export interface SyncError {
+    message: string;
+    code?: 'TOKEN_EXPIRED' | 'NETWORK_ERROR' | 'GIST_NOT_FOUND' | 'UNKNOWN';
+}
+
+export interface UseGitHubSyncReturn {
+    // State
+    githubSyncSettings: GitHubSyncSettings;
+    token: string | null;
+    status: SyncStatus;
+    error: SyncError | null;
+    isTokenLoading: boolean;
+    isSyncing: boolean;
+
+    // Actions
+    updateSyncSettings: (patch: Partial<GitHubSyncSettings>) => Promise<void>;
+    resetToken: () => Promise<void>;
+    syncNow: () => Promise<void>;
+    pullFromGist: () => Promise<Settings | null>;
+    pushToGist: () => Promise<void>;
+    clearError: () => void;
+}
+
 export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
 export interface GistResponse {

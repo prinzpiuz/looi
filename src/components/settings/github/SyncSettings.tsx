@@ -106,9 +106,6 @@ const SyncSettings: React.FC<{
     const [localAutoSync, setLocalAutoSync] = useState(
         githubSyncSettings.autoSync,
     );
-    const [localPublicGist, setLocalPublicGist] = useState(
-        githubSyncSettings.publicGist,
-    );
 
     const [displayLastSync, setDisplayLastSync] = useState('Never');
     const [focus, setFocus] = useState(false);
@@ -156,15 +153,8 @@ const SyncSettings: React.FC<{
 
     const setAutoSync = (value: boolean) => {
         setLocalAutoSync(!value);
-        updateSyncSettings({
+        void updateSyncSettings({
             autoSync: !value,
-        });
-    };
-
-    const setPublicGist = (value: boolean) => {
-        setLocalPublicGist(!value);
-        updateSyncSettings({
-            publicGist: !value,
         });
     };
 
@@ -226,14 +216,6 @@ const SyncSettings: React.FC<{
                     <ToggleButton
                         value={localAutoSync}
                         onToggle={setAutoSync}
-                    />
-                </div>
-
-                <div style={rowStyle}>
-                    <label style={labelStyle}>Public Gist</label>
-                    <ToggleButton
-                        value={localPublicGist}
-                        onToggle={setPublicGist}
                     />
                 </div>
             </div>
