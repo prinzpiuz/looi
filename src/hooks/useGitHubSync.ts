@@ -113,10 +113,7 @@ export const useGitHubSync = (): UseGitHubSyncReturn => {
             return false;
         }
 
-        if (
-            githubSyncSettings.storedAt &&
-            isTokenExpired(githubSyncSettings.storedAt)
-        ) {
+        if (githubSyncSettings.storedAt && isTokenExpired(githubSyncSettings)) {
             setError({
                 message: 'GitHub token has expired',
                 code: 'TOKEN_EXPIRED',

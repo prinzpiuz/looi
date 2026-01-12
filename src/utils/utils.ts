@@ -2,6 +2,7 @@ import { isChrome, isFirefox } from './browserApi';
 import { TOKEN_EXPIRY_TIME } from './constants';
 import {
     GithubAPIResponse,
+    GitHubSyncSettings,
     GithubUnAuthorizedResponse,
     Settings,
 } from './types';
@@ -35,9 +36,12 @@ export const closeTabAndOpen = () => {
     return;
 };
 
-export const isTokenExpired = (storedAt: number) => {
+export const isTokenExpired = (githubSettings: GitHubSyncSettings) => {
+    if (githubSettings.tokenSaved && githubSettings.tokenType === 'PAT') {
+        return false;
+    }
     const now = Date.now();
-    return now - storedAt > TOKEN_EXPIRY_TIME;
+    return now - githubSettings.storedAt > TOKEN_EXPIRY_TIME;
 };
 
 export enum gridItemType {

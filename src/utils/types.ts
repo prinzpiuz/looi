@@ -28,6 +28,8 @@ export interface WidgetConfig {
     isResizable: boolean;
 }
 
+export type TokenType = 'PAT' | 'UAT';
+
 export interface GitHubSyncSettings {
     lastSync: number | null;
     autoSync: boolean;
@@ -35,6 +37,7 @@ export interface GitHubSyncSettings {
     tokenSaved: boolean;
     gistId: string | undefined;
     storedAt: number;
+    tokenType: TokenType;
 }
 
 export interface Settings {

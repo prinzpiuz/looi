@@ -1,5 +1,5 @@
 import { GitHubSyncSettings, Settings, WidgetDataStore } from './types';
-import { defaultWidgetConfigs, widgetType } from './widgetsRegistry';
+import { defaultWidgetConfigs } from './widgetsRegistry';
 
 export const DEFAULT_BG_COLOR = 'rgba(0, 0, 0, 0.6)';
 
@@ -16,6 +16,7 @@ export const DEFAULT_GITHUB_SYNC_SETTINGS: GitHubSyncSettings = {
     tokenSaved: false,
     gistId: undefined,
     storedAt: 0,
+    tokenType: 'UAT',
 };
 
 export const BOOKMARK_SIZE = {
