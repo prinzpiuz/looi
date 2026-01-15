@@ -321,3 +321,29 @@ export interface UseWidgetDataReturn<T> {
     resetData: () => void;
     lastUpdated: number | null;
 }
+
+export interface SyncSettingsProps {
+    onTokenReset: () => void;
+}
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+export interface ToastOptions {
+    /** Duration in milliseconds. Set to 0 or use `persistent: true` for no auto-dismiss */
+    duration?: number;
+    /** If true, toast won't auto-dismiss */
+    persistent?: boolean;
+    /** Custom ID (useful for preventing duplicates) */
+    id?: string;
+}
+
+export interface Toast {
+    id: string;
+    type: ToastType;
+    message: string;
+    duration: number;
+    persistent: boolean;
+    createdAt: number;
+}
+
+export type ToastListener = (toasts: Toast[]) => void;

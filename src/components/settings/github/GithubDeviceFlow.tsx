@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { startDeviceFlow, pollForToken } from '../../../utils/github';
 import { GithubDeviceCodeResponse } from '../../../utils/types';
 
-const deviceFlowDivStyle: React.CSSProperties = { padding: 18, maxWidth: 340 };
+const deviceFlowDivStyle: React.CSSProperties = { padding: 60, maxWidth: 340 };
 const errorDivStyle: React.CSSProperties = {
     color: '#ffffff',
     marginTop: 5,

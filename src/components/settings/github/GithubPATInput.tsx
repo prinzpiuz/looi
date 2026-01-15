@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from '../../../utils/toastStore';
 
 const patDivStyle: React.CSSProperties = {
-    maxWidth: 190,
+    maxWidth: 300,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 10,
-};
-
-const labelStyle: React.CSSProperties = {
-    marginBottom: 3,
-    color: '#ffffff',
+    gap: 20,
 };
 
 const buttonStyle: React.CSSProperties = {
@@ -32,18 +28,11 @@ const creatTokenStyle: React.CSSProperties = {
     fontSize: 13,
 };
 
-const errorDivStyle: React.CSSProperties = {
-    color: '#ffffff',
-    marginBottom: 6,
-    fontSize: 13,
-};
-
 const GithubPATInput: React.FC<{
     onToken: (token: string) => void;
 }> = ({ onToken }) => {
     const [focus, setFocus] = useState(false);
     const [pat, setPat] = useState('');
-    const [error, setError] = useState<string | null>(null);
 
     const inputStyle: React.CSSProperties = {
         width: '60%',
@@ -73,22 +62,25 @@ const GithubPATInput: React.FC<{
         fontWeight: 600,
     };
 
+    useEffect(() => {
+        toast.info(`Paste your GitHub Personal Access Token (scope: gist)`, {
+            duration: 8000,
+        });
+    }, []);
+
     const handleSave = () => {
         if (!/^ghp_/i.test(pat.trim())) {
-            setError(
+            toast.error(
                 'That does not look like a valid GitHub Personal Access Token.',
             );
             return;
         }
-        setError(null);
+        toast.success('Token Saved Successfully!');
         onToken(pat.trim());
     };
 
     return (
         <div style={patDivStyle}>
-            <h5 style={labelStyle}>
-                Note: Paste your GitHub Personal Access Token (scope: gist)
-            </h5>
             <label htmlFor="token-input" style={inputLabelStyle}>
                 Github Token
             </label>
@@ -103,12 +95,12 @@ const GithubPATInput: React.FC<{
                 spellCheck={false}
                 placeholder=""
             />
-            {error && <div style={errorDivStyle}>{error}</div>}
             <button onClick={handleSave} style={buttonStyle}>
                 Save Token
             </button>
             <div style={creatTokenStyle}>
                 <span>Don’t have a token? </span>
+                <br />
                 <a
                     href="https://github.com/settings/tokens/new?scopes=gist&description=Settings%20Sync%20Extension"
                     target="_blank"

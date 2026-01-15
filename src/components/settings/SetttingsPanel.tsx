@@ -52,7 +52,7 @@ const SettingsPanel: React.FC = () => {
         top: 0,
         right: 0,
         height: '100%',
-        width: '300px',
+        width: '400px',
         backdropFilter: 'blur(12px)',
         transform: settingsOpen ? 'translateX(0)' : 'translateX(104%)',
         transition: 'transform 0.33s cubic-bezier(.4,0,.2,1)',

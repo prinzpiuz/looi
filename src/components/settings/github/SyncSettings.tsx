@@ -1,293 +1,252 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FaSyncAlt, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import ToggleButton from 'react-toggle-button';
 import { useGitHubSync } from '../../../hooks/useGitHubSync';
-import { useGistVerifier, VerifyErrors } from '../../../hooks/gistVerifier';
-import { updateSettings } from '../../../utils/manageSettings';
-import { closeTabAndOpen } from '../../../utils/utils';
+import { useGistVerifier } from '../../../hooks/gistVerifier';
+import { useSettings } from '../../../hooks/settingsContext';
+import { closeTabAndOpen, formatLastSync } from '../../../utils/utils';
+import '../../../assets/css/sync_settings.css';
+import { SyncSettingsProps } from '../../../utils/types';
+import { MIN_GIST_ID_LENGTH } from '../../../utils/constants';
+import { toast } from '../../../utils/toastStore';
 
-const rowStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-};
-
-const labelStyle: React.CSSProperties = {
-    color: '#ffffff',
-    fontWeight: 500,
-    marginTop: 10,
-};
-
-const connectButtonStyle: React.CSSProperties = {
-    fontWeight: 700,
-    fontSize: 15,
-    border: 0,
-    borderRadius: 8,
-    padding: '12px 32px',
-    background: 'linear-gradient(90deg,#2f82e4,#4559f9)',
-    color: '#ffffff',
-    cursor: 'pointer',
-    boxShadow: '0 2.5px 8px rgba(83,99,190,0.05)',
-    transition: 'background .14s, color .14s, box-shadow .13s',
-};
-
-const syncSettingsDivStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: 180,
-    marginTop: -15,
-};
-
-const connectedStyle: React.CSSProperties = {
-    color: '#ffffff',
-};
-
-const lastSyncStyle: React.CSSProperties = {
-    marginTop: -6,
-    color: '#ffffff',
-    fontWeight: 600,
-};
-
-const lastSyncdivStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 15,
-};
-
-const optionsDivStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 12,
-};
-
-const syncStatusStyle: React.CSSProperties = {
-    color: '#ffffff',
-    fontWeight: 600,
-};
-
-const syncingStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-};
-
-const syncAnimation: React.CSSProperties = {
-    animation: 'spin 1s linear infinite',
-    color: '#ffffff',
-};
-
-const gistIdDivStyle: React.CSSProperties = {
-    marginTop: 17,
-};
-
-const verifyDivStyle: React.CSSProperties = {
-    position: 'absolute',
-    right: '21%',
-    top: '72%',
-    transform: 'translateY(-50%)',
-};
-
-const SyncSettings: React.FC<{
-    onTokenReset: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ onTokenReset }) => {
+const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
     const {
         githubSyncSettings,
         status,
+        error: syncError,
         updateSyncSettings,
         resetToken,
-        syncNow,
+        pushToGist,
     } = useGitHubSync();
-    const { verifyGistId, verifying, valid, error, pulledSettings } =
-        useGistVerifier();
-    const [localAutoSync, setLocalAutoSync] = useState(
-        githubSyncSettings.autoSync,
-    );
 
-    const [displayLastSync, setDisplayLastSync] = useState('Never');
-    const [focus, setFocus] = useState(false);
+    const {
+        verifyGistId,
+        verifying,
+        valid,
+        error: verifyError,
+        pulledSettings,
+    } = useGistVerifier();
+
+    const { updateAndPersistSettings } = useSettings();
+
     const [gistId, setGistId] = useState(githubSyncSettings.gistId || '');
-    const [showNote, setShowNote] = useState(true);
-
-    setTimeout(() => {
-        setShowNote(false);
-    }, 8000);
-
-    const buttonDivStyle: React.CSSProperties = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-        marginTop: showNote ? -10 : 15,
-    };
-
-    const inputStyle: React.CSSProperties = {
-        width: '60%',
-        height: 3,
-        border: 'none',
-        borderRadius: 5,
-        outline: focus ? '2px solid #2189fa' : '1.2px solid #dfdff5',
-        background: 'rgba(255,255,255,0.16)',
-        boxShadow: focus
-            ? '0 2px 10px rgba(33,137,250,0.13)'
-            : '0 1.5px 5px rgba(60,90,160,0.04)',
-        fontSize: '1rem',
-        padding: '24px 38px 8px 35px',
-        color: '#1f283b',
-        transition: 'box-shadow .14s, outline .12s',
-    };
-
-    const inputLabelStyle: React.CSSProperties = {
-        position: 'absolute',
-        left: 52,
-        bottom: 295,
-        fontSize: focus || gistId ? 13 : 16,
-        color: focus ? '#ffffffff' : '#8d97ad',
-        padding: '0 3px',
-        pointerEvents: 'none',
-        transition: 'all .18s cubic-bezier(.4,0,.2,1)',
-        fontWeight: 600,
-    };
-
-    const setAutoSync = (value: boolean) => {
-        setLocalAutoSync(!value);
-        void updateSyncSettings({
-            autoSync: !value,
-        });
-    };
-
-    const handleResetToken = () => {
-        void resetToken();
-        onTokenReset(false);
-    };
+    const [displayLastSync, setDisplayLastSync] = useState('Never');
 
     useEffect(() => {
-        const formatLastSync = () => {
-            if (!githubSyncSettings.lastSync) return 'Never';
-            const d = new Date(githubSyncSettings.lastSync);
-            const weekday = d.toLocaleString(undefined, { weekday: 'long' });
-            const time = d.toLocaleString(undefined, {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: false,
-            });
-            return `${weekday} ${time}`;
-        };
+        toast.info(
+            'Paste your Gist ID if you have one, or click "Sync Now" to create a new one.',
+            { duration: 8000 },
+        );
+    }, []);
 
-        setDisplayLastSync(formatLastSync());
+    useEffect(() => {
+        setDisplayLastSync(formatLastSync(githubSyncSettings.lastSync));
 
         const intervalId = setInterval(() => {
-            setDisplayLastSync(formatLastSync());
+            setDisplayLastSync(formatLastSync(githubSyncSettings.lastSync));
         }, 60000);
 
         return () => clearInterval(intervalId);
     }, [githubSyncSettings.lastSync]);
 
-    const verifyGistID = () => {
-        if (gistId.length >= 8) {
-            void verifyGistId(gistId);
-            setTimeout(() => {
-                if (
-                    !verifying &&
-                    valid === true &&
-                    error === null &&
-                    pulledSettings !== null
-                ) {
-                    pulledSettings.githubSync.gistId = gistId;
-                    void updateSettings(pulledSettings);
-                    closeTabAndOpen();
-                }
-                if (!verifying && error === VerifyErrors.TOKEN_EXPIRED) {
-                    handleResetToken();
-                }
-            }, 2000);
+    useEffect(() => {
+        if (!verifying && valid === true && pulledSettings !== null) {
+            const updatedSettings = {
+                ...pulledSettings,
+                githubSync: {
+                    ...pulledSettings.githubSync,
+                    gistId: gistId,
+                },
+            };
+
+            void updateAndPersistSettings(updatedSettings).then(() => {
+                toast.success('Settings pulled successfully!');
+                setTimeout(() => closeTabAndOpen(), 1000);
+            });
         }
-    };
+    }, [verifying, valid, pulledSettings, gistId, updateAndPersistSettings]);
+
+    useEffect(() => {
+        if (!verifying && verifyError) {
+            if (verifyError === 'Token Expired') {
+                toast.error('Token expired. Please reconnect.');
+                handleResetToken();
+            } else {
+                toast.error(verifyError);
+            }
+        }
+    }, [verifying, verifyError]);
+
+    useEffect(() => {
+        if (status === 'success') {
+            toast.success('Sync completed successfully!');
+        } else if (status === 'error' && syncError) {
+            toast.error(syncError.message);
+        }
+    }, [status, syncError]);
+
+    const handleAutoSyncToggle = useCallback(
+        (currentValue: boolean) => {
+            void updateSyncSettings({ autoSync: !currentValue });
+            toast.info(
+                !currentValue ? 'Auto-sync enabled' : 'Auto-sync disabled',
+            );
+        },
+        [updateSyncSettings],
+    );
+
+    const handleResetToken = useCallback(() => {
+        const confirmed = window.confirm(
+            'Are you sure you want to reset your GitHub token?',
+        );
+        if (confirmed) {
+            void resetToken();
+            onTokenReset();
+            toast.info('Token reset. Please reconnect to GitHub.');
+        }
+    }, [resetToken, onTokenReset]);
+
+    const handleVerifyAndPull = useCallback(() => {
+        if (gistId.length >= MIN_GIST_ID_LENGTH) {
+            toast.info('Verifying Gist...', { id: 'verify', persistent: true });
+            void verifyGistId(gistId).finally(() => {
+                toast.dismiss('verify');
+            });
+        } else {
+            toast.warning(
+                `Gist ID must be at least ${MIN_GIST_ID_LENGTH} characters`,
+            );
+        }
+    }, [gistId, verifyGistId]);
+
+    const handleSyncNow = useCallback(() => {
+        toast.info('Syncing...', { id: 'sync', persistent: true });
+        void pushToGist().finally(() => {
+            toast.dismiss('sync');
+        });
+    }, [pushToGist]);
+
+    const handleGistIdChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setGistId(e.target.value);
+        },
+        [],
+    );
+
+    const isVerifyDisabled =
+        verifying || status === 'syncing' || gistId.length < MIN_GIST_ID_LENGTH;
+    const isSyncDisabled = status === 'syncing' || verifying;
+    const currentError = syncError?.message || verifyError;
 
     return (
-        <div style={syncSettingsDivStyle}>
-            <h3 style={connectedStyle}>Connected</h3>
+        <div className="sync-settings">
+            <h3 className="sync-settings__title">Connected</h3>
 
-            <div style={optionsDivStyle}>
-                <div style={rowStyle}>
-                    <label style={labelStyle}>Auto Sync</label>
+            <div className="sync-settings__options">
+                <div className="sync-settings__row">
+                    <label className="sync-settings__label">Auto Sync</label>
                     <ToggleButton
-                        value={localAutoSync}
-                        onToggle={setAutoSync}
+                        value={githubSyncSettings.autoSync}
+                        onToggle={handleAutoSyncToggle}
                     />
                 </div>
             </div>
 
-            <div style={lastSyncdivStyle}>
-                <span style={lastSyncStyle}>Last Synced</span>
-                <span style={syncStatusStyle}>{displayLastSync}</span>
+            <div className="sync-settings__last-sync">
+                <span className="sync-settings__last-sync-label">
+                    Last Synced
+                </span>
+                <span className="sync-settings__last-sync-value">
+                    {displayLastSync}
+                </span>
             </div>
-            <div style={gistIdDivStyle}>
-                <label htmlFor="gist-input" style={inputLabelStyle}>
-                    Gist ID
-                </label>
-                <input
-                    value={gistId}
-                    onChange={(e) => setGistId(e.target.value)}
-                    onFocus={() => setFocus(true)}
-                    onBlur={() => setFocus(false)}
-                    style={inputStyle}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    spellCheck={false}
-                />
-                <div style={verifyDivStyle}>
-                    {verifying && <FaSyncAlt style={syncAnimation} />}
-                    {!verifying && valid === true && (
-                        <FaCheckCircle color="#00e676" />
-                    )}
-                    {!verifying && valid === false && (
-                        <FaTimesCircle color="#ff5252" />
-                    )}
+
+            <div className="sync-settings__gist-section">
+                <div className="sync-settings__input-wrapper">
+                    <input
+                        type="text"
+                        className="sync-settings__input"
+                        value={gistId}
+                        onChange={handleGistIdChange}
+                        placeholder="Enter Gist ID"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        aria-label="GitHub Gist ID"
+                    />
+                    <div className="sync-settings__input-status">
+                        {verifying && (
+                            <FaSyncAlt className="sync-settings__spinner" />
+                        )}
+                        {!verifying && valid === true && (
+                            <FaCheckCircle color="#00e676" />
+                        )}
+                        {!verifying && valid === false && (
+                            <FaTimesCircle color="#ff5252" />
+                        )}
+                    </div>
                 </div>
-                {showNote && (
-                    <h5 style={labelStyle}>
-                        Note: Paste your Gist ID, if you already have Looi
-                        Settings Gist And then click Sync Now.
-                        <br />
-                        If you dont have one, click Sync Now for creating one.
-                    </h5>
+
+                {currentError && (
+                    <p className="sync-settings__error">{currentError}</p>
                 )}
             </div>
 
-            <div style={buttonDivStyle}>
+            <div className="sync-settings__buttons">
                 <button
-                    style={connectButtonStyle}
-                    onClick={() => void verifyGistID()}
-                    disabled={status === 'syncing'}
+                    type="button"
+                    className="sync-settings__button sync-settings__button--primary"
+                    onClick={handleVerifyAndPull}
+                    disabled={isVerifyDisabled}
+                    aria-busy={verifying}
                 >
-                    Verify & Pull
+                    {verifying ? (
+                        <>
+                            Verifying...
+                            <FaSyncAlt className="sync-settings__spinner" />
+                        </>
+                    ) : (
+                        'Verify & Pull'
+                    )}
                 </button>
+
                 <button
-                    style={connectButtonStyle}
-                    onClick={() => void syncNow()}
-                    disabled={status === 'syncing'}
+                    type="button"
+                    className="sync-settings__button sync-settings__button--primary"
+                    onClick={handleSyncNow}
+                    disabled={isSyncDisabled}
+                    aria-busy={status === 'syncing'}
                 >
                     {status === 'syncing' ? (
-                        <span style={syncingStyle}>
+                        <>
                             Syncing...
-                            <FaSyncAlt style={syncAnimation} />
-                        </span>
+                            <FaSyncAlt className="sync-settings__spinner" />
+                        </>
                     ) : (
                         'Sync Now'
                     )}
                 </button>
-                <button style={connectButtonStyle} onClick={handleResetToken}>
+
+                <button
+                    type="button"
+                    className="sync-settings__button sync-settings__button--danger"
+                    onClick={handleResetToken}
+                >
                     Reset Token
                 </button>
             </div>
 
             {status === 'success' && (
-                <p style={syncStatusStyle}>Sync successful!</p>
+                <div className="sync-settings__status sync-settings__status--success">
+                    ✓ Sync successful!
+                </div>
             )}
-            {status === 'error' && <p style={syncStatusStyle}>Sync failed.</p>}
+            {status === 'error' && !currentError && (
+                <div className="sync-settings__status sync-settings__status--error">
+                    Sync failed. Please try again.
+                </div>
+            )}
         </div>
     );
 };

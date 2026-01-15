@@ -62,7 +62,9 @@ const GitHubSync: React.FC = () => {
 
     const getSection = () => {
         if (tokenAvailable) {
-            return <SyncSettings onTokenReset={setTokenAvailable} />;
+            return (
+                <SyncSettings onTokenReset={() => setTokenAvailable(false)} />
+            );
         } else {
             return (
                 <>

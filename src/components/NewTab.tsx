@@ -5,6 +5,7 @@ import Grid from './Grid';
 import BookmarkForm from './bookmarks/BookmarkForm';
 import { DEFAULT_BG_COLOR } from '../utils/constants';
 import { useSettings } from '../hooks/settingsContext';
+import ToastContainer from './toast/ToastContainer';
 
 const fixedButtonsContainerStyle: React.CSSProperties = {
     position: 'fixed',
@@ -64,6 +65,7 @@ const NewTabPage: React.FC = () => {
                 onCancel={setShowBookmarkForm}
                 mode="add"
             />
+            <ToastContainer />
         </div>
     );
 };

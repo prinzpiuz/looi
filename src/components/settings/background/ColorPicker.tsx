@@ -19,14 +19,22 @@ const palette = [
     '#c89666',
     '#008080',
     '#a28089',
+    '#BFFCC6',
+    '#FFF5BA',
+    '#FFABAB',
+    '#A2E1DB',
+    '#D4F0F0',
+    '#FFC3A0',
+    '#D6B4FC',
+    '#E0FEFE',
 ];
 
 const colorPickerDivStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: 10,
-    width: '100%',
+    gap: 15,
+    width: '85%',
 };
 
 const colorInputStyle: React.CSSProperties = {
@@ -77,7 +85,7 @@ const ColorPanel: React.FC = () => {
         <div style={colorPickerDivStyle}>
             <label style={labelStyle}>Background Color</label>
             <CirclePicker
-                width="170px"
+                width="172px"
                 color={colorValue}
                 colors={palette}
                 onChange={handleColorChange}

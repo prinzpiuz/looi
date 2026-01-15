@@ -11,8 +11,8 @@ const buttonStyles: React.CSSProperties = {
     fontSize: 25,
     color: '#ffffffff',
     cursor: 'pointer',
-    left: '240px',
-    bottom: '10px',
+    left: '325',
+    bottom: '4px',
     position: 'relative',
 };
 

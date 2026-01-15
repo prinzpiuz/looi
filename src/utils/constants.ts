@@ -9,6 +9,8 @@ export const DEFAULT_SCALE_FACTOR = 'scale(1.025)';
 
 export const TOKEN_EXPIRY_TIME = 8 * 60 * 60 * 1000;
 
+export const MIN_GIST_ID_LENGTH = 8;
+
 export const DEFAULT_GITHUB_SYNC_SETTINGS: GitHubSyncSettings = {
     lastSync: null,
     autoSync: true,
