@@ -4,7 +4,11 @@ import ToggleButton from 'react-toggle-button';
 import { useGitHubSync } from '../../../hooks/useGitHubSync';
 import { useGistVerifier } from '../../../hooks/gistVerifier';
 import { useSettings } from '../../../hooks/settingsContext';
-import { closeTabAndOpen, formatLastSync } from '../../../utils/utils';
+import {
+    closeTabAndOpen,
+    formatLastSync,
+    isTokenExpired,
+} from '../../../utils/utils';
 import '../../../assets/css/sync_settings.css';
 import { SyncSettingsProps } from '../../../utils/types';
 import { MIN_GIST_ID_LENGTH } from '../../../utils/constants';
@@ -36,7 +40,7 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
     useEffect(() => {
         toast.info(
             'Paste your Gist ID if you have one, or click "Sync Now" to create a new one.',
-            { duration: 8000 },
+            { duration: 8000, id: 'gist-id-info' },
         );
     }, []);
 
@@ -71,7 +75,7 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
         if (!verifying && verifyError) {
             if (verifyError === 'Token Expired') {
                 toast.error('Token expired. Please reconnect.');
-                handleResetToken();
+                void handleResetToken();
             } else {
                 toast.error(verifyError);
             }
@@ -96,16 +100,28 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
         [updateSyncSettings],
     );
 
-    const handleResetToken = useCallback(() => {
-        const confirmed = window.confirm(
-            'Are you sure you want to reset your GitHub token?',
-        );
-        if (confirmed) {
-            void resetToken();
-            onTokenReset();
-            toast.info('Token reset. Please reconnect to GitHub.');
+    const handleResetToken = useCallback(async () => {
+        try {
+            if (isTokenExpired(githubSyncSettings)) {
+                toast.info('Token expired. Resetting token.');
+                await resetToken();
+                onTokenReset();
+                return;
+            }
+
+            const confirmed = window.confirm(
+                'Are you sure you want to reset your GitHub token?',
+            );
+
+            if (confirmed) {
+                await resetToken();
+                onTokenReset();
+                toast.info('Token reset. Please reconnect to GitHub.');
+            }
+        } catch (_) {
+            toast.error('Failed to reset token. Please try again.');
         }
-    }, [resetToken, onTokenReset]);
+    }, [resetToken, onTokenReset, githubSyncSettings]);
 
     const handleVerifyAndPull = useCallback(() => {
         if (gistId.length >= MIN_GIST_ID_LENGTH) {
@@ -231,7 +247,7 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
                 <button
                     type="button"
                     className="sync-settings__button sync-settings__button--danger"
-                    onClick={handleResetToken}
+                    onClick={void handleResetToken}
                 >
                     Reset Token
                 </button>

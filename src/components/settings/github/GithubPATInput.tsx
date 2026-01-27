@@ -65,6 +65,7 @@ const GithubPATInput: React.FC<{
     useEffect(() => {
         toast.info(`Paste your GitHub Personal Access Token (scope: gist)`, {
             duration: 8000,
+            id: 'pat-info',
         });
     }, []);
 

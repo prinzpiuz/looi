@@ -1,6 +1,5 @@
 import { Toast, ToastOptions, ToastType, ToastListener } from './types';
 
-// Default duration: 5 seconds
 const DEFAULT_DURATION = 5000;
 
 class ToastStore {
@@ -8,38 +7,24 @@ class ToastStore {
     private listeners: Set<ToastListener> = new Set();
     private timers: Map<string, NodeJS.Timeout> = new Map();
 
-    /**
-     * Subscribe to toast changes
-     */
     subscribe(listener: ToastListener): () => void {
         this.listeners.add(listener);
-        // Immediately call with current toasts
         listener(this.toasts);
 
-        // Return unsubscribe function
         return () => {
             this.listeners.delete(listener);
         };
     }
 
-    /**
-     * Notify all listeners of changes
-     */
     private notify(): void {
         const currentToasts = [...this.toasts];
         this.listeners.forEach((listener) => listener(currentToasts));
     }
 
-    /**
-     * Generate unique ID
-     */
     private generateId(): string {
-        return `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `toast-${Date.now()}-${crypto.randomUUID()}`;
     }
 
-    /**
-     * Add a new toast
-     */
     private addToast(
         type: ToastType,
         message: string,
@@ -47,7 +32,6 @@ class ToastStore {
     ): string {
         const id = options.id || this.generateId();
 
-        // If toast with same ID exists, remove it first
         if (options.id && this.toasts.some((t) => t.id === id)) {
             this.dismiss(id);
         }
@@ -64,7 +48,6 @@ class ToastStore {
         this.toasts.push(toast);
         this.notify();
 
-        // Set auto-dismiss timer if not persistent
         if (!toast.persistent && toast.duration > 0) {
             const timer = setTimeout(() => {
                 this.dismiss(id);
@@ -75,11 +58,7 @@ class ToastStore {
         return id;
     }
 
-    /**
-     * Dismiss a toast by ID
-     */
     dismiss(id: string): void {
-        // Clear timer if exists
         const timer = this.timers.get(id);
         if (timer) {
             clearTimeout(timer);
@@ -90,11 +69,7 @@ class ToastStore {
         this.notify();
     }
 
-    /**
-     * Dismiss all toasts
-     */
     dismissAll(): void {
-        // Clear all timers
         this.timers.forEach((timer) => clearTimeout(timer));
         this.timers.clear();
 
@@ -102,14 +77,10 @@ class ToastStore {
         this.notify();
     }
 
-    /**
-     * Get current toasts
-     */
     getToasts(): Toast[] {
         return [...this.toasts];
     }
 
-    // Convenience methods for each type
     success(message: string, options?: ToastOptions): string {
         return this.addToast('success', message, options);
     }
@@ -127,10 +98,8 @@ class ToastStore {
     }
 }
 
-// Create singleton instance
 const toastStore = new ToastStore();
 
-// Export the store instance and convenience functions
 export { toastStore };
 
 export const toast = {

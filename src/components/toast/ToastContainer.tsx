@@ -1,31 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { toastStore } from '../../utils/toastStore';
-import { Toast } from '../../utils/types';
 import ToastItem from './ToastItem';
 import '../../assets/css/toast.css';
+import { Toast } from '../../utils/types';
+import { toastStore } from '../../utils/toastStore';
 
 const ToastContainer: React.FC = () => {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
     useEffect(() => {
-        // Subscribe to toast store
-        const unsubscribe = toastStore.subscribe(setToasts);
-        return () => unsubscribe();
+        return toastStore.subscribe(setToasts);
     }, []);
 
-    if (toasts.length === 0) {
-        return null;
-    }
+    if (toasts.length === 0) return null;
 
     return createPortal(
-        <div
-            className="toast-container"
-            role="region"
-            aria-label="Notifications"
-        >
-            {toasts.map((toast) => (
-                <ToastItem key={toast.id} toast={toast} />
+        <div className="toast-container">
+            {toasts.map((t) => (
+                <ToastItem key={t.id} toast={t} />
             ))}
         </div>,
         document.body,

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { startDeviceFlow, pollForToken } from '../../../utils/github';
 import { GithubDeviceCodeResponse } from '../../../utils/types';
+import { toast } from '../../../utils/toastStore';
 
 const deviceFlowDivStyle: React.CSSProperties = { padding: 60, maxWidth: 340 };
 const errorDivStyle: React.CSSProperties = {
@@ -113,6 +114,7 @@ const GithubDeviceFlow: React.FC<{
         const pollToken = () => {
             if (tries >= maxTries) {
                 setError('Authorization timed out.');
+                toast.error('Authorization timed out.');
                 setPolling(false);
                 return;
             }
