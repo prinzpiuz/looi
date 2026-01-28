@@ -247,7 +247,7 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
                 <button
                     type="button"
                     className="sync-settings__button sync-settings__button--danger"
-                    onClick={void handleResetToken}
+                    onClick={() => void handleResetToken()}
                 >
                     Reset Token
                 </button>
