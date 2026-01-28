@@ -93,7 +93,11 @@ export interface SettingsButtonProps {
 }
 
 export interface AddBookmarkButtonProps {
-    showBookmarkForm: React.Dispatch<React.SetStateAction<boolean>>;
+    onClick: () => void;
+}
+
+export interface CloseSettingsIconProps {
+    onClose: () => void;
 }
 
 export interface BookmarkFormProps {
@@ -105,10 +109,11 @@ export interface BookmarkFormProps {
 }
 
 export interface FoldableSectionProps {
-    title: React.ReactNode;
+    title: string;
     icon?: React.ReactNode;
     children: React.ReactNode;
     defaultOpen?: boolean;
+    extraClassName?: string;
 }
 
 export type IconProps = React.FC<{ style?: CSSProperties }>;

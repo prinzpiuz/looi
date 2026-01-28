@@ -1,44 +1,26 @@
-import { HiOutlineCog6Tooth } from 'react-icons/hi2';
-import { SettingsButtonProps } from '../../utils/types';
-import ToolTip from '../commons/ToolTip';
+import { forwardRef } from 'react';
+import { FaCog } from 'react-icons/fa';
+import FloatingButton from '../commons/FAB';
 
-const toolTipPosition: React.CSSProperties = {
-    top: 50,
-    right: 20,
-};
+interface SettingsIconProps {
+    onClick: () => void;
+    'aria-expanded'?: boolean;
+    'aria-controls'?: string;
+}
 
-const buttonStyles: React.CSSProperties = {
-    position: 'fixed',
-    top: 30,
-    right: 30,
-    width: 35,
-    height: 35,
-    border: 'none',
-    borderRadius: '50px',
-    background: '#000000',
-    color: '#ffffff',
-    cursor: 'pointer',
-    fontSize: 23,
-    zIndex: 1000,
-};
+const SettingsIcon = forwardRef<HTMLButtonElement, SettingsIconProps>(
+    ({ onClick }) => {
+        return (
+            <FloatingButton
+                icon={<FaCog size={18} />}
+                onClick={onClick}
+                label="Settings"
+                position="settings"
+            />
+        );
+    },
+);
 
-const iconStyle: React.CSSProperties = {
-    verticalAlign: -3,
-};
-
-const SettingsIcon: React.FC<SettingsButtonProps> = ({ openSettingsPanel }) => {
-    const toggleSettings = () => openSettingsPanel((prevValue) => !prevValue);
-    return (
-        <ToolTip message="Settings" extraStyles={toolTipPosition}>
-            <button
-                aria-label="Open settings"
-                onClick={toggleSettings}
-                style={buttonStyles}
-            >
-                <HiOutlineCog6Tooth style={iconStyle} />
-            </button>
-        </ToolTip>
-    );
-};
+SettingsIcon.displayName = 'SettingsIcon';
 
 export default SettingsIcon;

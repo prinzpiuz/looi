@@ -189,7 +189,3 @@
     background: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
 }
-
-.todo-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
