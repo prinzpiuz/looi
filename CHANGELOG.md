@@ -1,4 +1,11 @@
+## What's Changed in 1.2.1
+* fix: issue with automatic token reset fixed by @prinzpiuz in [#87](https://github.com/prinzpiuz/looi/pull/87)
+* fix: issue with automatic token reset fixed by @prinzpiuz
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.2.0...1.2.1
+
 ## What's Changed in 1.2.0
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * feat: React grid layout & Other Fixes by @prinzpiuz in [#71](https://github.com/prinzpiuz/looi/pull/71)
 * style: minor updates in device code flow by @prinzpiuz
 * style(settings panel): style improvements in settings panel by @prinzpiuz
