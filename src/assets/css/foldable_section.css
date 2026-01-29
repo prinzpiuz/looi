@@ -1,0 +1,97 @@
+/* Foldable Section Container */
+.foldable-section {
+    margin: 0 16px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+
+/* Header Button */
+.foldable-section__header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+
+.foldable-section__header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.foldable-section__header:focus-visible {
+    outline: 2px solid #2189fa;
+    outline-offset: -2px;
+}
+
+/* Icon */
+.foldable-section__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Title */
+.foldable-section__title {
+    flex: 1;
+}
+
+/* Chevron */
+.foldable-section__chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    opacity: 0.5;
+    transition: transform 0.2s ease;
+}
+
+.foldable-section__chevron--open {
+    transform: rotate(180deg);
+}
+
+/* Content Wrapper - handles animation */
+.foldable-section__content-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease-out;
+}
+
+.foldable-section__content-wrapper--open {
+    grid-template-rows: 1fr;
+}
+
+/* Content Inner - prevents content from being visible during collapse */
+.foldable-section__content-inner {
+    overflow: hidden;
+}
+
+.foldable-section__content-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Content */
+.foldable-section__content {
+    padding: 0 16px 16px 44px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.foldable-section__content-wrapper--open .foldable-section__content {
+    opacity: 1;
+    transition-delay: 0.1s;
+}

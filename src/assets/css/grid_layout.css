@@ -1,0 +1,95 @@
+.react-grid-layout {
+    position: relative;
+    transition: height 200ms ease;
+}
+
+.react-grid-item {
+    transition: all 200ms ease;
+    transition-property: left, top, width, height;
+}
+
+.react-grid-item img {
+    pointer-events: none;
+    user-select: none;
+}
+
+.react-grid-item.cssTransforms {
+    transition-property: transform, width, height;
+}
+
+.react-grid-item.resizing {
+    transition: none;
+    z-index: 1;
+    will-change: width, height;
+}
+
+.react-grid-item.react-draggable-dragging {
+    transition: none;
+    z-index: 3;
+    will-change: transform;
+}
+
+.react-grid-item.dropping {
+    visibility: hidden;
+}
+
+.react-resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    box-sizing: border-box;
+    background-position: bottom right;
+    padding: 0 3px 3px 0;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.react-grid-item:hover > .react-resizable-handle {
+    opacity: 1;
+}
+
+.grid-layout {
+    min-height: 400px;
+}
+
+.grid-layout .react-grid-item {
+    overflow: visible; /* Allow popup menus to overflow */
+}
+
+@media (max-width: 768px) {
+    .react-resizable-handle {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.react-grid-item:not(.react-draggable-dragging):not(.resizing) {
+    animation: gridItemAppear 0.2s ease-out;
+}
+
+/* Disable animations during drag/resize for performance */
+.react-grid-item.react-draggable-dragging,
+.react-grid-item.resizing {
+    animation: none;
+}
+
+/* Grid item sizing, bookmark size */
+.bookmarks {
+    width: 70px !important;
+    height: 80px !important;
+}
+/* Placeholder - HIDDEN by default */
+.react-grid-item.react-grid-placeholder {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    opacity: 0 !important;
+}
+
+.react-grid-item.react-draggable-dragging ~ .react-grid-placeholder {
+    opacity: 0.8 !important;
+}

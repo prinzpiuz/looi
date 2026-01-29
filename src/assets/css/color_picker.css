@@ -1,0 +1,107 @@
+.color-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Section */
+.color-picker__section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.color-picker__section--custom {
+    padding-right: 50px;
+}
+/* Label */
+.color-picker__label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+/* Palette wrapper - override react-color styles */
+.color-picker__palette {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.color-picker__palette .circle-picker {
+    gap: 8px !important;
+}
+
+/* Custom color section */
+.color-picker__custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Custom color input wrapper */
+.color-picker__input-wrapper {
+    position: relative;
+    width: 44px;
+    height: 44px;
+}
+
+/* Hide native input, show custom preview */
+.color-picker__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+}
+
+/* Custom color preview */
+.color-picker__preview {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    transition:
+        border-color 0.15s ease,
+        transform 0.15s ease;
+    pointer-events: none;
+}
+
+.color-picker__input-wrapper:hover .color-picker__preview {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.color-picker__input:focus-visible + .color-picker__preview {
+    border-color: #2189fa;
+    outline: 2px solid #2189fa;
+    outline-offset: 2px;
+}
+
+/* Current color display */
+.color-picker__current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.color-picker__current-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.color-picker__current-value {
+    font-family: monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+}

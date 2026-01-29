@@ -1,99 +1,78 @@
+import { useCallback } from 'react';
 import { CirclePicker } from 'react-color';
 import { useSettings } from '../../../hooks/settingsContext';
+import { COLOR_PALETTE } from '../../../utils/constants';
+import '../../../assets/css/color_picker.css';
 import { ColorResult } from '../../../utils/types';
 
-const palette = [
-    '#478559',
-    '#51d0de',
-    '#8f8d9d',
-    '#496393',
-    '#c59c7f',
-    '#462532',
-    '#e1c7cb',
-    '#787197',
-    '#c1a4e2',
-    '#b4aef0',
-    '#c0c0c0',
-    '#00ab78',
-    '#ffc0cb',
-    '#c89666',
-    '#008080',
-    '#a28089',
-];
-
-const colorPickerDivStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 10,
-    width: '100%',
-};
-
-const colorInputStyle: React.CSSProperties = {
-    width: '40px',
-    height: '40px',
-    border: 'none',
-    background: 'none',
-    cursor: 'pointer',
-};
-
-const labelStyle: React.CSSProperties = {
-    fontSize: 13,
-    color: '#ffffff',
-    fontWeight: 600,
-    marginBottom: 5,
-};
-
-const customColorDivStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-};
-
-const ColorPanel: React.FC = () => {
+const ColorPicker: React.FC = () => {
     const { settings, updateAndPersistSettings } = useSettings();
-    const colorValue = settings?.bgColor ?? '#000000';
+    const currentColor = settings?.bgColor ?? '#000000';
 
-    const handleColorChange = (color: ColorResult) => {
-        if (!settings) return;
-        void updateAndPersistSettings({ bgColor: color.hex });
-    };
+    const handlePaletteChange = useCallback(
+        (color: ColorResult) => {
+            if (!settings) return;
+            void updateAndPersistSettings({ bgColor: color.hex });
+        },
+        [settings, updateAndPersistSettings],
+    );
 
-    const handleCustomColorChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const newColor = e.target.value;
-        if (!settings) return;
-        void updateAndPersistSettings({ bgColor: newColor }, false);
-    };
+    const handleCustomColorChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (!settings) return;
+            void updateAndPersistSettings({ bgColor: e.target.value }, false);
+        },
+        [settings, updateAndPersistSettings],
+    );
 
-    const handleFinalColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newColor = e.target.value;
-        if (!settings) return;
-        void updateAndPersistSettings({ bgColor: newColor });
-    };
+    const handleCustomColorComplete = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (!settings) return;
+            void updateAndPersistSettings({ bgColor: e.target.value });
+        },
+        [settings, updateAndPersistSettings],
+    );
 
     return (
-        <div style={colorPickerDivStyle}>
-            <label style={labelStyle}>Background Color</label>
-            <CirclePicker
-                width="170px"
-                color={colorValue}
-                colors={palette}
-                onChange={handleColorChange}
-            />
-            <div style={customColorDivStyle}>
-                <label style={labelStyle}>Custom</label>
-                <input
-                    type="color"
-                    onChange={handleCustomColorChange}
-                    onBlur={handleFinalColorChange}
-                    value={colorValue}
-                    style={colorInputStyle}
-                />
+        <div className="color-picker">
+            <div className="color-picker__section">
+                <div className="color-picker__palette">
+                    <CirclePicker
+                        color={currentColor}
+                        colors={COLOR_PALETTE}
+                        onChange={handlePaletteChange}
+                        width="200px"
+                        circleSize={24}
+                        circleSpacing={10}
+                    />
+                </div>
+            </div>
+
+            <div className="color-picker__section color-picker__section--custom">
+                <div className="color-picker__custom">
+                    <div className="color-picker__input-wrapper">
+                        <input
+                            id="custom-color-input"
+                            type="color"
+                            className="color-picker__input"
+                            value={currentColor}
+                            onChange={handleCustomColorChange}
+                            onBlur={handleCustomColorComplete}
+                        />
+                        <div
+                            className="color-picker__preview"
+                            style={{ backgroundColor: currentColor }}
+                        />
+                    </div>
+                    <div className="color-picker__current">
+                        <span className="color-picker__current-value">
+                            {currentColor}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     );
 };
 
-export default ColorPanel;
+export default ColorPicker;

@@ -124,3 +124,8 @@
 .react-calendar__month-view__days__day--neighboringMonth {
     color: #aaaaaa;
 }
+
+.react-calendar {
+    width: 382px !important;
+    height: 326px !important;
+}
