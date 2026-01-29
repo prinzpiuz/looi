@@ -1,0 +1,33 @@
+.close-settings-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    cursor: pointer;
+    transition:
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+.close-settings-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.close-settings-btn:focus-visible {
+    outline: 2px solid #2189fa;
+    outline-offset: 2px;
+}
+
+.close-settings-btn:active {
+    transform: scale(0.95);
+}

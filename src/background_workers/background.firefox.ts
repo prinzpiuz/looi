@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 /// <reference types="chrome"/>
 
 import type { Runtime } from 'webextension-polyfill';

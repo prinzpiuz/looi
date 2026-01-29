@@ -5,8 +5,9 @@ import GithubPATInput from './GithubPATInput';
 import { saveToken } from '../../../utils/github';
 import SyncSettings from './SyncSettings';
 import { useSettings } from '../../../hooks/settingsContext';
-import { GitHubSyncSettings } from '../../../utils/types';
+import { GitHubSyncSettings, TokenType } from '../../../utils/types';
 import { isTokenExpired } from '../../../utils/utils';
+import { toast } from '../../../utils/toastStore';
 
 const githubSyncDivStyle: React.CSSProperties = { margin: '7px 0 27px' };
 const selectionDivStyle: React.CSSProperties = {
@@ -20,25 +21,33 @@ const checkTokenStatus = (
     githubSync: GitHubSyncSettings | undefined,
 ): boolean => {
     if (githubSync === undefined) return false;
-    return githubSync?.tokenSaved && !isTokenExpired(githubSync.storedAt);
+    return !isTokenExpired(githubSync);
 };
 
 const GitHubSync: React.FC = () => {
     const { settings, updateGithubSettings } = useSettings();
-    const [authTab, setAuthTab] = useState<'device' | 'pat'>('device');
+    const [authTab, setAuthTab] = useState<TokenType>('UAT');
 
     const [tokenAvailable, setTokenAvailable] = useState(
         checkTokenStatus(settings?.githubSync),
     );
     const onToken = (token: string) => {
         saveToken(token);
-        void updateGithubSettings({ tokenSaved: true, storedAt: Date.now() });
+        void updateGithubSettings({
+            tokenSaved: true,
+            storedAt: Date.now(),
+            tokenType: authTab,
+        });
         setTokenAvailable(true);
+        toast.success('GitHub token saved successfully.', {
+            id: 'github-token-saved',
+            duration: 4000,
+        });
     };
 
     const connectButtonStyle: React.CSSProperties = {
         flex: 1,
-        background: authTab === 'device' ? '#ffffff' : 'none',
+        background: authTab === 'UAT' ? '#ffffff' : 'none',
         border: 'none',
         fontWeight: 700,
         fontSize: 15,
@@ -48,7 +57,7 @@ const GitHubSync: React.FC = () => {
 
     const authButtonStyle: React.CSSProperties = {
         flex: 1,
-        background: authTab === 'pat' ? '#ffffff' : 'none',
+        background: authTab === 'PAT' ? '#ffffff' : 'none',
         border: 'none',
         fontWeight: 700,
         fontSize: 15,
@@ -58,25 +67,27 @@ const GitHubSync: React.FC = () => {
 
     const getSection = () => {
         if (tokenAvailable) {
-            return <SyncSettings onTokenReset={setTokenAvailable} />;
+            return (
+                <SyncSettings onTokenReset={() => setTokenAvailable(false)} />
+            );
         } else {
             return (
                 <>
                     <div style={selectionDivStyle}>
                         <button
                             style={connectButtonStyle}
-                            onClick={() => setAuthTab('device')}
+                            onClick={() => setAuthTab('UAT')}
                         >
                             <FaGithub /> Login
                         </button>
                         <button
                             style={authButtonStyle}
-                            onClick={() => setAuthTab('pat')}
+                            onClick={() => setAuthTab('PAT')}
                         >
                             <FaGithub /> Token
                         </button>
                     </div>
-                    {authTab === 'device' ? (
+                    {authTab === 'UAT' ? (
                         <GithubDeviceFlow onToken={onToken} />
                     ) : (
                         <GithubPATInput onToken={onToken} />

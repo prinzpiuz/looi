@@ -1,9 +1,34 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Enable version updates for npm dependencies
   - package-ecosystem: "npm"
-    # Look for `package.json` and `lock` files in the `root` directory
+    # Look for `package.json` and `lock` files in the root directory
     directory: "/"
-    # Check the npm registry for updates every day (weekdays)
+    # Check the npm registry for updates weekly on Mondays to reduce noise
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+    # Limit open pull requests to prevent overwhelming the repository
+    open-pull-requests-limit: 10
+    # Assign assignees for dependency updates
+    assignees:
+      - "prinzpiuz" # Replace with actual maintainer usernames
+    # Customize commit messages for better tracking
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Ignore major version updates to maintain stability
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    # Group related updates together for cleaner PRs
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/*"

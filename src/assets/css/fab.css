@@ -1,0 +1,36 @@
+.floating-btn {
+    position: fixed;
+    top: 24px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    z-index: 100;
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.floating-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.floating-btn:active {
+    transform: scale(0.95);
+}
+
+.floating-btn--settings {
+    right: 24px;
+}
+
+.floating-btn--add-bookmark {
+    right: 80px;
+}

@@ -1,26 +1,34 @@
 /// <reference types="chrome"/>
 import { CSSProperties } from 'react';
-
-export interface Position {
-    x: number;
-    y: number;
-}
+import { LayoutItem } from 'react-grid-layout';
+import { gridItemType } from './utils';
 
 export interface Bookmark {
     id: string;
     url: string;
     name: string;
-    position?: Position;
     icon: string;
+}
+
+export interface WidgetSize {
+    w: number;
+    h: number;
+    minW?: number;
+    maxW?: number;
+    minH?: number;
+    maxH?: number;
 }
 
 export interface WidgetConfig {
     id: string;
     name: string;
-    position: Position;
     icon?: string;
     enabled: boolean;
+    size: WidgetSize;
+    isResizable: boolean;
 }
+
+export type TokenType = 'PAT' | 'UAT';
 
 export interface GitHubSyncSettings {
     lastSync: number | null;
@@ -29,6 +37,7 @@ export interface GitHubSyncSettings {
     tokenSaved: boolean;
     gistId: string | undefined;
     storedAt: number;
+    tokenType: TokenType;
 }
 
 export interface Settings {
@@ -36,7 +45,19 @@ export interface Settings {
     bgUrl?: string;
     githubSync: GitHubSyncSettings;
     bookmarks?: Bookmark[];
-    widgetConfigs: Record<string, WidgetConfig>;
+    widgetConfigs: WidgetConfig[];
+    gridLayouts?: LayoutItem[];
+    widgetData: WidgetDataStore;
+}
+
+export interface GridConfig {
+    cols: number;
+    rowHeight: number;
+}
+
+export interface GridItem {
+    id: string;
+    type: gridItemType;
 }
 
 export interface SettingsContextType {
@@ -46,13 +67,25 @@ export interface SettingsContextType {
     updateBookmark: (s: string, bm: Partial<Bookmark>) => Promise<void>;
     removeBookmark: (s: string) => Promise<void>;
     getBookmarkById: (s: string) => Bookmark | undefined;
-    updateWidgetPosition: (id: string, newPos: Position) => Promise<void>;
+    updateGridLayouts: (layouts: LayoutItem[]) => Promise<void>;
     enableDisableWidget: (id: string, enabled: boolean) => Promise<void>;
     updateGithubSettings: (s: Partial<GitHubSyncSettings>) => Promise<void>;
     updateAndPersistSettings: (
         s: Partial<Settings>,
         saveChanges?: boolean,
     ) => Promise<void>;
+    updateWidgetData: (
+        widgetId: string,
+        data: VersionedWidgetData,
+    ) => Promise<void>;
+    getWidgetData: <T>(widgetId: string) => VersionedWidgetData<T> | undefined;
+    clearWidgetData: (widgetId: string) => Promise<void>;
+    clearAllWidgetData: () => Promise<void>;
+}
+
+export interface BookmarkItemProps {
+    bookmark: Bookmark;
+    bgColor: string;
 }
 
 export interface SettingsButtonProps {
@@ -60,7 +93,11 @@ export interface SettingsButtonProps {
 }
 
 export interface AddBookmarkButtonProps {
-    showBookmarkForm: React.Dispatch<React.SetStateAction<boolean>>;
+    onClick: () => void;
+}
+
+export interface CloseSettingsIconProps {
+    onClose: () => void;
 }
 
 export interface BookmarkFormProps {
@@ -71,15 +108,12 @@ export interface BookmarkFormProps {
     showBookmarkForm: boolean;
 }
 
-export interface WidgetProps {
-    config: WidgetConfig;
-}
-
 export interface FoldableSectionProps {
-    title: React.ReactNode;
+    title: string;
     icon?: React.ReactNode;
     children: React.ReactNode;
     defaultOpen?: boolean;
+    extraClassName?: string;
 }
 
 export type IconProps = React.FC<{ style?: CSSProperties }>;
@@ -98,14 +132,17 @@ export interface PopUpMenuProps {
 }
 
 interface Runtime {
-    sendMessage: (message: any, callback: (response?: any) => void) => void;
+    sendMessage: (
+        message: unknown,
+        callback: (response?: unknown) => void,
+    ) => void;
     lastError?: { message: string };
 }
 
 interface Storage {
     local: {
-        set: (items: Record<string, any>) => void;
-        get: (key: string) => Promise<Record<string, any>>;
+        set: (items: Record<string, unknown>) => void;
+        get: (key: string) => Promise<Record<string, unknown>>;
         remove: (key: string) => Promise<void>;
     };
 }
@@ -218,6 +255,29 @@ export interface DeviceFlowAuthProps {
     onTokenReceived: (token: string) => void;
 }
 
+export interface SyncError {
+    message: string;
+    code?: 'TOKEN_EXPIRED' | 'NETWORK_ERROR' | 'GIST_NOT_FOUND' | 'UNKNOWN';
+}
+
+export interface UseGitHubSyncReturn {
+    // State
+    githubSyncSettings: GitHubSyncSettings;
+    token: string | null;
+    status: SyncStatus;
+    error: SyncError | null;
+    isTokenLoading: boolean;
+    isSyncing: boolean;
+
+    // Actions
+    updateSyncSettings: (patch: Partial<GitHubSyncSettings>) => Promise<void>;
+    resetToken: () => Promise<void>;
+    syncNow: () => Promise<void>;
+    pullFromGist: () => Promise<Settings | null>;
+    pushToGist: () => Promise<void>;
+    clearError: () => void;
+}
+
 export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
 export interface GistResponse {
@@ -227,9 +287,69 @@ export interface GistResponse {
     public: boolean;
 }
 
-export type Task = {
+export interface Task {
     id: string;
     text: string;
     completed: boolean;
-    reminder?: Date;
+    createdAt?: number;
+    completedAt?: number;
+}
+
+export interface TodoWidgetData {
+    tasks: Task[];
+    showCompleted: boolean;
+}
+
+export interface VersionedWidgetData<T = unknown> {
+    version: number;
+    data: T;
+    updatedAt: number;
+}
+
+export type WidgetDataStore = {
+    [widgetId: string]: VersionedWidgetData;
 };
+
+export type MigrationFn<T = unknown> = (oldData: unknown) => T;
+
+export interface WidgetDataConfig<T> {
+    widgetId: string;
+    version: number;
+    defaultData: T;
+    migrations?: Record<number, MigrationFn<T>>;
+}
+
+export interface UseWidgetDataReturn<T> {
+    data: T;
+    isLoading: boolean;
+    updateData: (updater: Partial<T> | ((prev: T) => T)) => void;
+    resetData: () => void;
+    lastUpdated: number | null;
+}
+
+export interface SyncSettingsProps {
+    onTokenReset: () => void;
+}
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+export interface ToastOptions {
+    duration?: number;
+    persistent?: boolean;
+    id?: string;
+}
+
+export interface ToastItemProps {
+    toast: Toast;
+}
+
+export interface Toast {
+    id: string;
+    type: ToastType;
+    message: string;
+    duration: number;
+    persistent: boolean;
+    createdAt: number;
+}
+
+export type ToastListener = (toasts: Toast[]) => void;

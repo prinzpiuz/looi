@@ -25,70 +25,9 @@ jobs:
               run: npm run build:chrome
 
             - name: Create zip for upload
-              run: cd build && zip -r ../looi-extension.zip .
+              run: cd build && zip -r ../looi-extension.zip . && cd ..
 
-            - name: Set up GCP authentication
-              uses: google-github-actions/auth@v1
-              with:
-                  credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-
-            - name: Get OAuth2 access token
-              run: |
-                  ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
-                  echo "ACCESS_TOKEN=$ACCESS_TOKEN" >> $GITHUB_ENV
-
-            - name: Upload and Publish to Chrome Web Store
-              run: |
-                  npm install googleapis
-
-                  # Set up the Google API client
-                  node -e "
-                  const { google } = require('googleapis');
-                  const path = require('path');
-                  const fs = require('fs');
-
-                  // Load credentials from environment variable
-                  const accessToken = process.env.ACCESS_TOKEN;
-                  const extensionId = '${{ secrets.CHROME_EXTENSION_ID }}';
-
-                  const chromeWebStore = google.chromewebstore('v1.1');
-
-                  // Authenticate with the access token
-                  const auth = new google.auth.OAuth2();
-                  auth.setCredentials({ access_token: accessToken });
-
-                  async function uploadAndPublish() {
-                      try {
-                      const file = fs.createReadStream(path.join(__dirname, 'looi-extension.zip'));
-
-                      // Upload the extension
-                      const uploadResponse = await chromeWebStore.items.upload({
-                          auth,
-                          extensionId: extensionId,
-                          media: {
-                          body: file
-                          }
-                      });
-
-                      console.log('Extension upload response:', uploadResponse.data);
-
-                      // Publish the extension after upload
-                      const publishResponse = await chromeWebStore.items.update({
-                          auth,
-                          extensionId: extensionId,
-                          requestBody: {
-                          status: 'default'  // 'default' will publish the extension
-                          }
-                      });
-
-                      console.log('Extension publish response:', publishResponse.data);
-                      } catch (err) {
-                      console.error('Error uploading and publishing extension:', err);
-                      process.exit(1);
-                      }
-                  }
-
-                  uploadAndPublish();
-                  "
+            - name: Upload and publish Chrome extension
+              run: node chrome_upload.js ${{ secrets.CHROME_EXTENSION_ID }} looi-extension.zip ${{ secrets.CHROME_PUBLISHER_ID }}
               env:
-                  ACCESS_TOKEN: ${{ env.ACCESS_TOKEN }}
+                  GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}

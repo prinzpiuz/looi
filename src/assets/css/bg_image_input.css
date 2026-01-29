@@ -1,0 +1,105 @@
+.bg-image-input {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Label */
+.bg-image-input__label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+/* Input wrapper */
+.bg-image-input__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Icon */
+.bg-image-input__icon {
+    position: absolute;
+    left: 12px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    transition: color 0.15s ease;
+}
+
+.bg-image-input__input-wrapper:focus-within .bg-image-input__icon {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Input */
+.bg-image-input__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 40px 0 36px;
+    border: none;
+    border-radius: 8px;
+    outline: 1.5px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 14px;
+    color: #ffffff;
+    transition:
+        outline 0.15s ease,
+        background 0.15s ease;
+}
+
+.bg-image-input__input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.bg-image-input__input:focus {
+    outline: 2px solid #2189fa;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Clear button */
+.bg-image-input__clear {
+    position: absolute;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+        opacity 0.15s ease,
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+.bg-image-input__input-wrapper:hover .bg-image-input__clear,
+.bg-image-input__input:focus ~ .bg-image-input__clear {
+    opacity: 1;
+}
+
+.bg-image-input__clear:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.bg-image-input__preview-image {
+    display: none;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

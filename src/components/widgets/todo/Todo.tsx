@@ -10,46 +10,51 @@ import {
     FaChevronUp,
     FaPlus,
     FaMinus,
+    FaEye,
+    FaEyeSlash,
+    FaTrash,
 } from 'react-icons/fa';
 import '../../../assets/css/todo.css';
-import { Task } from '../../../utils/types';
+import { useTodoData } from './useTodoData';
 
 const TodoWidget: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [newTask, setNewTask] = useState('');
+    const {
+        visibleTasks,
+        showCompleted,
+        isLoading,
+        completedCount,
+        totalCount,
+        addTask,
+        removeTask,
+        toggleTask,
+        reorderTasks,
+        toggleShowCompleted,
+        clearCompleted,
+    } = useTodoData();
+
+    const [newTaskText, setNewTaskText] = useState('');
     const [expanded, setExpanded] = useState(true);
     const listRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const addTask = () => {
-        if (!newTask.trim()) return;
-        const task: Task = {
-            id: crypto.randomUUID(),
-            text: newTask,
-            completed: false,
-        };
-        setTasks((prev) => [...prev, task]);
-        setNewTask('');
+    const handleAddTask = () => {
+        if (!newTaskText.trim()) return;
+        addTask(newTaskText);
+        setNewTaskText('');
         inputRef.current?.focus();
     };
 
-    const removeTask = (id: string) => {
-        setTasks((prev) => prev.filter((task) => task.id !== id));
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleAddTask();
+        }
     };
 
-    const toggleComplete = (id: string) => {
-        setTasks((prev) =>
-            prev.map((task) =>
-                task.id === id ? { ...task, completed: !task.completed } : task,
-            ),
-        );
-    };
-
+    // Drag and drop setup
     useEffect(() => {
         const container = listRef.current;
         if (!container) return;
 
-        // register all items as draggable + droppable
         const disposables = Array.from(container.children).map((child) => {
             const el = child as HTMLElement;
             const taskId = el.dataset.id;
@@ -69,20 +74,20 @@ const TodoWidget: React.FC = () => {
                 element: el,
                 getData: () => ({ taskId }),
                 onDrop: ({ source }) => {
-                    const sourceTaskId = source.data.taskId;
+                    const sourceTaskId = source.data.taskId as string;
                     if (!sourceTaskId || !taskId || sourceTaskId === taskId)
                         return;
 
-                    setTasks((prev) => {
-                        const fromIndex = prev.findIndex(
-                            (t) => t.id === sourceTaskId,
-                        );
-                        const toIndex = prev.findIndex((t) => t.id === taskId);
-                        const reordered = [...prev];
-                        const [moved] = reordered.splice(fromIndex, 1);
-                        reordered.splice(toIndex, 0, moved);
-                        return reordered;
-                    });
+                    const fromIndex = visibleTasks.findIndex(
+                        (t) => t.id === sourceTaskId,
+                    );
+                    const toIndex = visibleTasks.findIndex(
+                        (t) => t.id === taskId,
+                    );
+
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        reorderTasks(fromIndex, toIndex);
+                    }
                 },
             });
 
@@ -92,8 +97,9 @@ const TodoWidget: React.FC = () => {
         return () => {
             disposables.flat().forEach((cleanup) => cleanup());
         };
-    }, [tasks]);
+    }, [visibleTasks, reorderTasks]);
 
+    // Keyboard shortcut to toggle expanded
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.altKey && e.key === 'c') {
@@ -102,19 +108,34 @@ const TodoWidget: React.FC = () => {
         };
 
         window.addEventListener('keydown', handleKeyDown);
-
-        // Cleanup the event listener
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
+
+    if (isLoading) {
+        return (
+            <div className="todo-widget">
+                <div className="todo-header">
+                    <FaTasks className="todo-icon" />
+                    Loading...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`todo-widget ${expanded ? 'expanded' : 'collapsed'}`}>
             <div className="todo-header">
                 <FaTasks className="todo-icon" />
-                To-Do
-                <div onClick={() => setExpanded((prev) => !prev)}>
+                <span>To-Do</span>
+                {totalCount > 0 && (
+                    <span className="todo-count">
+                        {completedCount}/{totalCount}
+                    </span>
+                )}
+                <div
+                    className="todo-expand-btn"
+                    onClick={() => setExpanded((prev) => !prev)}
+                >
                     {expanded ? <FaChevronUp /> : <FaChevronDown />}
                 </div>
             </div>
@@ -126,18 +147,41 @@ const TodoWidget: React.FC = () => {
                             className="task-input"
                             ref={inputRef}
                             type="text"
-                            value={newTask}
-                            onChange={(e) => setNewTask(e.target.value)}
+                            value={newTaskText}
+                            onChange={(e) => setNewTaskText(e.target.value)}
+                            onKeyDown={handleKeyDown}
                             placeholder="Add Task"
                         />
-
-                        <div onClick={addTask}>
+                        <div className="add-btn" onClick={handleAddTask}>
                             <FaPlus />
                         </div>
                     </div>
 
+                    <div className="todo-controls">
+                        <button
+                            className="todo-control-btn"
+                            onClick={toggleShowCompleted}
+                            title={
+                                showCompleted
+                                    ? 'Hide completed'
+                                    : 'Show completed'
+                            }
+                        >
+                            {showCompleted ? <FaEye /> : <FaEyeSlash />}
+                        </button>
+                        {completedCount > 0 && (
+                            <button
+                                className="todo-control-btn"
+                                onClick={clearCompleted}
+                                title="Clear completed"
+                            >
+                                <FaTrash />
+                            </button>
+                        )}
+                    </div>
+
                     <ul ref={listRef} className="todo-list">
-                        {tasks.map((task) => (
+                        {visibleTasks.map((task) => (
                             <li
                                 key={task.id}
                                 data-id={task.id}
@@ -145,7 +189,7 @@ const TodoWidget: React.FC = () => {
                             >
                                 <span
                                     className="task-text"
-                                    onClick={() => toggleComplete(task.id)}
+                                    onClick={() => toggleTask(task.id)}
                                 >
                                     {task.text}
                                 </span>
@@ -159,6 +203,14 @@ const TodoWidget: React.FC = () => {
                             </li>
                         ))}
                     </ul>
+
+                    {visibleTasks.length === 0 && (
+                        <div className="todo-empty">
+                            {totalCount === 0
+                                ? 'No tasks yet. Add one above!'
+                                : 'All tasks completed! 🎉'}
+                        </div>
+                    )}
                 </>
             )}
         </div>

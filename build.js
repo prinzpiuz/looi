@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import esbuild from 'esbuild';
 
 const target = process.argv[2];

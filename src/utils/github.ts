@@ -25,36 +25,32 @@ export const startDeviceFlow = (
             type: 'GITHUB_DEVICE_FLOW',
             action: 'startDeviceFlow',
         };
-        ext?.runtime.sendMessage(
-            message,
-            (
-                response:
-                    | BackgroundResponse<GithubDeviceCodeResponse>
-                    | undefined,
-            ) => {
-                if (ext?.runtime.lastError) {
-                    reject(new Error(ext.runtime.lastError.message));
-                    return;
-                }
+        ext?.runtime.sendMessage(message, (response?: unknown) => {
+            const typedResponse = response as
+                | BackgroundResponse<GithubDeviceCodeResponse>
+                | undefined;
+            if (ext?.runtime.lastError) {
+                reject(new Error(ext.runtime.lastError.message));
+                return;
+            }
 
-                if (response?.success && response.data) {
-                    setDeviceData(response.data);
-                    setdataReceived(true);
-                    setStarted(true);
-                    resolve(response.data);
-                } else {
-                    setError(
-                        response?.error ||
-                            'Failed to start GitHub Device Flow.',
-                    );
-                    reject(
-                        new Error(
-                            response?.error ?? 'Unknown background error',
-                        ),
-                    );
-                }
-            },
-        );
+            if (typedResponse?.success && typedResponse.data) {
+                setDeviceData(typedResponse.data);
+                setdataReceived(true);
+                setStarted(true);
+                resolve(typedResponse.data);
+            } else {
+                setError(
+                    typedResponse?.error ||
+                        'Failed to start GitHub Device Flow.',
+                );
+                reject(
+                    new Error(
+                        typedResponse?.error ?? 'Unknown background error',
+                    ),
+                );
+            }
+        });
     });
 };
 
@@ -75,37 +71,37 @@ export const pollForToken = (
         action: 'getToken',
         device_code: device_code,
     };
-    ext?.runtime.sendMessage(
-        message,
-        (response: BackgroundResponse<GithubTokenResponse> | undefined) => {
-            if (response?.success && response.data) {
-                const data = response.data;
-                if (data.access_token) {
-                    setPolling(false);
-                    setSuccess(true);
-                    setdataReceived(false);
-                    onToken(data.access_token);
-                    return;
-                } else if (data.error === 'authorization_pending') {
-                    tries++;
-                    // Try again after interval
-                    if (intervalId) clearTimeout(intervalId);
-                    intervalId = setTimeout(pollToken, interval * 1000);
-                } else if (data.error === 'slow_down') {
-                    interval += 5;
-                    tries++;
-                    if (intervalId) clearTimeout(intervalId);
-                    intervalId = setTimeout(pollToken, interval * 1000);
-                } else {
-                    setPolling(false);
-                    setError(data.error_description ?? 'Authorization error');
-                }
+    ext?.runtime.sendMessage(message, (response?: unknown) => {
+        const typedResponse = response as
+            | BackgroundResponse<GithubTokenResponse>
+            | undefined;
+        if (typedResponse?.success && typedResponse.data) {
+            const data = typedResponse.data;
+            if (data.access_token) {
+                setPolling(false);
+                setSuccess(true);
+                setdataReceived(false);
+                onToken(data.access_token);
+                return;
+            } else if (data.error === 'authorization_pending') {
+                tries++;
+                // Try again after interval
+                if (intervalId) clearTimeout(intervalId);
+                intervalId = setTimeout(pollToken, interval * 1000);
+            } else if (data.error === 'slow_down') {
+                interval += 5;
+                tries++;
+                if (intervalId) clearTimeout(intervalId);
+                intervalId = setTimeout(pollToken, interval * 1000);
             } else {
                 setPolling(false);
-                setError(response?.error || 'Failed to poll token');
+                setError(data.error_description ?? 'Authorization error');
             }
-        },
-    );
+        } else {
+            setPolling(false);
+            setError(typedResponse?.error || 'Failed to poll token');
+        }
+    });
 };
 
 export const findGist = (
@@ -117,30 +113,26 @@ export const findGist = (
             action: 'findGist',
             gistId,
         };
-        ext?.runtime.sendMessage(
-            message,
-            (
-                response:
-                    | BackgroundResponse<
-                          GithubAPIResponse | GithubUnAuthorizedResponse
-                      >
-                    | undefined,
-            ) => {
-                if (ext?.runtime.lastError) {
-                    reject(new Error(ext.runtime.lastError.message));
-                    return;
-                }
-                if (response?.success && response.data) {
-                    resolve(response.data);
-                } else {
-                    reject(
-                        new Error(
-                            response?.error ?? 'Unknown background error',
-                        ),
-                    );
-                }
-            },
-        );
+        ext?.runtime.sendMessage(message, (response?: unknown) => {
+            const typedResponse = response as
+                | BackgroundResponse<
+                      GithubAPIResponse | GithubUnAuthorizedResponse
+                  >
+                | undefined;
+            if (ext?.runtime.lastError) {
+                reject(new Error(ext.runtime.lastError.message));
+                return;
+            }
+            if (typedResponse?.success && typedResponse.data) {
+                resolve(typedResponse.data);
+            } else {
+                reject(
+                    new Error(
+                        typedResponse?.error ?? 'Unknown background error',
+                    ),
+                );
+            }
+        });
     });
 };
 
@@ -155,31 +147,27 @@ export const createOrUpdateLooiGist = (
             gistId,
             payload,
         };
-        ext?.runtime.sendMessage(
-            message,
-            (
-                response:
-                    | BackgroundResponse<
-                          GithubAPIResponse | GithubUnAuthorizedResponse
-                      >
-                    | undefined,
-            ) => {
-                if (ext?.runtime.lastError) {
-                    reject(new Error(ext.runtime.lastError.message));
-                    return;
-                }
+        ext?.runtime.sendMessage(message, (response?: unknown) => {
+            const typedResponse = response as
+                | BackgroundResponse<
+                      GithubAPIResponse | GithubUnAuthorizedResponse
+                  >
+                | undefined;
+            if (ext?.runtime.lastError) {
+                reject(new Error(ext.runtime.lastError.message));
+                return;
+            }
 
-                if (response?.success && response.data) {
-                    resolve(response.data);
-                } else {
-                    reject(
-                        new Error(
-                            response?.error ?? 'Unknown background error',
-                        ),
-                    );
-                }
-            },
-        );
+            if (typedResponse?.success && typedResponse.data) {
+                resolve(typedResponse.data);
+            } else {
+                reject(
+                    new Error(
+                        typedResponse?.error ?? 'Unknown background error',
+                    ),
+                );
+            }
+        });
     });
 };
 
@@ -188,8 +176,10 @@ export const saveToken = (token: string) => {
 };
 
 export const getToken = async (): Promise<string> => {
-    const stored = await ext?.storage.local.get('github_token');
-    return stored?.github_token as Promise<string>;
+    const stored = (await ext?.storage.local.get('github_token')) as
+        | { github_token?: string }
+        | undefined;
+    return stored?.github_token ?? '';
 };
 
 export const removeToken = async () => {

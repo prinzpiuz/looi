@@ -1,0 +1,116 @@
+/* Overlay behind panel */
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+    z-index: 998;
+}
+
+.settings-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Settings Panel */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 400px;
+    max-width: 90vw;
+    backdrop-filter: blur(30px);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.settings-panel.open {
+    transform: translateX(0);
+}
+
+/* Header */
+.settings-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-panel__title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+.settings-panel__close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+.settings-panel__close:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Content */
+.settings-panel__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0;
+}
+
+/* Scrollbar - Chrome/Safari */
+.settings-panel__content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.settings-panel__content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.settings-panel__content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+/* Scrollbar - Firefox */
+.settings-panel__content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* Footer */
+.settings-panel__footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .settings-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}

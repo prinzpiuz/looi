@@ -3,7 +3,7 @@ name: Extension Build & Publish to Firefox
 on:
     push:
         branches:
-            - release1
+            - release
 
 jobs:
     build:
