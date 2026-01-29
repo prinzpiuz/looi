@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Looi",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Minimal, Customisable New Tab page for Firefox, Chrome, and Edge.",
   "browser_specific_settings": {
     "gecko": {
