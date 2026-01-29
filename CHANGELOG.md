@@ -1,4 +1,25 @@
-## What's Changed in 1.1.4
+## What's Changed in 1.2.0
+* feat: React grid layout & Other Fixes by @prinzpiuz in [#71](https://github.com/prinzpiuz/looi/pull/71)
+* style: minor updates in device code flow by @prinzpiuz
+* style(settings panel): style improvements in settings panel by @prinzpiuz
+* fix: fix issues with reset button by @prinzpiuz
+* fix(pat input): style updated for fixing alignment issues by @prinzpiuz
+* fix(toasts): toast design minimalised by @prinzpiuz
+* feat: implemented toast notifications by @prinzpiuz
+* fix: removed expiry for PAT by @prinzpiuz
+* fix: removed public gist feature by @prinzpiuz
+* fix: updated to useCallback on settings functions by @prinzpiuz
+* feat: persisting widget data by @prinzpiuz
+* fix: bookmar drah while editing fixed by @prinzpiuz
+* chore: working version by @prinzpiuz
+* refactor: code refactoring and cleanup by @prinzpiuz
+* chore: working version by @prinzpiuz
+* feat: Implement react-grid-layout for bookmark grid and refactor codebase by @prinzpiuz
+* fix: improve bookmark form by @prinzpiuz
+* fix: new bookmarks added at center of screen; error handling improved by @prinzpiuz
+* fix: menu getting hidden behind other elements by @prinzpiuz
+* fix: issue with bookmark name display by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * chore: testing chrome release action by @prinzpiuz in [#57](https://github.com/prinzpiuz/looi/pull/57)
 * fix: eslint error fixes by @prinzpiuz
 * fix: pre-commit errors by @prinzpiuz
@@ -29,7 +50,7 @@
 ## New Contributors
 * @dependabot[bot] made their first contribution
 
-**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.3...1.1.4
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.3...1.2.0
 
 ## What's Changed in 1.1.3
 * chore: changelog generated & version updated automatically by @github-actions[bot]
