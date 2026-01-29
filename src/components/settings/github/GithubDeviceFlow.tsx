@@ -64,12 +64,6 @@ const loadingSpinnerStyle: React.CSSProperties = {
     marginLeft: 8,
 };
 
-const infoDivStyle: React.CSSProperties = {
-    color: '#ffffff',
-    marginTop: 8,
-    fontSize: 12,
-};
-
 const connectingStyle: React.CSSProperties = {
     color: '#ffffff',
     display: 'flex',
@@ -111,6 +105,14 @@ const GithubDeviceFlow: React.FC<{
         let interval = deviceData.interval;
 
         setPolling(true);
+        toast.info('Waiting for GitHub authorization...', {
+            duration: 10000,
+            id: 'github-auth-wait',
+        });
+        toast.info(
+            `Please enter the code ${deviceData.user_code} at GitHub to authorize.`,
+            { duration: 15000, id: 'github-auth-code' },
+        );
         const pollToken = () => {
             if (tries >= maxTries) {
                 setError('Authorization timed out.');
@@ -168,10 +170,6 @@ const GithubDeviceFlow: React.FC<{
 
             {dataReceived && deviceData && (
                 <div>
-                    <p style={infoDivStyle}>
-                        To authenticate with GitHub, click the button below and
-                        enter your device code:
-                    </p>
                     <p
                         style={codeBlockStyle}
                         tabIndex={0} // make code selectable/focusable

@@ -7,6 +7,7 @@ import SyncSettings from './SyncSettings';
 import { useSettings } from '../../../hooks/settingsContext';
 import { GitHubSyncSettings, TokenType } from '../../../utils/types';
 import { isTokenExpired } from '../../../utils/utils';
+import { toast } from '../../../utils/toastStore';
 
 const githubSyncDivStyle: React.CSSProperties = { margin: '7px 0 27px' };
 const selectionDivStyle: React.CSSProperties = {
@@ -38,6 +39,10 @@ const GitHubSync: React.FC = () => {
             tokenType: authTab,
         });
         setTokenAvailable(true);
+        toast.success('GitHub token saved successfully.', {
+            id: 'github-token-saved',
+            duration: 4000,
+        });
     };
 
     const connectButtonStyle: React.CSSProperties = {
