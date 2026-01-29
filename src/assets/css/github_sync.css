@@ -1,0 +1,68 @@
+.github-sync {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tab List */
+.github-sync__tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+/* Tab Button */
+.github-sync__tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.github-sync__tab:hover:not(.github-sync__tab--active) {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.github-sync__tab--active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.github-sync__tab:focus-visible {
+    outline: 2px solid #2189fa;
+    outline-offset: -2px;
+}
+
+.github-sync__tab-icon {
+    font-size: 16px;
+}
+
+/* Tab Panel */
+.github-sync__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Connected State */
+.github-sync__connected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
