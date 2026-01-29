@@ -353,3 +353,9 @@ export interface Toast {
 }
 
 export type ToastListener = (toasts: Toast[]) => void;
+
+export interface TabConfig {
+    id: TokenType;
+    label: string;
+    icon: React.ReactNode;
+}

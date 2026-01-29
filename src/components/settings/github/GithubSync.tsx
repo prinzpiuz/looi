@@ -1,103 +1,124 @@
-import React, { useState } from 'react';
-import { FaGithub } from 'react-icons/fa';
+import React, { useState, useCallback, useMemo } from 'react';
+import { FaGithub, FaKey } from 'react-icons/fa';
 import GithubDeviceFlow from './GithubDeviceFlow';
 import GithubPATInput from './GithubPATInput';
-import { saveToken } from '../../../utils/github';
 import SyncSettings from './SyncSettings';
+import { saveToken } from '../../../utils/github';
 import { useSettings } from '../../../hooks/settingsContext';
-import { GitHubSyncSettings, TokenType } from '../../../utils/types';
 import { isTokenExpired } from '../../../utils/utils';
 import { toast } from '../../../utils/toastStore';
+import '../../../assets/css/github_sync.css';
+import { TabConfig, TokenType } from '../../../utils/types';
 
-const githubSyncDivStyle: React.CSSProperties = { margin: '7px 0 27px' };
-const selectionDivStyle: React.CSSProperties = {
-    display: 'flex',
-    borderBottom: '1px solid #ffffff',
-    gap: 0,
-    marginBottom: -10,
-};
-
-const checkTokenStatus = (
-    githubSync: GitHubSyncSettings | undefined,
-): boolean => {
-    if (githubSync === undefined) return false;
-    return !isTokenExpired(githubSync);
-};
+const TABS: TabConfig[] = [
+    { id: 'UAT', label: 'Login', icon: <FaGithub /> },
+    { id: 'PAT', label: 'Token', icon: <FaKey /> },
+];
 
 const GitHubSync: React.FC = () => {
     const { settings, updateGithubSettings } = useSettings();
-    const [authTab, setAuthTab] = useState<TokenType>('UAT');
+    const [activeTab, setActiveTab] = useState<TokenType>('UAT');
 
-    const [tokenAvailable, setTokenAvailable] = useState(
-        checkTokenStatus(settings?.githubSync),
+    const isTokenValid = useMemo(() => {
+        const githubSync = settings?.githubSync;
+        if (!githubSync?.tokenSaved) return false;
+        if (!githubSync.storedAt) return false;
+        return !isTokenExpired(githubSync);
+    }, [settings?.githubSync]);
+
+    const handleTokenSave = useCallback(
+        (token: string) => {
+            saveToken(token);
+            void updateGithubSettings({
+                tokenSaved: true,
+                storedAt: Date.now(),
+                tokenType: activeTab,
+            });
+            toast.success('GitHub connected successfully!');
+        },
+        [activeTab, updateGithubSettings],
     );
-    const onToken = (token: string) => {
-        saveToken(token);
-        void updateGithubSettings({
-            tokenSaved: true,
-            storedAt: Date.now(),
-            tokenType: authTab,
-        });
-        setTokenAvailable(true);
-        toast.success('GitHub token saved successfully.', {
-            id: 'github-token-saved',
-            duration: 4000,
-        });
-    };
 
-    const connectButtonStyle: React.CSSProperties = {
-        flex: 1,
-        background: authTab === 'UAT' ? '#ffffff' : 'none',
-        border: 'none',
-        fontWeight: 700,
-        fontSize: 15,
-        padding: '12px 0',
-        borderRadius: '8px 8px 0 0',
-    };
+    const handleTokenReset = useCallback(() => {
+        toast.info('GitHub disconnected');
+    }, []);
 
-    const authButtonStyle: React.CSSProperties = {
-        flex: 1,
-        background: authTab === 'PAT' ? '#ffffff' : 'none',
-        border: 'none',
-        fontWeight: 700,
-        fontSize: 15,
-        padding: '12px 0',
-        borderRadius: '8px 8px 0 0',
-    };
+    const handleTabKeyDown = useCallback(
+        (e: React.KeyboardEvent) => {
+            const currentIndex = TABS.findIndex((tab) => tab.id === activeTab);
+            let newIndex = currentIndex;
 
-    const getSection = () => {
-        if (tokenAvailable) {
-            return (
-                <SyncSettings onTokenReset={() => setTokenAvailable(false)} />
-            );
-        } else {
-            return (
-                <>
-                    <div style={selectionDivStyle}>
-                        <button
-                            style={connectButtonStyle}
-                            onClick={() => setAuthTab('UAT')}
-                        >
-                            <FaGithub /> Login
-                        </button>
-                        <button
-                            style={authButtonStyle}
-                            onClick={() => setAuthTab('PAT')}
-                        >
-                            <FaGithub /> Token
-                        </button>
-                    </div>
-                    {authTab === 'UAT' ? (
-                        <GithubDeviceFlow onToken={onToken} />
-                    ) : (
-                        <GithubPATInput onToken={onToken} />
-                    )}
-                </>
-            );
-        }
-    };
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                newIndex =
+                    currentIndex > 0 ? currentIndex - 1 : TABS.length - 1;
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                newIndex =
+                    currentIndex < TABS.length - 1 ? currentIndex + 1 : 0;
+            }
 
-    return <div style={githubSyncDivStyle}>{getSection()}</div>;
+            if (newIndex !== currentIndex) {
+                setActiveTab(TABS[newIndex].id);
+            }
+        },
+        [activeTab],
+    );
+
+    const renderAuthTabs = () => (
+        <>
+            <div
+                className="github-sync__tabs"
+                role="tablist"
+                aria-label="Authentication method"
+            >
+                {TABS.map((tab) => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        id={`tab-${tab.id}`}
+                        aria-selected={activeTab === tab.id}
+                        aria-controls={`panel-${tab.id}`}
+                        tabIndex={activeTab === tab.id ? 0 : -1}
+                        className={`github-sync__tab ${activeTab === tab.id ? 'github-sync__tab--active' : ''}`}
+                        onClick={() => setActiveTab(tab.id)}
+                        onKeyDown={handleTabKeyDown}
+                    >
+                        <span className="github-sync__tab-icon">
+                            {tab.icon}
+                        </span>
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            <div
+                id={`panel-${activeTab}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${activeTab}`}
+                className="github-sync__panel"
+            >
+                {activeTab === 'UAT' ? (
+                    <GithubDeviceFlow onToken={handleTokenSave} />
+                ) : (
+                    <GithubPATInput onToken={handleTokenSave} />
+                )}
+            </div>
+        </>
+    );
+
+    const renderConnected = () => (
+        <div className="github-sync__connected">
+            <SyncSettings onTokenReset={handleTokenReset} />
+        </div>
+    );
+
+    return (
+        <div className="github-sync">
+            {isTokenValid ? renderConnected() : renderAuthTabs()}
+        </div>
+    );
 };
 
 export default GitHubSync;
