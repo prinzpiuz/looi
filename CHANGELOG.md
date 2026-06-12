@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @prinzpiuz in [#114](https://github.com/prinzpiuz/looi/pull/114)
+* deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @prinzpiuz in [#113](https://github.com/prinzpiuz/looi/pull/113)
 * deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @dependabot[bot]
 * deps-dev(deps-dev): bump axios from 1.13.4 to 1.16.0 by @prinzpiuz in [#112](https://github.com/prinzpiuz/looi/pull/112)
