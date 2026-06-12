@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump jsonpath from 1.1.1 to 1.3.0 by @prinzpiuz in [#101](https://github.com/prinzpiuz/looi/pull/101)
+* deps(deps): bump jsonpath from 1.1.1 to 1.3.0 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @prinzpiuz in [#100](https://github.com/prinzpiuz/looi/pull/100)
 * deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
