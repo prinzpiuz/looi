@@ -1,4 +1,13 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump rollup from 2.79.2 to 2.80.0 by @prinzpiuz in [#99](https://github.com/prinzpiuz/looi/pull/99)
+* deps(deps): bump rollup from 2.79.2 to 2.80.0 by @dependabot[bot]
+* deps-dev(deps-dev): bump the typescript group across 1 directory with 2 updates by @prinzpiuz in [#97](https://github.com/prinzpiuz/looi/pull/97)
+* deps-dev(deps-dev): bump the typescript group across 1 directory with 2 updates by @dependabot[bot]
+* deps(deps): bump ajv from 6.12.6 to 6.14.0 by @prinzpiuz in [#96](https://github.com/prinzpiuz/looi/pull/96)
+* deps(deps): bump ajv from 6.12.6 to 6.14.0 by @dependabot[bot]
+* deps(deps): bump qs from 6.14.0 to 6.14.2 by @prinzpiuz in [#95](https://github.com/prinzpiuz/looi/pull/95)
+* deps(deps): bump qs from 6.14.0 to 6.14.2 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @prinzpiuz in [#92](https://github.com/prinzpiuz/looi/pull/92)
 * deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
