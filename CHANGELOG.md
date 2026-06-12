@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump the react group with 2 updates by @prinzpiuz in [#81](https://github.com/prinzpiuz/looi/pull/81)
+* deps(deps): bump the react group with 2 updates by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @prinzpiuz in [#79](https://github.com/prinzpiuz/looi/pull/79)
 * deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
