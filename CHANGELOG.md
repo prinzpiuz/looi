@@ -1,4 +1,15 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @prinzpiuz in [#108](https://github.com/prinzpiuz/looi/pull/108)
+* deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @dependabot[bot]
+* deps(deps): bump brace-expansion from 1.1.12 to 1.1.13 by @prinzpiuz in [#107](https://github.com/prinzpiuz/looi/pull/107)
+* deps(deps): bump brace-expansion from 1.1.12 to 1.1.13 by @dependabot[bot]
+* deps(deps): bump node-forge from 1.3.3 to 1.4.0 by @prinzpiuz in [#106](https://github.com/prinzpiuz/looi/pull/106)
+* deps(deps): bump node-forge from 1.3.3 to 1.4.0 by @dependabot[bot]
+* deps(deps): bump yaml by @prinzpiuz in [#105](https://github.com/prinzpiuz/looi/pull/105)
+* deps(deps): bump yaml by @dependabot[bot]
+* deps(deps): bump picomatch from 2.3.1 to 2.3.2 by @prinzpiuz in [#104](https://github.com/prinzpiuz/looi/pull/104)
+* deps(deps): bump picomatch from 2.3.1 to 2.3.2 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump flatted from 3.3.3 to 3.4.2 by @prinzpiuz in [#103](https://github.com/prinzpiuz/looi/pull/103)
 * deps(deps): bump flatted from 3.3.3 to 3.4.2 by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
