@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @prinzpiuz in [#79](https://github.com/prinzpiuz/looi/pull/79)
+* deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @prinzpiuz in [#76](https://github.com/prinzpiuz/looi/pull/76)
 * deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @dependabot[bot]
 
