@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @prinzpiuz in [#100](https://github.com/prinzpiuz/looi/pull/100)
+* deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump rollup from 2.79.2 to 2.80.0 by @prinzpiuz in [#99](https://github.com/prinzpiuz/looi/pull/99)
 * deps(deps): bump rollup from 2.79.2 to 2.80.0 by @dependabot[bot]
 * deps-dev(deps-dev): bump the typescript group across 1 directory with 2 updates by @prinzpiuz in [#97](https://github.com/prinzpiuz/looi/pull/97)
