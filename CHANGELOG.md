@@ -1,4 +1,15 @@
 ## What's Changed in 1.2.2
+* deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @prinzpiuz in [#113](https://github.com/prinzpiuz/looi/pull/113)
+* deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @dependabot[bot]
+* deps-dev(deps-dev): bump axios from 1.13.4 to 1.16.0 by @prinzpiuz in [#112](https://github.com/prinzpiuz/looi/pull/112)
+* deps-dev(deps-dev): bump axios from 1.13.4 to 1.16.0 by @dependabot[bot]
+* deps(deps): bump fast-uri from 3.1.0 to 3.1.2 by @prinzpiuz in [#111](https://github.com/prinzpiuz/looi/pull/111)
+* deps(deps): bump fast-uri from 3.1.0 to 3.1.2 by @dependabot[bot]
+* deps(deps): bump @babel/plugin-transform-modules-systemjs from 7.28.5 to 7.29.7 by @prinzpiuz in [#110](https://github.com/prinzpiuz/looi/pull/110)
+* deps(deps): bump @babel/plugin-transform-modules-systemjs by @dependabot[bot]
+* deps(deps): bump follow-redirects from 1.15.11 to 1.16.0 by @prinzpiuz in [#109](https://github.com/prinzpiuz/looi/pull/109)
+* deps(deps): bump follow-redirects from 1.15.11 to 1.16.0 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @prinzpiuz in [#108](https://github.com/prinzpiuz/looi/pull/108)
 * deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @dependabot[bot]
 * deps(deps): bump brace-expansion from 1.1.12 to 1.1.13 by @prinzpiuz in [#107](https://github.com/prinzpiuz/looi/pull/107)
