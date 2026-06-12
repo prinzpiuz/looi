@@ -1,4 +1,7 @@
 ## What's Changed in 1.2.2
+* deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @prinzpiuz in [#92](https://github.com/prinzpiuz/looi/pull/92)
+* deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump the react group with 2 updates by @prinzpiuz in [#81](https://github.com/prinzpiuz/looi/pull/81)
 * deps(deps): bump the react group with 2 updates by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
