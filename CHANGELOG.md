@@ -1,4 +1,11 @@
+## What's Changed in 1.2.2
+* deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @prinzpiuz in [#76](https://github.com/prinzpiuz/looi/pull/76)
+* deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @dependabot[bot]
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.2.1...1.2.2
+
 ## What's Changed in 1.2.1
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * fix: issue with automatic token reset fixed by @prinzpiuz in [#87](https://github.com/prinzpiuz/looi/pull/87)
 * fix: issue with automatic token reset fixed by @prinzpiuz
 
@@ -53,9 +60,6 @@
 * chrome release by @prinzpiuz
 * build: fixing chrome release issue by @prinzpiuz in [#51](https://github.com/prinzpiuz/looi/pull/51)
 * build: fixing chrome release issue by @prinzpiuz
-
-## New Contributors
-* @dependabot[bot] made their first contribution
 
 **Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.3...1.2.0
 
