@@ -50,6 +50,11 @@ export default [
                 setInterval: 'readonly',
                 clearInterval: 'readonly',
                 navigator: 'readonly',
+                indexedDB: 'readonly',
+                IDBDatabase: 'readonly',
+                FileReader: 'readonly',
+                Blob: 'readonly',
+                URL: 'readonly',
             },
         },
         plugins: {
@@ -62,7 +67,12 @@ export default [
             ...tsEslint.configs['recommended-requiring-type-checking'].rules,
             '@typescript-eslint/no-unused-vars': [
                 'warn',
-                { argsIgnorePattern: '^_' },
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    caughtErrorsIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                },
             ],
             '@typescript-eslint/explicit-function-return-type': 'off',
             '@typescript-eslint/no-unsafe-assignment': 'off',

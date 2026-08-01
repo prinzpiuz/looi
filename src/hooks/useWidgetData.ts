@@ -36,7 +36,7 @@ const migrateData = <T>(
                 // console.log(
                 //   `[WidgetData] Migrated from v${currentVersion} to v${nextVersion}`,
                 // );
-            } catch (_) {
+            } catch {
                 /* empty */
                 // console.error(
                 //   `[WidgetData] Migration to v${nextVersion} failed:`,

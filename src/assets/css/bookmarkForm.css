@@ -1,0 +1,177 @@
+/* Overlay */
+.bookmark-form__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+}
+
+/* Modal */
+.bookmark-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(430px, 90vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 33px 35px 20px;
+    background: rgba(240, 241, 245, 0.4);
+    border-radius: 18px;
+    box-shadow:
+        0 6px 36px rgba(25, 44, 81, 0.18),
+        0 0.5px 1.6px rgba(82, 99, 140, 0.09);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Header */
+.bookmark-form__header {
+    margin: 0 0 18px;
+    font-weight: 800;
+    font-size: 21px;
+    color: #ffffff;
+    letter-spacing: 0.07em;
+    text-align: center;
+}
+
+/* Close button */
+.bookmark-form__close {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    display: flex;
+    padding: 0;
+    font-size: 22px;
+    color: #ffffff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 20;
+}
+
+/* Field */
+.bookmark-form__field {
+    position: relative;
+    margin: 20px 0;
+}
+
+.bookmark-form__field-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #8792b0;
+    pointer-events: none;
+}
+
+/* Input */
+.bookmark-form__input {
+    width: 100%;
+    padding: 16px 16px 16px 42px;
+    border: 1.3px solid #ebeef7;
+    border-radius: 11px;
+    outline: none;
+    font-size: 15px;
+    color: #1f283b;
+    background: rgba(248, 248, 255, 0.84);
+    box-shadow: 0 2px 7px rgba(111, 135, 246, 0.06);
+    transition:
+        box-shadow 0.17s,
+        border-color 0.14s;
+    box-sizing: border-box;
+}
+
+.bookmark-form__input:focus {
+    border-color: #2189fa;
+    box-shadow: 0 2px 10px rgba(33, 137, 250, 0.13);
+}
+
+.bookmark-form__input--error {
+    border-color: #b10707;
+}
+
+/* Floating label — moves up when input is focused OR has content */
+.bookmark-form__label {
+    position: absolute;
+    left: 42px;
+    top: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #92a0c3;
+    pointer-events: none;
+    transition: all 0.16s;
+}
+
+.bookmark-form__input:focus + .bookmark-form__label,
+.bookmark-form__input:not(:placeholder-shown) + .bookmark-form__label {
+    top: 3px;
+    font-size: 12px;
+    color: #1d2a49;
+}
+
+/* Error message */
+.bookmark-form__error {
+    padding: 7px 12px;
+    font-weight: 600;
+    text-align: center;
+    color: #b10707;
+}
+
+/* Actions */
+.bookmark-form__actions {
+    display: flex;
+    gap: 13px;
+    margin-top: 28px;
+    justify-content: flex-end;
+}
+
+.bookmark-form__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 24px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2.5px 8px rgba(83, 99, 190, 0.05);
+    transition:
+        opacity 0.14s,
+        transform 0.1s;
+}
+
+.bookmark-form__button:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.bookmark-form__button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.bookmark-form__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bookmark-form__button--cancel {
+    background: rgba(228, 234, 254, 0.83);
+    color: #000000;
+}
+
+.bookmark-form__button--submit {
+    background: linear-gradient(90deg, #2f82e4, #4559f9);
+    color: #ffffff;
+}
+
+.bookmark-form__button:focus-visible,
+.bookmark-form__close:focus-visible {
+    outline: 2px solid #2189fa;
+    outline-offset: 2px;
+}

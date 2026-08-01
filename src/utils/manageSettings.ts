@@ -31,7 +31,7 @@ const performGitHubSync = async (
             ext?.storage.local.set({ settings: data.settings });
             setSettings?.(data.settings);
         }
-    } catch (_) {
+    } catch {
         /* empty */
     }
 };

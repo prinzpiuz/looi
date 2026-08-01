@@ -3,139 +3,8 @@ import { createPortal } from 'react-dom';
 import { FaLink, FaFont, FaImage, FaTimes, FaPlus } from 'react-icons/fa';
 import { Bookmark, BookmarkFormProps } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
-import { removeProtocol } from '../../utils/utils';
-
-const overlayStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 1040,
-};
-
-const inputWrapperStyle: React.CSSProperties = {
-    position: 'relative',
-    margin: '20px 0',
-};
-
-const labelStyle: React.CSSProperties = {
-    position: 'absolute',
-    left: 42,
-    top: 13,
-    color: 'rgba(240,241,245,0.4)',
-    fontWeight: 600,
-    pointerEvents: 'none',
-    transition: 'all .16s',
-};
-
-const inputStyle: React.CSSProperties = {
-    width: '80%',
-    padding: '16px 16px 16px 42px',
-    borderRadius: 11,
-    border: 'none',
-    outline: 'none',
-    fontSize: 15,
-    background: 'rgba(248,248,255,0.84)',
-    boxShadow: '0 2px 7px rgba(111,135,246,0.06)',
-    transition: 'box-shadow .17s, outline .14s',
-    marginTop: 3,
-};
-
-const iconStyle: React.CSSProperties = {
-    position: 'absolute',
-    left: 15,
-    top: 18,
-    fontSize: 16,
-    color: '#8792b0bb',
-};
-
-const modalStyle: React.CSSProperties = {
-    minWidth: 360,
-    maxWidth: 430,
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    background: 'rgba(240,241,245,0.4)',
-    borderRadius: 18,
-    boxShadow:
-        '0 6px 36px rgba(25,44,81,0.18), 0 0.5px 1.6px 0 rgba(82,99,140,0.09)',
-    padding: '33px 35px 20px 35px',
-    zIndex: 1050,
-    transition: 'opacity .28s cubic-bezier(.4,0,.2,1)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    backdropFilter: 'blur(50px)',
-};
-
-const buttonBarStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: 13,
-    marginTop: 28,
-    justifyContent: 'flex-end',
-};
-
-const actionButtonStyle: React.CSSProperties = {
-    fontWeight: 700,
-    fontSize: 15,
-    border: 0,
-    borderRadius: 8,
-    padding: '11px 24px',
-    cursor: 'pointer',
-    boxShadow: '0 2.5px 8px rgba(83,99,190,0.05)',
-    transition: 'background .14s, color .14s, box-shadow .13s',
-};
-
-const cancelButtonStyle: React.CSSProperties = {
-    ...actionButtonStyle,
-    background: 'rgba(228,234,254,0.83)',
-    color: '#000000',
-};
-
-const addButtonStyle: React.CSSProperties = {
-    ...actionButtonStyle,
-    background: 'linear-gradient(90deg,#2f82e4,#4559f9)',
-    color: '#162242',
-    marginLeft: 4,
-};
-
-const closeIconStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 20,
-    right: 22,
-    fontSize: 22,
-    color: '#ffffff',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    zIndex: 20,
-};
-
-const errorDivStyle: React.CSSProperties = {
-    color: '#ffffff',
-    padding: '7px 12px',
-    fontWeight: 600,
-    textAlign: 'center',
-};
-
-const AddIconStyle: React.CSSProperties = {
-    marginRight: 5,
-    fontSize: 15,
-    verticalAlign: -2,
-};
-
-const headerStyle: React.CSSProperties = {
-    margin: 0,
-    marginBottom: 18,
-    fontWeight: 800,
-    fontSize: 21,
-    color: '#ffffff',
-    letterSpacing: '.07em',
-    textAlign: 'center',
-};
+import { getDomain, prefetchFavicon } from '../../utils/favicon';
+import '../../assets/css/bookmarkForm.css';
 
 const BookmarkForm: React.FC<BookmarkFormProps> = ({
     onCancel,
@@ -152,7 +21,6 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
     const [error, setError] = useState<string | null>(null);
 
     const firstInput = useRef<HTMLInputElement>(null);
-    const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setUrl(initialData.url || '');
@@ -163,7 +31,15 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         }
     }, [initialData.url, initialData.name, initialData.icon, showBookmarkForm]);
 
-    // Handle Escape key to close
+    const handleCancel = () => {
+        onCancel(false);
+        setUrl(initialData.url || '');
+        setName(initialData.name || '');
+        setIcon(initialData.icon || '');
+        setError(null);
+    };
+
+    // Escape to close
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && showBookmarkForm) {
@@ -174,16 +50,7 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
         return () => document.removeEventListener('keydown', handleEscape);
     }, [showBookmarkForm]);
 
-    const handleCancel = () => {
-        onCancel(false);
-        setUrl(initialData.url || '');
-        setName(initialData.name || '');
-        setIcon(initialData.icon || '');
-        setError(null);
-    };
-
     const handleOverlayClick = (e: React.MouseEvent) => {
-        // Close if clicking the overlay (not the modal itself)
         if (e.target === e.currentTarget) {
             handleCancel();
         }
@@ -198,9 +65,9 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
             setError('Enter a valid URL');
             return;
         }
+
         const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
-        const finalIcon =
-            icon || `https://icon.horse/icon/${removeProtocol(url)}`;
+        const finalIcon = icon.trim();
 
         if (isEdit && bookmarkId) {
             void updateBookmark(bookmarkId, {
@@ -217,119 +84,113 @@ const BookmarkForm: React.FC<BookmarkFormProps> = ({
             };
             void addBookmark(bookmark);
         }
+
+        // Prefetch on both add and edit (URL may have changed)
+        prefetchFavicon(getDomain(normalizedUrl), finalIcon || undefined);
+
         handleCancel();
-    };
-
-    const nameLabelStyle: React.CSSProperties = {
-        ...labelStyle,
-        top: name ? 3 : 13,
-        fontSize: name ? 12 : 14,
-        color: name ? '#1d2a49' : '#92a0c3',
-    };
-
-    const urlLabelStyle: React.CSSProperties = {
-        ...labelStyle,
-        top: url ? 3 : 13,
-        fontSize: url ? 12 : 14,
-        color: url ? '#1d2a49' : '#92a0c3',
-    };
-
-    const iconLabelStyle: React.CSSProperties = {
-        ...labelStyle,
-        top: icon ? 3 : 13,
-        fontSize: icon ? 12 : 14,
-        color: icon ? '#1d2a49' : '#92a0c3',
-    };
-
-    const allInputStyle: React.CSSProperties = {
-        ...inputStyle,
-        border:
-            error && !name ? '1.5px solid #b10707ff' : '1.3px solid #ebeef7',
     };
 
     if (!showBookmarkForm) return null;
 
-    // Use Portal to render at document body level
     const modalContent = (
         <div
-            style={overlayStyle}
+            className="bookmark-form__overlay"
             onClick={handleOverlayClick}
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
         >
             <div
-                ref={modalRef}
-                style={modalStyle}
-                onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
+                className="bookmark-form"
+                role="dialog"
+                aria-modal="true"
+                aria-label={isEdit ? 'Edit Bookmark' : 'Add Bookmark'}
+                onClick={(e) => e.stopPropagation()}
             >
                 <button
                     type="button"
+                    className="bookmark-form__close"
                     aria-label="Close"
-                    style={closeIconStyle}
                     onClick={handleCancel}
                 >
                     <FaTimes />
                 </button>
-                <h2 style={headerStyle}>
+
+                <h2 className="bookmark-form__header">
                     {isEdit ? 'Edit Bookmark' : 'Add Bookmark'}
                 </h2>
-                <div style={inputWrapperStyle}>
-                    <FaFont style={iconStyle} />
+
+                {/* Name */}
+                <div className="bookmark-form__field">
+                    <FaFont className="bookmark-form__field-icon" />
                     <input
+                        id="bm-name"
                         ref={firstInput}
+                        className="bookmark-form__input"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        style={allInputStyle}
                         placeholder=" "
                         autoComplete="off"
                     />
-                    <label style={nameLabelStyle}>Name</label>
+                    <label htmlFor="bm-name" className="bookmark-form__label">
+                        Name
+                    </label>
                 </div>
-                <div style={inputWrapperStyle}>
-                    <FaLink style={iconStyle} />
+
+                {/* URL */}
+                <div className="bookmark-form__field">
+                    <FaLink className="bookmark-form__field-icon" />
                     <input
+                        id="bm-url"
+                        className={`bookmark-form__input ${error ? 'bookmark-form__input--error' : ''}`}
                         value={url}
                         onChange={(e) => {
                             setUrl(e.target.value);
                             if (error) setError(null);
                         }}
-                        style={allInputStyle}
                         placeholder=" "
                         autoComplete="off"
                         inputMode="url"
                     />
-                    <label style={urlLabelStyle}>URL</label>
+                    <label htmlFor="bm-url" className="bookmark-form__label">
+                        URL
+                    </label>
                 </div>
-                <div style={inputWrapperStyle}>
-                    <FaImage style={iconStyle} />
+
+                {/* Icon (optional) */}
+                <div className="bookmark-form__field">
+                    <FaImage className="bookmark-form__field-icon" />
                     <input
+                        id="bm-icon"
+                        className="bookmark-form__input"
                         value={icon}
                         onChange={(e) => setIcon(e.target.value)}
-                        style={inputStyle}
                         placeholder=" "
                         autoComplete="off"
                         inputMode="url"
                     />
-                    <label style={iconLabelStyle}>Icon URL (optional)</label>
+                    <label htmlFor="bm-icon" className="bookmark-form__label">
+                        Icon URL (optional)
+                    </label>
                 </div>
 
-                {error && <div style={errorDivStyle}>{error}</div>}
+                {error && <div className="bookmark-form__error">{error}</div>}
 
-                <div style={buttonBarStyle}>
+                <div className="bookmark-form__actions">
                     <button
                         type="button"
-                        style={cancelButtonStyle}
+                        className="bookmark-form__button bookmark-form__button--cancel"
                         onClick={handleCancel}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        style={addButtonStyle}
+                        className="bookmark-form__button bookmark-form__button--submit"
                         onClick={handleSubmit}
                         disabled={!url}
                     >
-                        <FaPlus style={AddIconStyle} />
+                        <FaPlus />
                         {isEdit ? 'Update' : 'Add'}
                     </button>
                 </div>

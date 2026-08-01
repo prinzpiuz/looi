@@ -1,6 +1,7 @@
 import { FaEllipsis } from 'react-icons/fa6';
 import BookmarkForm from './BookmarkForm';
 import PopUpMenu from './PopUpMenu';
+import Favicon from './Favicon';
 import { BookmarkItemProps } from '../../utils/types';
 import { useState, useRef } from 'react';
 import { DEFAULT_HL_COLOR, DEFAULT_SCALE_FACTOR } from '../../utils/constants';
@@ -54,12 +55,6 @@ const moreIconStyle: React.CSSProperties = {
     transition: 'color 0.2s',
 };
 
-const imageStyle: React.CSSProperties = {
-    borderRadius: '50%',
-    background: 'rgba(255,255,255,0.08)',
-    boxShadow: '0 1.5px 7px 0 rgba(0,0,0,0.08)',
-};
-
 const itemStyle = (bgColor: string): React.CSSProperties => ({
     ...bookmarkStyle,
     backgroundColor: bgColor,
@@ -105,12 +100,11 @@ const BookmarkItem: React.FC<BookmarkItemProps> = ({ bookmark, bgColor }) => {
                         (e.currentTarget.style.color = '#a5adc6')
                     }
                 >
-                    <img
-                        src={bookmark.icon}
-                        alt={bookmark.url}
-                        width={36}
-                        height={36}
-                        style={imageStyle}
+                    <Favicon
+                        url={bookmark.url}
+                        name={bookmark.name}
+                        customIcon={bookmark.icon}
+                        size={32}
                     />
                     <span style={bookmarkNameStyle}>{bookmark.name}</span>
                 </a>
