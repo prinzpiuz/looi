@@ -1,4 +1,66 @@
+## What's Changed in 1.3.0
+* feat(bookmark): bookmark favicon caching implemented by @prinzpiuz in [#135](https://github.com/prinzpiuz/looi/pull/135)
+* feat(bookmark): bookmark favicon caching implemented by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @prinzpiuz in [#114](https://github.com/prinzpiuz/looi/pull/114)
+* deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @prinzpiuz in [#113](https://github.com/prinzpiuz/looi/pull/113)
+* deps(deps): bump lodash-es from 4.17.23 to 4.18.1 by @dependabot[bot]
+* deps-dev(deps-dev): bump axios from 1.13.4 to 1.16.0 by @prinzpiuz in [#112](https://github.com/prinzpiuz/looi/pull/112)
+* deps-dev(deps-dev): bump axios from 1.13.4 to 1.16.0 by @dependabot[bot]
+* deps(deps): bump fast-uri from 3.1.0 to 3.1.2 by @prinzpiuz in [#111](https://github.com/prinzpiuz/looi/pull/111)
+* deps(deps): bump fast-uri from 3.1.0 to 3.1.2 by @dependabot[bot]
+* deps(deps): bump @babel/plugin-transform-modules-systemjs from 7.28.5 to 7.29.7 by @prinzpiuz in [#110](https://github.com/prinzpiuz/looi/pull/110)
+* deps(deps): bump @babel/plugin-transform-modules-systemjs by @dependabot[bot]
+* deps(deps): bump follow-redirects from 1.15.11 to 1.16.0 by @prinzpiuz in [#109](https://github.com/prinzpiuz/looi/pull/109)
+* deps(deps): bump follow-redirects from 1.15.11 to 1.16.0 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @prinzpiuz in [#108](https://github.com/prinzpiuz/looi/pull/108)
+* deps(deps): bump path-to-regexp from 0.1.12 to 0.1.13 by @dependabot[bot]
+* deps(deps): bump brace-expansion from 1.1.12 to 1.1.13 by @prinzpiuz in [#107](https://github.com/prinzpiuz/looi/pull/107)
+* deps(deps): bump brace-expansion from 1.1.12 to 1.1.13 by @dependabot[bot]
+* deps(deps): bump node-forge from 1.3.3 to 1.4.0 by @prinzpiuz in [#106](https://github.com/prinzpiuz/looi/pull/106)
+* deps(deps): bump node-forge from 1.3.3 to 1.4.0 by @dependabot[bot]
+* deps(deps): bump yaml by @prinzpiuz in [#105](https://github.com/prinzpiuz/looi/pull/105)
+* deps(deps): bump yaml by @dependabot[bot]
+* deps(deps): bump picomatch from 2.3.1 to 2.3.2 by @prinzpiuz in [#104](https://github.com/prinzpiuz/looi/pull/104)
+* deps(deps): bump picomatch from 2.3.1 to 2.3.2 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump flatted from 3.3.3 to 3.4.2 by @prinzpiuz in [#103](https://github.com/prinzpiuz/looi/pull/103)
+* deps(deps): bump flatted from 3.3.3 to 3.4.2 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump jsonpath from 1.1.1 to 1.3.0 by @prinzpiuz in [#101](https://github.com/prinzpiuz/looi/pull/101)
+* deps(deps): bump jsonpath from 1.1.1 to 1.3.0 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @prinzpiuz in [#100](https://github.com/prinzpiuz/looi/pull/100)
+* deps-dev(deps-dev): bump minimatch from 3.1.2 to 3.1.5 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump rollup from 2.79.2 to 2.80.0 by @prinzpiuz in [#99](https://github.com/prinzpiuz/looi/pull/99)
+* deps(deps): bump rollup from 2.79.2 to 2.80.0 by @dependabot[bot]
+* deps-dev(deps-dev): bump the typescript group across 1 directory with 2 updates by @prinzpiuz in [#97](https://github.com/prinzpiuz/looi/pull/97)
+* deps-dev(deps-dev): bump the typescript group across 1 directory with 2 updates by @dependabot[bot]
+* deps(deps): bump ajv from 6.12.6 to 6.14.0 by @prinzpiuz in [#96](https://github.com/prinzpiuz/looi/pull/96)
+* deps(deps): bump ajv from 6.12.6 to 6.14.0 by @dependabot[bot]
+* deps(deps): bump qs from 6.14.0 to 6.14.2 by @prinzpiuz in [#95](https://github.com/prinzpiuz/looi/pull/95)
+* deps(deps): bump qs from 6.14.0 to 6.14.2 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @prinzpiuz in [#92](https://github.com/prinzpiuz/looi/pull/92)
+* deps-dev(deps-dev): bump axios from 1.13.2 to 1.13.4 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump the react group with 2 updates by @prinzpiuz in [#81](https://github.com/prinzpiuz/looi/pull/81)
+* deps(deps): bump the react group with 2 updates by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @prinzpiuz in [#79](https://github.com/prinzpiuz/looi/pull/79)
+* deps(deps): bump lodash-es from 4.17.22 to 4.17.23 by @dependabot[bot]
+* chore: changelog generated & version updated automatically by @github-actions[bot]
+* deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @prinzpiuz in [#76](https://github.com/prinzpiuz/looi/pull/76)
+* deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @dependabot[bot]
+
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.2.1...1.3.0
+
 ## What's Changed in 1.2.1
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * fix: issue with automatic token reset fixed by @prinzpiuz in [#87](https://github.com/prinzpiuz/looi/pull/87)
 * fix: issue with automatic token reset fixed by @prinzpiuz
 
@@ -53,9 +115,6 @@
 * chrome release by @prinzpiuz
 * build: fixing chrome release issue by @prinzpiuz in [#51](https://github.com/prinzpiuz/looi/pull/51)
 * build: fixing chrome release issue by @prinzpiuz
-
-## New Contributors
-* @dependabot[bot] made their first contribution
 
 **Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.1.3...1.2.0
 

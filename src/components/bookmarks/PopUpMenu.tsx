@@ -1,30 +1,7 @@
 import { useEffect } from 'react';
 import { PopUpMenuProps } from '../../utils/types';
 import { useSettings } from '../../hooks/settingsContext';
-
-const popupMenuStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '120%', // slightly below the icon
-    right: 0,
-    background: 'rgba(28, 28, 28, 0.95)',
-    borderRadius: 8,
-    boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-    zIndex: 10000,
-    minWidth: 110,
-    padding: '6px 0',
-};
-
-const menuItemStyle: React.CSSProperties = {
-    padding: '8px 16px',
-    cursor: 'pointer',
-    color: '#f0f0f0',
-    fontSize: 14,
-    userSelect: 'none',
-};
-
-const menuItemHoverStyle: React.CSSProperties = {
-    backgroundColor: '#433f4f',
-};
+import '../../assets/css/popupMenu.css';
 
 const PopUpMenu: React.FC<PopUpMenuProps> = ({
     id,
@@ -35,7 +12,7 @@ const PopUpMenu: React.FC<PopUpMenuProps> = ({
 }) => {
     const { removeBookmark } = useSettings();
 
-    // Close menu on outside click
+    // Close on outside click
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -50,56 +27,36 @@ const PopUpMenu: React.FC<PopUpMenuProps> = ({
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [menuOpen]);
-
-    const handleRemove = () => {
-        void removeBookmark(id);
-        setMenuOpen(false);
-    };
+    }, [menuOpen, wrapperRef, setMenuOpen]);
 
     const handleEdit = () => {
         onEdit?.(true);
         setMenuOpen(false);
     };
 
+    const handleRemove = () => {
+        void removeBookmark(id);
+        setMenuOpen(false);
+    };
+
     return (
-        <div style={popupMenuStyle} role="menu" aria-label="Bookmark options">
-            <div
-                style={menuItemStyle}
-                onClick={handleEdit}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleEdit();
-                }}
-                tabIndex={0}
+        <div className="popup-menu" role="menu" aria-label="Bookmark options">
+            <button
+                type="button"
                 role="menuitem"
-                onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                        menuItemHoverStyle.backgroundColor ?? '433f4f')
-                }
-                onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = 'transparent')
-                }
+                className="popup-menu__item"
+                onClick={handleEdit}
             >
                 Edit
-            </div>
-            <div
-                style={menuItemStyle}
-                onClick={handleRemove}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleRemove();
-                }}
-                tabIndex={0}
+            </button>
+            <button
+                type="button"
                 role="menuitem"
-                onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                        menuItemHoverStyle.backgroundColor ?? '433f4f')
-                }
-                onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = 'transparent')
-                }
+                className="popup-menu__item popup-menu__item--danger"
+                onClick={handleRemove}
             >
                 Remove
-            </div>
+            </button>
         </div>
     );
 };
