@@ -38,10 +38,12 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
     const [displayLastSync, setDisplayLastSync] = useState('Never');
 
     useEffect(() => {
-        toast.info(
-            'Paste your Gist ID if you have one, or click "Sync Now" to create a new one.',
-            { duration: 8000, id: 'gist-id-info' },
-        );
+        if (!gistId) {
+            toast.info(
+                'Paste your Gist ID if you have one, or click "Sync Now" to create a new one.',
+                { duration: 8000, id: 'gist-id-info' },
+            );
+        }
     }, []);
 
     useEffect(() => {
@@ -118,7 +120,7 @@ const SyncSettings: React.FC<SyncSettingsProps> = ({ onTokenReset }) => {
                 onTokenReset();
                 toast.info('Token reset. Please reconnect to GitHub.');
             }
-        } catch (_) {
+        } catch {
             toast.error('Failed to reset token. Please try again.');
         }
     }, [resetToken, onTokenReset, githubSyncSettings]);

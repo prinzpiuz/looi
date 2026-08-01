@@ -1,0 +1,43 @@
+.popup-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    min-width: 120px;
+    padding: 6px 0;
+    background: rgba(28, 28, 28, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+.popup-menu__item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: #f0f0f0;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s ease;
+}
+
+.popup-menu__item:hover,
+.popup-menu__item:focus-visible {
+    background: #433f4f;
+    outline: none;
+}
+
+.popup-menu__item--danger {
+    color: #f87171;
+}
+
+.popup-menu__item--danger:hover,
+.popup-menu__item--danger:focus-visible {
+    background: rgba(248, 113, 113, 0.15);
+}

@@ -1,0 +1,29 @@
+.favicon {
+    border-radius: 6px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.favicon--loading {
+    background: rgba(255, 255, 255, 0.1);
+    animation: faviconPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes faviconPulse {
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.favicon--letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+}

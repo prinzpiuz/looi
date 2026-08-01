@@ -49,7 +49,7 @@ export const useGitHubSync = (): UseGitHubSyncReturn => {
                 if (isMountedRef.current) {
                     setToken(storedToken || null);
                 }
-            } catch (_) {
+            } catch {
                 if (isMountedRef.current) {
                     setToken(null);
                 }
