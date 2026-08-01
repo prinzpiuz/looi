@@ -1,4 +1,7 @@
-## What's Changed in 1.2.2
+## What's Changed in 1.3.0
+* feat(bookmark): bookmark favicon caching implemented by @prinzpiuz in [#135](https://github.com/prinzpiuz/looi/pull/135)
+* feat(bookmark): bookmark favicon caching implemented by @prinzpiuz
+* chore: changelog generated & version updated automatically by @github-actions[bot]
 * deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @prinzpiuz in [#114](https://github.com/prinzpiuz/looi/pull/114)
 * deps(deps): bump shell-quote from 1.8.3 to 1.8.4 by @dependabot[bot]
 * chore: changelog generated & version updated automatically by @github-actions[bot]
@@ -54,7 +57,7 @@
 * deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @prinzpiuz in [#76](https://github.com/prinzpiuz/looi/pull/76)
 * deps-dev(deps-dev): bump eslint-plugin-prettier from 5.5.4 to 5.5.5 by @dependabot[bot]
 
-**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.2.1...1.2.2
+**Full Changelog**: https://github.com/prinzpiuz/looi/compare/1.2.1...1.3.0
 
 ## What's Changed in 1.2.1
 * chore: changelog generated & version updated automatically by @github-actions[bot]
